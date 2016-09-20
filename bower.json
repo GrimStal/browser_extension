@@ -1,0 +1,24 @@
+{
+  "name": "browser_extesion",
+  "authors": [
+    "Borshchov Dimitriy <grimstal@bigmir.net>"
+  ],
+  "description": "Extension to add cargo offers to Cargo.lt and LardiTrans",
+  "main": "popup.html",
+  "license": "MIT",
+  "homepage": "https://cargo.lt",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "lodash": "^4.15.0",
+    "js-md5": "md5#^0.4.1",
+    "abdmob/x2js": "x2js#^1.2.0"
+  }
+}

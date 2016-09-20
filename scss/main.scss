@@ -1,0 +1,129 @@
+$lime: #91b247;
+$white: #fff;
+$greyText: #666;
+$black: #000;
+
+body {
+    min-width: 570px;
+    min-height: 300px;
+    background-color: $white;
+}
+
+img {
+    width: 180px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.btn {
+    &:focus {
+        outline: none;
+    }
+
+    &.btn-success {
+        color: $white;
+        background-color: $lime;
+        border: none;
+    }
+}
+
+.ce__loading {
+    position: fixed;
+    top: 38px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    background-color: rgba(0,0,0,0.8);
+
+    .loading-img-holder,
+    .loading-text-holder {
+        text-align: center;
+        margin: 30px 0;
+        color: white;
+    }
+
+    .loading-img {
+        width: 128px;
+        height: 128px;
+    }
+}
+
+.ce__header {
+    background-color: $lime;
+    color: $white;
+    margin-bottom: 0.8em;
+}
+
+.ce__company-name {
+    color: $lime;
+}
+
+.ce__wrapper {
+    color: $greyText;
+
+    :last-child {
+        margin-bottom: 10px;
+    }
+}
+
+.ce__auth-wrapper {
+    margin: 20px 0;
+    padding: 20px 0;
+}
+
+.ce__image-holder {
+    text-align: center;
+}
+
+.ce__form-container {
+    margin: 0 20px;
+}
+
+.header-holder {
+    padding: 0.6em;
+}
+
+.header-icons {
+    text-align: right;
+    font-size: 1.5em;
+
+    .glyphicon:active {
+        color: $greyText;
+    }
+}
+
+.header-icons {
+    .glyphicon {
+        padding: 0 0.2em;
+    }
+}
+
+.show-right-border {
+    border-right: 2px solid #f2f2f2;
+}
+
+.auth-message {
+    text-align: center;
+}
+
+.binded {
+    color: $lime!important;
+    border: 1px solid $lime;
+    background-color: $white;
+}
+
+.unbinding-message-holder {
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin-top: 25px;
+
+  .glyphicon {
+    color: $lime;
+    margin-left: 10px;
+  }
+
+  .unbinding_text {
+    margin: 0 10px 0 5px;
+  }
+}

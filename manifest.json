@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "CargoExtension",
+  "version": "1.0.1",
+
+  "description": "Extension to leave vacancies for cargo transport",
+  "icons": {
+    "19": "images/GB-19.png"
+  },
+
+  "browser_action": {
+    "default_icon": "images/GB-19.png",
+    "default_popup": "popup.html",
+    "default_title": "Leave order"
+  },
+
+  "background": {
+    "scripts": [
+      "background.js",
+      "bower_components/jquery/dist/jquery.min.js"
+    ]
+  },
+
+  "permissions": [
+    "tabs",
+    "https://io-dev.cargo.lt/*",
+    "http://api.lardi-trans.com/*"
+  ],
+
+  "author": "Borshchov Dimitriy"
+}

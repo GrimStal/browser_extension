@@ -1,0 +1,20 @@
+{
+  "name": "browser_extesion",
+  "version": "1.0.0",
+  "description": "Cargo extension for browser",
+  "main": "popup.js",
+  "dependencies": {
+    "bower": "^1.7.9"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.3.2",
+    "gulp-watch": "^4.3.9",
+    "lodash-cli": "^4.15.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Borshchov Dimitriy",
+  "license": "MIT"
+}

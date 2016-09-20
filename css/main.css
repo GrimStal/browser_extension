@@ -1,0 +1,90 @@
+body {
+  min-width: 570px;
+  min-height: 300px;
+  background-color: #fff; }
+
+img {
+  width: 180px;
+  height: 80px;
+  margin-bottom: 10px; }
+
+.btn:focus {
+  outline: none; }
+
+.btn.btn-success {
+  color: #fff;
+  background-color: #91b247;
+  border: none; }
+
+.ce__loading {
+  position: fixed;
+  top: 38px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  background-color: rgba(0, 0, 0, 0.8); }
+  .ce__loading .loading-img-holder,
+  .ce__loading .loading-text-holder {
+    text-align: center;
+    margin: 30px 0;
+    color: white; }
+  .ce__loading .loading-img {
+    width: 128px;
+    height: 128px; }
+
+.ce__header {
+  background-color: #91b247;
+  color: #fff;
+  margin-bottom: 0.8em; }
+
+.ce__company-name {
+  color: #91b247; }
+
+.ce__wrapper {
+  color: #666; }
+  .ce__wrapper :last-child {
+    margin-bottom: 10px; }
+
+.ce__auth-wrapper {
+  margin: 20px 0;
+  padding: 20px 0; }
+
+.ce__image-holder {
+  text-align: center; }
+
+.ce__form-container {
+  margin: 0 20px; }
+
+.header-holder {
+  padding: 0.6em; }
+
+.header-icons {
+  text-align: right;
+  font-size: 1.5em; }
+  .header-icons .glyphicon:active {
+    color: #666; }
+
+.header-icons .glyphicon {
+  padding: 0 0.2em; }
+
+.show-right-border {
+  border-right: 2px solid #f2f2f2; }
+
+.auth-message {
+  text-align: center; }
+
+.binded {
+  color: #91b247 !important;
+  border: 1px solid #91b247;
+  background-color: #fff; }
+
+.unbinding-message-holder {
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin-top: 25px; }
+  .unbinding-message-holder .glyphicon {
+    color: #91b247;
+    margin-left: 10px; }
+  .unbinding-message-holder .unbinding_text {
+    margin: 0 10px 0 5px; }

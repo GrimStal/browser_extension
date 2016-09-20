@@ -1,0 +1,24 @@
+<div class="ce__auth-wrapper col-xs-6 col-sm-6 col-md-6 col-lg-6 <%=wrapper_class%>" id="<%=wrapper_id%>">
+    <div class="ce__form-container">
+        <div class="ce__image-holder">
+            <img class="ce__form-container_company-image" src="images/<%=img_name%>" />
+        </div>
+        <div class="ce_form-holder">
+            <form novalidate id="<%=form_id%>">
+                <fieldset>
+                  <%_.each(fields, function(field){%>
+                    <div class="form-group has-feedback">
+                        <label for="<%=field.id%>"><%=field.label.toUpperCase()%></label>
+                        <input type="<%=field.type%>" class="form-control auth-input" id="<%=field.id%>" name="<%=field.id%>" placeholder="Введите <%=field.label%>" />
+                    </div>
+                  <% }); %>
+                </fieldset>
+                <div class="ce__auth_btn">
+                    <button id="<%=submit_id%>" type="button" class="btn ce__btn btn-defualt ce__auth_btn-confirm col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">
+                  Привязать аккаунт
+                </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

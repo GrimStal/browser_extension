@@ -1,0 +1,41 @@
+<div class="ce__cargo-wrapper col-xs-12 col-sm-12 col-md-12 col-lg-12 <%=wrapper_class%>" id="<%=wrapper_id%>">
+    <div class="row">
+        <div class="city-holder">
+          <form novalidate id="city-holder-form">
+              <fieldset>
+                  <div class="form-group has-feedback">
+                      <label for="city-from"><%-cityFromLabel%></label>
+                      <input type="text" class="form-control city-from-input" id="city-from" name="city-from"/>
+                  </div>
+                  <div class="revert-cities">
+                      <img class="revert-cities-img" src="images/revert-arrows"/>
+                  </div>
+                  <div class="form-group has-feedback">
+                      <label for="city-to"><%-cityToLabel%></label>
+                      <input type="text" class="form-control city-to-input" id="city-to" name="city-to"/>
+                  </div>
+              </fieldset>
+          </form>
+        </div>
+        <div class="calendar-holder">
+
+        </div>
+    </div>
+    <div class="ce_form-holder">
+        <form novalidate id="<%=form_id%>">
+            <fieldset>
+                <%_.each(fields, function(field){%>
+                    <div class="form-group has-feedback">
+                        <label for="<%=field.id%>"><%=field.label.toUpperCase()%></label>
+                        <input type="<%=field.type%>" class="form-control auth-input" id="<%=field.id%>" name="<%=field.id%>" placeholder="Введите <%=field.label%>" />
+                    </div>
+                    <% }); %>
+            </fieldset>
+            <div class="ce__auth_btn">
+                <button id="<%=submit_id%>" type="button" class="btn ce__btn btn-defualt ce__auth_btn-confirm col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">
+                  Привязать аккаунт
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
