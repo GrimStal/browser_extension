@@ -51,6 +51,7 @@ function sendRequest(data, uid, callback) {
 
 chrome.runtime.onMessage.addListener(function (request, uid, callback) {
   sendRequest(request, uid, callback);
+  return true;
 });
 
 console.log('runned');

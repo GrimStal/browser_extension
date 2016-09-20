@@ -1,6 +1,6 @@
 <div class="ce__cargo-wrapper col-xs-12 col-sm-12 col-md-12 col-lg-12 <%=wrapper_class%>" id="<%=wrapper_id%>">
     <div class="row">
-        <div class="city-holder">
+        <div class="city-holder col-xs-8 col-md-8">
           <form novalidate id="city-holder-form">
               <fieldset>
                   <div class="form-group has-feedback">
@@ -17,8 +17,36 @@
               </fieldset>
           </form>
         </div>
-        <div class="calendar-holder">
-
+        <div class="calendar-holder col-xs-4 col-md-4">
+          <div class="calendar container-fluid">
+            <div clas="row">
+                <div class="month">Сентябрь</div>
+            </div>
+            <div class="row">
+                <div class="day_names">
+                    <% var days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс']%>
+                    <% for(var i=0; i < days.length; i++) { %>
+                      <div class="day_name"><%=day[i]%></div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="row">
+              <div class="container-fluid">
+                <% var dates=[]; for (var i=1; i < 31; i++) { dates.push(i); }%>
+                <% for (var date=0; date < dates.length; date++){ %>
+                  <% if (date % 7 && (date+1 % 7) {%>
+                    <div class="date"><%-date%></div>
+                  <% } else if (date % 7 && !(date+1 % 7) {%>
+                    <div class="date"><%-date%></div>
+                  </div>
+                  <% } else if (!(date % 7)) {%>
+                  <div class="dates row">
+                    <div class="date"><%-date%></div>
+                  <% } else { %>
+                  <% } %>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
     <div class="ce_form-holder">

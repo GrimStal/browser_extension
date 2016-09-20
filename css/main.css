@@ -8,13 +8,13 @@ img {
   height: 80px;
   margin-bottom: 10px; }
 
-.btn:focus {
-  outline: none; }
-
-.btn.btn-success {
+.btn-accept {
   color: #fff;
   background-color: #91b247;
   border: none; }
+
+.btn:focus {
+  outline: none; }
 
 .ce__loading {
   position: fixed;
@@ -68,8 +68,8 @@ img {
 .header-icons .glyphicon {
   padding: 0 0.2em; }
 
-.show-right-border {
-  border-right: 2px solid #f2f2f2; }
+.show-left-border {
+  border-left: 2px solid #f2f2f2; }
 
 .auth-message {
   text-align: center; }

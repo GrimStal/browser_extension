@@ -15,15 +15,15 @@ img {
     margin-bottom: 10px;
 }
 
+.btn-accept {
+    color: $white;
+    background-color: $lime;
+    border: none;
+}
+
 .btn {
     &:focus {
         outline: none;
-    }
-
-    &.btn-success {
-        color: $white;
-        background-color: $lime;
-        border: none;
     }
 }
 
@@ -99,8 +99,8 @@ img {
     }
 }
 
-.show-right-border {
-    border-right: 2px solid #f2f2f2;
+.show-left-border {
+    border-left: 2px solid #f2f2f2;
 }
 
 .auth-message {

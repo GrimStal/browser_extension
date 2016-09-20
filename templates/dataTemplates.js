@@ -4,7 +4,7 @@ var Templates = (function () {
   var t = {};
 
   t.lardiLogin = {
-    wrapper_class: '',
+    wrapper_class: 'show-left-border',
     wrapper_id: 'lardiLogin',
     img_name: 'lardi.png',
     form_id: 'lardiAuth',
@@ -24,7 +24,7 @@ var Templates = (function () {
   };
 
   t.cargoLogin = {
-    wrapper_class: 'show-right-border',
+    wrapper_class: '',
     wrapper_id: 'cargoLogin',
     img_name: 'cargo.png',
     form_id: 'cargoAuth',
@@ -44,7 +44,7 @@ var Templates = (function () {
   };
 
   t.cargoUnbind = {
-    wrapper_class: 'show-right-border',
+    wrapper_class: '',
     wrapper_id: 'cargoUnbind',
     img_name: 'cargo.png',
     submit_id: 'cargoUnbind',
@@ -52,7 +52,7 @@ var Templates = (function () {
   };
 
   t.lardiUnbind = {
-    wrapper_class: '',
+    wrapper_class: 'show-left-border',
     wrapper_id: 'lardiUnbind',
     img_name: 'lardi.png',
     submit_id: 'lardiUnbind',

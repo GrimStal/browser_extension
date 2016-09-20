@@ -32,11 +32,11 @@ App.scenes.auth = {
 
         if (App.checkToken()) {
           $orderButton.prop('disabled', false);
-          $orderButton.addClass('btn-success');
+          $orderButton.addClass('btn-accept');
           $orderButton.removeClass('btn-default');
         } else {
           $orderButton.prop('disabled', true);
-          $orderButton.removeClass('btn-success');
+          $orderButton.removeClass('btn-accept');
           $orderButton.addClass('btn-default');
         }
       },
