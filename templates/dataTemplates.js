@@ -59,5 +59,12 @@ var Templates = (function () {
     text: 'Аккаунт привязан',
   };
 
+  t.cargosOffer = {
+    wrapper_class: 'cargos-offer',
+    wrapper_id: 'cargosOffer',
+    cityFromLabel: 'Город погрузки',
+    cityToLabel: 'Город разгрузки',
+  };
+
   return t;
 }());

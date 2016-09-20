@@ -19,6 +19,7 @@
     'accountUnbinding': {},
     'addOrder': {},
     'auth': {},
+    'cargos': {},
     'intro': {},
     'loading': {},
     'settingsNav': {}
@@ -89,6 +90,59 @@
     __p += '\n                </fieldset>\n                <div class="ce__auth_btn">\n                    <button id="' +
     ((__t = (submit_id)) == null ? '' : __t) +
     '" type="button" class="btn ce__btn btn-defualt ce__auth_btn-confirm col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">\n                  Привязать аккаунт\n                </button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n';
+
+    }
+    return __p
+  };
+
+  templates['cargos'] =   function(obj) {
+    obj || (obj = {});
+    var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+    function print() { __p += __j.call(arguments, '') }
+    with (obj) {
+    __p += '<div class="ce__cargo-wrapper col-xs-12 col-sm-12 col-md-12 col-lg-12 ' +
+    ((__t = (wrapper_class)) == null ? '' : __t) +
+    '" id="' +
+    ((__t = (wrapper_id)) == null ? '' : __t) +
+    '">\n    <div class="row">\n        <div class="city-holder col-xs-8 col-md-8">\n          <form novalidate class="form-horizontal" id="city-holder-form">\n              <fieldset>\n                  <div class="form-group has-feedback">\n                      <label for="city-from">' +
+    __e(cityFromLabel) +
+    '</label>\n                      <input type="text" class="form-control city-from-input" id="city-from" name="city-from"/>\n                  </div>\n                  <div class="revert-cities">\n                      <img class="revert-cities-img" src="images/revert-arrows"/>\n                  </div>\n                  <div class="form-group has-feedback">\n                      <label for="city-to">' +
+    __e(cityToLabel) +
+    '</label>\n                      <input type="text" class="form-control city-to-input" id="city-to" name="city-to"/>\n                  </div>\n              </fieldset>\n          </form>\n        </div>\n        <div class="calendar-holder col-xs-4 col-md-4">\n          <div class="calendar container-fluid">\n            <div clas="row">\n                <div class="month current-month">Сентябрь</div>\n            </div>\n            <div class="row">\n                <table class="table table-bordered">\n                  <tr>\n                    ';
+     var days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+    __p += '\n                    ';
+     for(var i=0; i < days.length; i++) {
+    __p += '\n                      <th>' +
+    ((__t = (days[i])) == null ? '' : __t) +
+    '</th>\n                    ';
+     }
+    __p += '\n                  </tr>\n\n                ';
+     var dates=[]; for (var i=1; i < 29; i++) { dates.push(i); };
+    __p += '\n                ';
+     for (var date=0; date < dates.length; date++){
+    __p += '\n                  ';
+     var dayNum = (date % 7); ;
+    __p += '\n                  ';
+     if (dayNum === 0) {
+    __p += '\n                    <tr>\n                      <td class="date weekday">' +
+    __e(dates[date]) +
+    '</td>\n                  ';
+     } else if (dayNum === 5) {
+    __p += '\n                      <td class="date weekend">' +
+    __e(dates[date]) +
+    '</td>\n                  ';
+     } else if (dayNum === 6) {
+    __p += '\n                      <td class="date weekend">' +
+    __e(dates[date]) +
+    '</td>\n                    </tr>\n                  ';
+     } else {
+    __p += '\n                      <td class="date weekday">' +
+    __e(dates[date]) +
+    '</td>\n                  ';
+     }
+    __p += '\n                ';
+     }
+    __p += '\n                </table>\n            </div>\n          </div>\n        </div>\n    </div>\n</div>\n';
 
     }
     return __p

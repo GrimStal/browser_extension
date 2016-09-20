@@ -204,55 +204,9 @@ var App = (function () {
   };
 
   app.sendRequest = function (data, callback) {
-    var reqParams = {
-      url: '',
-      type: '',
-      data: '',
-      crossDomain: true,
-      dataType: '',
-      contentType: '',
-      headers: {},
-      success: function (response) {
-        callback(null, response);
-      },
-
-      error: function (error) {
-        if (error.status === 200) {
-          return callback(null, error.responseText);
-        }
-
-        callback(error);
-      },
-    };
-
-    if (!data || !data.to || (data.to === 'cargo' && !data.url)) {
-      return callback('Invalid data to send');
+    if (navigator.userAgent.search(/Chrome/) > -1) {
+      chrome.runtime.sendMessage(data, callback);
     }
-
-    switch (data.to){
-      case 'lardi':
-        reqParams.dataType = 'x-www-form-urlencoded';
-        reqParams.contentType = 'xml';
-        reqParams.url = 'https://io-dev.cargo.lt/lardi';
-        reqParams.data = data.data;
-        break;
-      case 'cargo':
-        reqParams.dataType = 'json';
-        reqParams.contentType = 'application/json';
-        reqParams.url = 'https://io-dev.cargo.lt/' + data.url;
-        reqParams.data = JSON.stringify(data.data);
-        break;
-      default:
-        return callback('Unknown request target');
-    }
-    reqParams.type = data.type;
-    reqParams.headers = data.headers ? data.headers : {};
-
-    $.ajax(reqParams);
-
-    // if (navigator.userAgent.search(/Chrome/) > -1) {
-    //   chrome.runtime.sendMessage(data, callback);
-    // }
 
   };
 
@@ -275,6 +229,7 @@ var App = (function () {
     this.loading('Проверка авторизации');
     this.updateAppData();
     $('.header-icons .glyphicon-cog').bind('click', App.changeScene.bind(App, 'settings'));
+    $('.header-icons .glyphicon-bell').bind('click', App.changeScene.bind(App, 'cargos'));
 
     if (this.checkToken()) {
       this.checkAuth().then(

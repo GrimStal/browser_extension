@@ -10,27 +10,27 @@ function sendRequest(data, uid, callback) {
     contentType: '',
     headers: {},
     success: function (response) {
-      callback(null, response);
+      callback({ error: null, success: response });
     },
 
     error: function (error) {
       if (error.status === 200) {
-        return callback(null, error.responseText);
+        return callback({ error: null, success: error.responseText });
       }
 
-      callback(error);
+      callback({ error: error, success: null });
     },
   };
 
   if (!data || !data.to || (data.to === 'cargo' && !data.url)) {
-    return callback('Invalid data to send');
+    return callback({ error: 'Invalid data to send', success: null });
   }
 
   switch (data.to){
     case 'lardi':
       reqParams.dataType = 'x-www-form-urlencoded';
       reqParams.contentType = 'application/xml';
-      reqParams.url = 'https://io-dev.cargo.lt/lardi';
+      reqParams.url = 'http://api.lardi-trans.com/api/';
       reqParams.data = data.data;
       break;
     case 'cargo':
@@ -46,12 +46,11 @@ function sendRequest(data, uid, callback) {
   reqParams.headers = data.headers ? data.headers : {};
 
   $.ajax(reqParams);
-  return true;
 }
 
-chrome.runtime.onMessage.addListener(function (request, uid, callback) {
-  sendRequest(request, uid, callback);
-  return true;
-});
-
-console.log('runned');
+if (navigator.userAgent.search(/Chrome/) > -1) {
+  chrome.runtime.onMessage.addListener(function (request, uid, callback) {
+    sendRequest(request, uid, callback);
+    return true;
+  });
+}

@@ -19,6 +19,9 @@ img {
     color: $white;
     background-color: $lime;
     border: none;
+    $:hover {
+      color: $greyText;
+    }
 }
 
 .btn {
@@ -125,5 +128,30 @@ img {
 
   .unbinding_text {
     margin: 0 10px 0 5px;
+  }
+}
+
+.calendar-holder {
+  .month {
+    background-color: rgba(0,0,0,0.1);
+    color: $greyText;
+    border-radius: 8px;
+
+    &.currentMonth {
+      background-color: $lime;
+      opacity: 0.8;
+    }
+  }
+
+  .table-bordered {
+    border: 0px;
+
+    .th {
+      border: 0px;
+    }
+
+    .td {
+      border-color: $greyText;
+    }
   }
 }

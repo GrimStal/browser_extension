@@ -92,9 +92,10 @@ App.scenes.auth = {
 
       $('#' + key + 'Submit').text('Авторизация');
 
-      App.sendRequest(reqParams, function (err, res) {
+      App.sendRequest(reqParams, function (response) {
           var result = false;
           var token;
+          var res;
           var userData = {
             id: '',
             name: '',
@@ -102,14 +103,15 @@ App.scenes.auth = {
             password: '',
           };
 
-          if (!err && res) {
+          if (!response.error && response.success) {
             result = true;
 
             if (key === 'lardi') {
-              res = XMLtoJson(res);
+              res = XMLtoJson(response.success);
               token = res.response.sig;
               userData.id = res.response.uid;
             } else {
+              res = response.success;
               token = res.accessToken;
               userData.id = res.userId;
               userData.name = res.fullName;
