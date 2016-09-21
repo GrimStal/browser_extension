@@ -1,54 +1,52 @@
 <div class="ce__cargo-wrapper col-xs-12 col-sm-12 col-md-12 col-lg-12 <%=wrapper_class%>" id="<%=wrapper_id%>">
     <div class="row">
-        <div class="city-holder col-xs-8 col-md-8">
-          <form novalidate class="form-horizontal" id="city-holder-form">
-              <fieldset>
-                  <div class="form-group has-feedback">
-                      <label for="city-from"><%-cityFromLabel%></label>
-                      <input type="text" class="form-control city-from-input" id="city-from" name="city-from"/>
-                  </div>
-                  <div class="revert-cities">
-                      <img class="revert-cities-img" src="images/revert-arrows"/>
-                  </div>
-                  <div class="form-group has-feedback">
-                      <label for="city-to"><%-cityToLabel%></label>
-                      <input type="text" class="form-control city-to-input" id="city-to" name="city-to"/>
-                  </div>
-              </fieldset>
-          </form>
+        <div class="city-holder col-xs-7 col-md-7">
+            <form class="form-horizontal" role="form" id="city-holder-form" novalidate>
+                <fieldset>
+                    <div class="form-group has-feedback">
+                        <label for="city-from" class="col-xs-4 col-md-4"><%-cityFromLabel%></label>
+                        <input type="text" class="form-control city-from-input col-xs-6 col-sm-6" id="city-from" name="city-from" />
+                    </div>
+                    <div class="revert-cities">
+                        <img class="revert-cities-img" src="images/reverse.png" />
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="city-to" class="col-xs-2 col-md-2"><%-cityToLabel%></label>
+                        <input type="text" class="form-control city-to-input col-xs-10 col-sm-10" id="city-to" name="city-to" />
+                    </div>
+                </fieldset>
+            </form>
         </div>
-        <div class="calendar-holder col-xs-4 col-md-4">
-          <div class="calendar container-fluid">
-            <div clas="row">
-                <div class="month current-month">Сентябрь</div>
-            </div>
-            <div class="row">
+        <div class="calendar-holder col-xs-5 col-md-5">
+            <div class="calendar">
+                <div class="month current-month">Сентябрь<span id="removeSelection" class="glyphicon glyphicon-remove"></div>
                 <table class="table table-bordered">
-                  <tr>
+                    <tr>
                     <% var days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс']%>
                     <% for(var i=0; i < days.length; i++) { %>
                       <th><%=days[i]%></th>
                     <% } %>
-                  </tr>
-
-                <% var dates=[]; for (var i=1; i < 29; i++) { dates.push(i); };%>
-                <% for (var date=0; date < dates.length; date++){ %>
-                  <% var dayNum = (date % 7); %>
-                  <% if (dayNum === 0) { %>
-                    <tr>
-                      <td class="date weekday"><%-dates[date]%></td>
-                  <% } else if (dayNum === 5) { %>
-                      <td class="date weekend"><%-dates[date]%></td>
-                  <% } else if (dayNum === 6) { %>
-                      <td class="date weekend"><%-dates[date]%></td>
                     </tr>
-                  <% } else { %>
-                      <td class="date weekday"><%-dates[date]%></td>
-                  <% }%>
-                <% } %>
+
+                    <% for (var date=0; date < dates.length; date++){ %>
+                      <% var dayNum = (date % 7); %>
+                      <% if (dayNum === 0) { %>
+                      <tr>
+                        <td class="date weekday date-<%=dates[date]%>"><div><%-dates[date]%></div></td>
+                      <% } else if (dayNum === 3) { %>
+                        <td class="date weekday thursday date-<%=dates[date]%>"><div><%-dates[date]%></div></td>
+                      <% } else if (dayNum === 5) { %>
+                        <td class="date weekend date-<%=dates[date]%>"><div><%-dates[date]%></div></td>
+                      <% } else if (dayNum === 6) { %>
+                        <td class="date weekend date-<%=dates[date]%>"><div><%-dates[date]%></div></td>
+                      </tr>
+                      <% } else { %>
+                        <td class="date weekday date-<%=dates[date]%>"><div><%-dates[date]%></div></td>
+                      <% }%>
+                    <% } %>
                 </table>
+                <div class="month next-month">Октябрь</div>
             </div>
-          </div>
         </div>
     </div>
 </div>

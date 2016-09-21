@@ -21,7 +21,7 @@ App.scenes.settings = {
         lardiHTML = _.templates.auth(Templates.lardiLogin);
       }
 
-      $('.ce__wrapper').empty().append('<div class="row">' + cargoHTML + lardiHTML + '</div>');
+      $('.ce__wrapper').empty().append(cargoHTML + lardiHTML);
 
       if (App.appData.cargo.token) {
         $('#cargoUnbind').bind('click', this.cargoUnbind.bind(settingsContext));
@@ -89,7 +89,7 @@ App.scenes.settings = {
   showLogin: function (key) {
     var context = App.scenes.auth;
 
-    $('#' + key + 'Unbind').replaceWith(_.templates.auth(Templates[key + 'Login']));
+    $('#' + key + 'Bind').replaceWith(_.templates.auth(Templates[key + 'Login']));
     $('#' + key + 'Submit').bind('click', context[key + 'Submit'].bind(context, this.showUnbind));
     context.initForm(key);
   },

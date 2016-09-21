@@ -123,7 +123,8 @@ var App = (function () {
   };
 
   app.checkAuth = function () {
-    function cargoCB(err, res) {
+    function cargoCB(response) {
+      var err = response.error;
       if (err && err.responseJSON) {
         err = err.responseJSON;
         if (err.error && err.error.code) {
@@ -142,12 +143,13 @@ var App = (function () {
       return cargoDef.resolve();
     }
 
-    function lardiCB(err, res) {
+    function lardiCB(response) {
+      var err = response.error;
       if (err) {
         return lardiDef.reject(err);
       }
 
-      res = XMLtoJson(res);
+      var res = XMLtoJson(response.success);
       if (res.response.error &&
         res.response.error._text === 'SIG идентификатор устарел или указан не верно') {
         return lardiDef.reject('lardi error');
@@ -188,6 +190,7 @@ var App = (function () {
       },
 
       function (cargoErr, lardiErr) {
+        console.log(cargoErr);
         console.warn('relogin called');
         _this.tryToRelogin(checkResult, [cargoErr, lardiErr]);
       });
@@ -234,7 +237,7 @@ var App = (function () {
     if (this.checkToken()) {
       this.checkAuth().then(
         function () {
-          _this.changeScene('settings');
+          _this.changeScene('cargos');
         },
 
         function (err) {

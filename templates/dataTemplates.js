@@ -45,7 +45,7 @@ var Templates = (function () {
 
   t.cargoUnbind = {
     wrapper_class: '',
-    wrapper_id: 'cargoUnbind',
+    wrapper_id: 'cargoBind',
     img_name: 'cargo.png',
     submit_id: 'cargoUnbind',
     text: 'Аккаунт привязан',
@@ -53,7 +53,7 @@ var Templates = (function () {
 
   t.lardiUnbind = {
     wrapper_class: 'show-left-border',
-    wrapper_id: 'lardiUnbind',
+    wrapper_id: 'lardiBind',
     img_name: 'lardi.png',
     submit_id: 'lardiUnbind',
     text: 'Аккаунт привязан',
@@ -64,6 +64,7 @@ var Templates = (function () {
     wrapper_id: 'cargosOffer',
     cityFromLabel: 'Город погрузки',
     cityToLabel: 'Город разгрузки',
+    dates: [],
   };
 
   return t;

@@ -27,8 +27,7 @@
 
   templates['accountUnbinding'] =   function(obj) {
     obj || (obj = {});
-    var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-    function print() { __p += __j.call(arguments, '') }
+    var __t, __p = '', __e = _.escape;
     with (obj) {
     __p += '<div class="ce__auth-wrapper col-xs-6 col-sm-6 col-md-6 col-lg-6 ' +
     ((__t = (wrapper_class)) == null ? '' : __t) +
@@ -38,9 +37,9 @@
     ((__t = (img_name)) == null ? '' : __t) +
     '" />\n        </div>\n        <div class="ce__unbinding_holder">\n          <div class="unbinding-message-holder">\n            <span class="glyphicon glyphicon-ok"></span>\n            <span class="unbinding_text">' +
     __e(text) +
-    '</span>\n          </div>\n          <button id="';
-    submit_id;
-    __p += '" type="button" class="btn ce__btn btn-defualt ce__unbind_btn-confirm binded">\n              Отвязать\n          </button>\n        </div>\n    </div>\n</div>\n';
+    '</span>\n          </div>\n          <button id="' +
+    ((__t = (submit_id)) == null ? '' : __t) +
+    '" type="button" class="btn ce__btn btn-defualt ce__unbind_btn-confirm binded">\n              Отвязать\n          </button>\n        </div>\n    </div>\n</div>\n';
 
     }
     return __p
@@ -50,9 +49,9 @@
     obj || (obj = {});
     var __t, __p = '', __e = _.escape;
     with (obj) {
-    __p += '<div class="row">\n    <div class="ce__order_btn">\n        <button id="addOrder" type="button" class="btn btn-defualt ce__btn ce__order_btn-confirm col-xs-6 col-sm-6 col-sm-offset-3 col-xs-offset-3">\n    ' +
+    __p += '<div class="ce__order_btn">\n  <button id="addOrder" type="button" class="btn btn-defualt ce__btn ce__order_btn-confirm col-xs-6 col-sm-6 col-sm-offset-3 col-xs-offset-3">\n    ' +
     __e(buttonText) +
-    '\n  </button>\n    </div>\n</div>\n';
+    '\n  </button>\n</div>\n';
 
     }
     return __p
@@ -104,11 +103,11 @@
     ((__t = (wrapper_class)) == null ? '' : __t) +
     '" id="' +
     ((__t = (wrapper_id)) == null ? '' : __t) +
-    '">\n    <div class="row">\n        <div class="city-holder col-xs-8 col-md-8">\n          <form novalidate class="form-horizontal" id="city-holder-form">\n              <fieldset>\n                  <div class="form-group has-feedback">\n                      <label for="city-from">' +
+    '">\n    <div class="row">\n        <div class="city-holder col-xs-7 col-md-7">\n            <form class="form-horizontal" role="form" id="city-holder-form" novalidate>\n                <fieldset>\n                    <div class="form-group has-feedback">\n                        <label for="city-from" class="col-xs-4 col-md-4">' +
     __e(cityFromLabel) +
-    '</label>\n                      <input type="text" class="form-control city-from-input" id="city-from" name="city-from"/>\n                  </div>\n                  <div class="revert-cities">\n                      <img class="revert-cities-img" src="images/revert-arrows"/>\n                  </div>\n                  <div class="form-group has-feedback">\n                      <label for="city-to">' +
+    '</label>\n                        <input type="text" class="form-control city-from-input col-xs-6 col-sm-6" id="city-from" name="city-from" />\n                    </div>\n                    <div class="revert-cities">\n                        <img class="revert-cities-img" src="images/reverse.png" />\n                    </div>\n                    <div class="form-group has-feedback">\n                        <label for="city-to" class="col-xs-2 col-md-2">' +
     __e(cityToLabel) +
-    '</label>\n                      <input type="text" class="form-control city-to-input" id="city-to" name="city-to"/>\n                  </div>\n              </fieldset>\n          </form>\n        </div>\n        <div class="calendar-holder col-xs-4 col-md-4">\n          <div class="calendar container-fluid">\n            <div clas="row">\n                <div class="month current-month">Сентябрь</div>\n            </div>\n            <div class="row">\n                <table class="table table-bordered">\n                  <tr>\n                    ';
+    '</label>\n                        <input type="text" class="form-control city-to-input col-xs-10 col-sm-10" id="city-to" name="city-to" />\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n        <div class="calendar-holder col-xs-5 col-md-5">\n            <div class="calendar">\n                <div class="month current-month">Сентябрь<span id="removeSelection" class="glyphicon glyphicon-remove"></div>\n                <table class="table table-bordered">\n                    <tr>\n                    ';
      var days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
     __p += '\n                    ';
      for(var i=0; i < days.length; i++) {
@@ -116,33 +115,45 @@
     ((__t = (days[i])) == null ? '' : __t) +
     '</th>\n                    ';
      }
-    __p += '\n                  </tr>\n\n                ';
-     var dates=[]; for (var i=1; i < 29; i++) { dates.push(i); };
-    __p += '\n                ';
+    __p += '\n                    </tr>\n\n                    ';
      for (var date=0; date < dates.length; date++){
-    __p += '\n                  ';
+    __p += '\n                      ';
      var dayNum = (date % 7); ;
-    __p += '\n                  ';
+    __p += '\n                      ';
      if (dayNum === 0) {
-    __p += '\n                    <tr>\n                      <td class="date weekday">' +
+    __p += '\n                      <tr>\n                        <td class="date weekday date-' +
+    ((__t = (dates[date])) == null ? '' : __t) +
+    '"><div>' +
     __e(dates[date]) +
-    '</td>\n                  ';
+    '</div></td>\n                      ';
+     } else if (dayNum === 3) {
+    __p += '\n                        <td class="date weekday thursday date-' +
+    ((__t = (dates[date])) == null ? '' : __t) +
+    '"><div>' +
+    __e(dates[date]) +
+    '</div></td>\n                      ';
      } else if (dayNum === 5) {
-    __p += '\n                      <td class="date weekend">' +
+    __p += '\n                        <td class="date weekend date-' +
+    ((__t = (dates[date])) == null ? '' : __t) +
+    '"><div>' +
     __e(dates[date]) +
-    '</td>\n                  ';
+    '</div></td>\n                      ';
      } else if (dayNum === 6) {
-    __p += '\n                      <td class="date weekend">' +
+    __p += '\n                        <td class="date weekend date-' +
+    ((__t = (dates[date])) == null ? '' : __t) +
+    '"><div>' +
     __e(dates[date]) +
-    '</td>\n                    </tr>\n                  ';
+    '</div></td>\n                      </tr>\n                      ';
      } else {
-    __p += '\n                      <td class="date weekday">' +
+    __p += '\n                        <td class="date weekday date-' +
+    ((__t = (dates[date])) == null ? '' : __t) +
+    '"><div>' +
     __e(dates[date]) +
-    '</td>\n                  ';
+    '</div></td>\n                      ';
      }
-    __p += '\n                ';
+    __p += '\n                    ';
      }
-    __p += '\n                </table>\n            </div>\n          </div>\n        </div>\n    </div>\n</div>\n';
+    __p += '\n                </table>\n                <div class="month next-month">Октябрь</div>\n            </div>\n        </div>\n    </div>\n</div>\n';
 
     }
     return __p
@@ -152,7 +163,7 @@
     obj || (obj = {});
     var __t, __p = '';
     with (obj) {
-    __p += '<div class="row">\n    <div class="ce__wrapper_auth-message auth-message col-xs-12 col-sm-12 col-md-12 col-lg-12">\n        Расширение "CargoExtension" позволяет одновременно добавлять Ваши грузы и транспорт на транспортные биржи\n        <span class="ce__company-name" title="https://www.cargo.lt">Cargo.LT</span> и <span class="ce__company-name" title="https://lardi-trans.com/">Lardi-Trans</span>. Для того, чтобы добавить предложение привяжите свой аккаунт.\n    </div>\n</div>\n';
+    __p += '<div class="ce__wrapper_auth-message auth-message col-xs-12 col-sm-12 col-md-12 col-lg-12">\n    Расширение "CargoExtension" позволяет одновременно добавлять Ваши грузы и транспорт на транспортные биржи\n    <span class="ce__company-name" title="https://www.cargo.lt">Cargo.LT</span> и <span class="ce__company-name" title="https://lardi-trans.com/">Lardi-Trans</span>. Для того, чтобы добавить предложение привяжите свой аккаунт.\n</div>\n';
 
     }
     return __p
