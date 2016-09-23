@@ -1,4 +1,5 @@
 $lime: #91b247;
+$darkGreen: #55692a;
 $white: #fff;
 $greyText: #666;
 $black: #000;
@@ -11,20 +12,33 @@ body {
     background-color: $white;
 }
 
-.ce__form-container_company-image,
-.ce__unbinding-container_company-image {
-    width: 180px;
-    height: 80px;
-    margin-bottom: 10px;
-}
+label {
+    input[type=checkbox] {
+        margin: 2px 0 0;
 
-.btn-accept {
-    color: $white;
-    background-color: $lime;
-    border: none;
+        &:before {
+            content: "";
+            width: 14px;
+            height: 14px;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            background-color: $white;
+            border-radius: 3px;
+            border: 1px solid $lightGrey;
+            text-align: center;
+            font-weight: 800;
+        }
 
-    &:hover {
-        color: $greyText;
+        &:checked {
+            &:before {
+                content: '\2713';
+                font-size: 18px;
+                color: $lime;
+                line-height: 14px;
+                border-color: $lime;
+            }
+        }
     }
 }
 
@@ -32,6 +46,34 @@ body {
     &:focus {
         outline: none;
     }
+}
+
+.btn-accept {
+    color: $white;
+    background-color: $lime;
+
+    &:hover {
+        color: $greyText;
+    }
+}
+
+.row {
+    margin-bottom: 5px;
+}
+
+.center {
+    text-align: center;
+}
+
+.ce__form-container_company-image,
+.ce__unbinding-container_company-image {
+    width: 180px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.ce__btn {
+    padding: 5px;
 }
 
 .ce__loading {
@@ -76,16 +118,16 @@ body {
     padding: 20px 0;
 }
 
-.ce__image-holder {
-    text-align: center;
-}
-
 .ce__form-container {
     margin: 0 20px;
 }
 
 .header-holder {
-    padding: 0.6em;
+    padding: 6px 0;
+}
+
+.header-message {
+  padding-top: 2px;
 }
 
 .header-icons {
@@ -107,10 +149,6 @@ body {
     border-left: 2px solid #f2f2f2;
 }
 
-.auth-message {
-    text-align: center;
-}
-
 .binded {
     color: $lime!important;
     border: 1px solid $lime;
@@ -118,9 +156,7 @@ body {
 }
 
 .unbinding-message-holder {
-    display: inline-block;
-    vertical-align: text-bottom;
-    margin-top: 25px;
+    margin-top: 5px;
 
     .glyphicon {
         color: $lime;
@@ -132,56 +168,144 @@ body {
     }
 }
 
+.cargo-info-holder,
 .city-holder {
     label {
-        font-size: 0.8em;
+        top: 2px;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+        padding-right: 0;
     }
 
-    .revert-cities {
-        text-align: center;
+    .input-sm {
+        height: 24px;
+        padding: 3px 4px;
+        background-color: $white;
+    }
 
+    .form-group {
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+
+    .form-control-feedback {
+        right: 12px;
+        line-height: 24px;
+    }
+
+    .checkbox {
+        margin: 0 0 5px;
+        padding-right: 0;
+
+         > div > div,
+        > div {
+            padding-left: 0;
+        }
+
+        label {
+            text-align: left;
+            display: block;
+        }
+    }
+}
+
+.city-holder {
+    padding: 18px 5px;
+
+    .revert-cities {
         .revert-cities-img {
-            width: 16px;
-            height: 16px;
+            width: 24px;
+            height: 28px;
             transform: rotate(90deg);
         }
     }
 }
 
+.wide-right {
+    padding-right: 0;
+}
+
+.wide-left {
+    padding-left: 0;
+}
+
+.cargos-container,
+.cargos-info-holder {
+    &.container {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.cargo-info-holder {
+    ::-webkit-input-placeholder {
+        text-align: right;
+    }
+
+    input:-moz-placeholder {
+        text-align: right;
+    }
+
+    label {
+        text-align: right;
+    }
+
+    .col-wrap {
+        .form-group {
+            margin-top: 0;
+        }
+
+        div:first-child {
+            padding-left: 0;
+        }
+
+        div:last-child {
+            padding-right: 0;
+        }
+    }
+}
+
 #removeSelection {
-  display: none;
+    display: none;
 }
 
 .calendar-holder {
-    font-size: 0.8em;
+    padding: 0 5px;
+
+    .dates,
+    .month {
+        font-size: 10px;
+    }
+
+    .month {
+      margin: 1px 0;
+    }
 
     .current-month {
         background-color: $lime;
-        color: #fff;
+        color: $white;
     }
 
     .next-month {
-        background-color: $lightGrey;
+        background-color: $lighterGrey;
     }
 
     #removeSelection {
-      background-color: $lightGrey;
-      color: red;
-      float: right;
+        background-color: $lightGrey;
+        color: red;
+        float: right;
     }
 
-    .weekend {
-        color: $lightGrey;
-    }
-
-    .weekday {
-        color: $greyText;
+    .weekend > div {
+        opacity: 0.7;
     }
 
     .date {
         div {
             border-radius: 2px;
-            padding: 2px 0;
+            padding: 1px 0;
+            font-size: 11px;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -189,14 +313,21 @@ body {
 
         &.today {
             div {
-                background-color: $lighterGrey;
+                font-weight: 800;
             }
+        }
+
+        &.past {
+          div {
+            opacity: 0.3;
+          }
         }
 
         &.selected {
             div {
-                background-color: $lime;
+                background-color: $darkGreen;
                 color: $white;
+                opacity: 1;
             }
         }
     }
@@ -215,26 +346,8 @@ body {
         }
     }
 
-    .table-bordered {
-        border: 0;
-        padding: 2px;
+    .table {
         margin-bottom: 0;
-
-        tr {
-            border-top: 0;
-
-            &:nth-child(2) {
-                td {
-                    border-top: 0;
-                }
-            }
-
-            &:last-child {
-                td {
-                    border-bottom: 0;
-                }
-            }
-        }
 
         td,
         th {
@@ -242,22 +355,15 @@ body {
         }
 
         th {
-            border: 0;
+            padding: 0;
             color: rgba(0,0,0,0.3);
+            border: 0;
         }
 
         td {
             padding: 1px;
             border-color: transparent;
             cursor: pointer;
-
-            &:first-child {
-                border-left: 0;
-            }
-
-            &:last-child {
-                border-right: 0;
-            }
         }
     }
 }

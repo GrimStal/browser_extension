@@ -3,21 +3,50 @@ body {
   min-height: 250px;
   background-color: #fff; }
 
+label input[type=checkbox] {
+  margin: 2px 0 0; }
+  label input[type=checkbox]:before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-weight: 800; }
+  label input[type=checkbox]:checked:before {
+    content: '\2713';
+    font-size: 18px;
+    color: #91b247;
+    line-height: 14px;
+    border-color: #91b247; }
+
+.btn:focus {
+  outline: none; }
+
+.btn-accept {
+  color: #fff;
+  background-color: #91b247; }
+  .btn-accept:hover {
+    color: #666; }
+
+.row {
+  margin-bottom: 5px; }
+
+.center {
+  text-align: center; }
+
 .ce__form-container_company-image,
 .ce__unbinding-container_company-image {
   width: 180px;
   height: 80px;
   margin-bottom: 10px; }
 
-.btn-accept {
-  color: #fff;
-  background-color: #91b247;
-  border: none; }
-  .btn-accept:hover {
-    color: #666; }
-
-.btn:focus {
-  outline: none; }
+.ce__btn {
+  padding: 5px; }
 
 .ce__loading {
   position: fixed;
@@ -52,14 +81,14 @@ body {
   margin: 15px 0;
   padding: 20px 0; }
 
-.ce__image-holder {
-  text-align: center; }
-
 .ce__form-container {
   margin: 0 20px; }
 
 .header-holder {
-  padding: 0.6em; }
+  padding: 6px 0; }
+
+.header-message {
+  padding-top: 2px; }
 
 .header-icons {
   text-align: right;
@@ -73,63 +102,129 @@ body {
 .show-left-border {
   border-left: 2px solid #f2f2f2; }
 
-.auth-message {
-  text-align: center; }
-
 .binded {
   color: #91b247 !important;
   border: 1px solid #91b247;
   background-color: #fff; }
 
 .unbinding-message-holder {
-  display: inline-block;
-  vertical-align: text-bottom;
-  margin-top: 25px; }
+  margin-top: 5px; }
   .unbinding-message-holder .glyphicon {
     color: #91b247;
     margin-left: 10px; }
   .unbinding-message-holder .unbinding_text {
     margin: 0 10px 0 5px; }
 
+.cargo-info-holder label,
 .city-holder label {
-  font-size: 0.8em; }
+  top: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  padding-right: 0; }
 
-.city-holder .revert-cities {
-  text-align: center; }
+.cargo-info-holder .input-sm,
+.city-holder .input-sm {
+  height: 24px;
+  padding: 3px 4px;
+  background-color: #fff; }
+
+.cargo-info-holder .form-group,
+.city-holder .form-group {
+  margin-top: 5px;
+  margin-bottom: 0; }
+
+.cargo-info-holder .form-control-feedback,
+.city-holder .form-control-feedback {
+  right: 12px;
+  line-height: 24px; }
+
+.cargo-info-holder .checkbox,
+.city-holder .checkbox {
+  margin: 0 0 5px;
+  padding-right: 0; }
+  .cargo-info-holder .checkbox > div > div,
+  .cargo-info-holder .checkbox > div,
+  .city-holder .checkbox > div > div,
+  .city-holder .checkbox > div {
+    padding-left: 0; }
+  .cargo-info-holder .checkbox label,
+  .city-holder .checkbox label {
+    text-align: left;
+    display: block; }
+
+.city-holder {
+  padding: 18px 5px; }
   .city-holder .revert-cities .revert-cities-img {
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 28px;
     transform: rotate(90deg); }
+
+.wide-right {
+  padding-right: 0; }
+
+.wide-left {
+  padding-left: 0; }
+
+.cargos-container.container,
+.cargos-info-holder.container {
+  margin: 0;
+  padding: 0; }
+
+.cargo-info-holder ::-webkit-input-placeholder {
+  text-align: right; }
+
+.cargo-info-holder input:-moz-placeholder {
+  text-align: right; }
+
+.cargo-info-holder label {
+  text-align: right; }
+
+.cargo-info-holder .col-wrap .form-group {
+  margin-top: 0; }
+
+.cargo-info-holder .col-wrap div:first-child {
+  padding-left: 0; }
+
+.cargo-info-holder .col-wrap div:last-child {
+  padding-right: 0; }
 
 #removeSelection {
   display: none; }
 
 .calendar-holder {
-  font-size: 0.8em; }
+  padding: 0 5px; }
+  .calendar-holder .dates,
+  .calendar-holder .month {
+    font-size: 10px; }
+  .calendar-holder .month {
+    margin: 1px 0; }
   .calendar-holder .current-month {
     background-color: #91b247;
     color: #fff; }
   .calendar-holder .next-month {
-    background-color: #ccc; }
+    background-color: #eee; }
   .calendar-holder #removeSelection {
     background-color: #ccc;
     color: red;
     float: right; }
-  .calendar-holder .weekend {
-    color: #ccc; }
-  .calendar-holder .weekday {
-    color: #666; }
+  .calendar-holder .weekend > div {
+    opacity: 0.7; }
   .calendar-holder .date div {
     border-radius: 2px;
-    padding: 2px 0;
+    padding: 1px 0;
+    font-size: 11px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none; }
   .calendar-holder .date.today div {
-    background-color: #eee; }
+    font-weight: 800; }
+  .calendar-holder .date.past div {
+    opacity: 0.3; }
   .calendar-holder .date.selected div {
-    background-color: #91b247;
-    color: #fff; }
+    background-color: #55692a;
+    color: #fff;
+    opacity: 1; }
   .calendar-holder .month {
     border-radius: 2px;
     padding: 0 8px; }
@@ -138,27 +233,16 @@ body {
       text-align: left; }
     .calendar-holder .month.next-month {
       text-align: right; }
-  .calendar-holder .table-bordered {
-    border: 0;
-    padding: 2px;
+  .calendar-holder .table {
     margin-bottom: 0; }
-    .calendar-holder .table-bordered tr {
-      border-top: 0; }
-      .calendar-holder .table-bordered tr:nth-child(2) td {
-        border-top: 0; }
-      .calendar-holder .table-bordered tr:last-child td {
-        border-bottom: 0; }
-    .calendar-holder .table-bordered td,
-    .calendar-holder .table-bordered th {
+    .calendar-holder .table td,
+    .calendar-holder .table th {
       text-align: center; }
-    .calendar-holder .table-bordered th {
-      border: 0;
-      color: rgba(0, 0, 0, 0.3); }
-    .calendar-holder .table-bordered td {
+    .calendar-holder .table th {
+      padding: 0;
+      color: rgba(0, 0, 0, 0.3);
+      border: 0; }
+    .calendar-holder .table td {
       padding: 1px;
       border-color: transparent;
       cursor: pointer; }
-      .calendar-holder .table-bordered td:first-child {
-        border-left: 0; }
-      .calendar-holder .table-bordered td:last-child {
-        border-right: 0; }
