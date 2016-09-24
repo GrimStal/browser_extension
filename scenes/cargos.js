@@ -25,6 +25,24 @@ App.scenes.cargos = {
           return false;
         }
 
+        function parseForAutocomplete(request, response) {
+          _this.getLocations(request.term).then(
+            function (res) {
+              response($.map(res.locations, function (v, i) {
+                return {
+                  label: v.name,
+                  value: v.name,
+                  object: v,
+                };
+              }));
+            },
+
+            function (err) {
+              console.error(err);
+            }
+          );
+        }
+
         var _this = this;
         var calendar = this.getCalendarDates(4, 'ru');
         var today = new Date().setHours(0, 0, 0, 0) / 1000;
@@ -60,18 +78,29 @@ App.scenes.cargos = {
             $('.date').filter(nextMonth).find('div').addClass('next-month');
 
             /** Disable to enter not digital chars to input */
-            $('#price').bind('keyup keypress', onlyPositiveDigits);
-            $('#weight').bind('keyup keypress', onlyPositiveDigits);
-            $('#volume').bind('keyup keypress', onlyPositiveDigits);
-            $('#palets').bind('keyup keypress', onlyPositiveDigits);
-            $('#temperatureMin').bind('keyup keypress', onlyDigits);
-            $('#temperatureMax').bind('keyup keypress', onlyDigits);
+            $('#price, #weight, #volume, #palets').bind('keyup keypress', onlyPositiveDigits);
+            $('#temperatureMin, #temperatureMax').bind('keyup keypress', onlyDigits);
+
+            /** Save the origin and destination objects on authocomplete select*/
+            $('#origin').autocomplete({
+              source: parseForAutocomplete,
+              select: function (event, obj) {
+                _this.origin = obj.item.object;
+              },
+            });
+
+            $('#destination').autocomplete({
+              source: parseForAutocomplete,
+              select: function (event, obj) {
+                _this.destination = obj.item.object;
+              },
+            });
 
             $('#removeSelection').bind('click', function () {
               _this.removeSelection(true);
             });
 
-            $('.revert-cities').bind('click', _this.revertCities);
+            $('.revert-cities').bind('click', _this.revertCities.bind(_this));
 
             _this.setDates();
           },
@@ -87,6 +116,9 @@ App.scenes.cargos = {
         $('.date').unbind('click', this.selectDate);
         $('#removeSelection').unbind('click');
         $('.revert-cities').bind('click', this.revertCities);
+
+        $('#price, #weight, #volume, #palets').unbind('keyup keypress', onlyPositiveDigits);
+        $('#temperatureMin, #temperatureMax').unbind('keyup keypress', onlyDigits);
 
         $('.ce__wrapper').empty();
       },
@@ -238,16 +270,21 @@ App.scenes.cargos = {
         return false;
       }
 
-      var rev = '';
+      var $rev;
+      var revObj;
       var $origin = $('#origin');
       var $destination = $('#destination');
 
-      rev = $origin.val();
+      $rev = $origin.val();
       $origin.val($destination.val());
-      $destination.val(rev);
+      $destination.val($rev);
+
+      revObj = cloneObj(this.origin);
+      this.origin = cloneObj(this.destination);
+      this.destination = cloneObj(revObj);
     },
 
-    getDataFromCargo: function (req) {
+    getDataFromServer: function (req) {
       var result = $.Deferred();
 
       App.sendRequest(req, function (response) {
@@ -263,16 +300,23 @@ App.scenes.cargos = {
 
     getCargoTypes: function () {
       var req = new Request('cargo', 'GET', 'cargoTypes');
-      return this.getDataFromCargo(req);
+      return this.getDataFromServer(req);
     },
 
     getTrailerTypes: function () {
       var req = new Request('cargo', 'GET', 'trailerTypes');
-      return this.getDataFromCargo(req);
+      return this.getDataFromServer(req);
     },
 
     getCurrencies: function () {
       var req = new Request('cargo', 'GET', 'currencies');
-      return this.getDataFromCargo(req);
+      return this.getDataFromServer(req);
+    },
+
+    getLocations: function (name) {
+      var req = new Request('cargo', 'GET', 'locations');
+      req.headers = { 'Access-Token': App.appData.cargo.token };
+      req.data = { name: name };
+      return this.getDataFromServer(req);
     },
   };

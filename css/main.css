@@ -36,6 +36,9 @@ label input[type=checkbox] {
 .row {
   margin-bottom: 5px; }
 
+.ui-widget {
+  font-size: 10px; }
+
 .center {
   text-align: center; }
 

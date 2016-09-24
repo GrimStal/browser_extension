@@ -80,3 +80,7 @@ function onlyDigits(e) {
     return (digits.indexOf(String.fromCharCode(e.which)) !== -1);
   }
 }
+
+function cloneObj(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}

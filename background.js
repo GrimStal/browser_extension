@@ -26,6 +26,9 @@ function sendRequest(data, uid, callback) {
     return callback({ error: 'Invalid data to send', success: null });
   }
 
+  reqParams.type = data.type;
+  reqParams.headers = data.headers ? data.headers : {};
+
   switch (data.to){
     case 'lardi':
       reqParams.dataType = 'x-www-form-urlencoded';
@@ -37,13 +40,11 @@ function sendRequest(data, uid, callback) {
       reqParams.dataType = 'json';
       reqParams.contentType = 'application/json';
       reqParams.url = 'https://io-dev.cargo.lt/' + data.url;
-      reqParams.data = JSON.stringify(data.data);
+      reqParams.data = (reqParams.dataType === 'POST') ? JSON.stringify(data.data) : data.data;
       break;
     default:
       return callback('Unknown request target');
   }
-  reqParams.type = data.type;
-  reqParams.headers = data.headers ? data.headers : {};
 
   $.ajax(reqParams);
 }
