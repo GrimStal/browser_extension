@@ -206,6 +206,13 @@ var App = (function () {
     return true;
   };
 
+  /**
+   * Function wrapper to send and get data from server. Used to not
+   * get Cross-Domain requests error.
+   * @param  {Object}   data      Request object.
+   * @param  {Function} callback  Callback function.
+   * @return {object}   response  Response object. Has error and success keys
+   */
   app.sendRequest = function (data, callback) {
     if (navigator.userAgent.search(/Chrome/) > -1) {
       chrome.runtime.sendMessage(data, callback);

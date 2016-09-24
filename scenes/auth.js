@@ -75,24 +75,21 @@ App.scenes.auth = {
       },
 
     signIn: function (key, login, password, callback) {
+      var req = new Request(key, 'POST', (key === 'cargo') ? 'accounts/signin' : '');
       var data = {
         login: login,
         password: (key !== 'lardi') ? password : md5(password),
       };
-      var reqParams = {
-          to: key,
-          type: (key === 'cargo') ? 'POST' : 'GET',
-          url: (key === 'cargo') ? 'accounts/signin' : '',
-          data: data,
-        };
 
       if (key === 'lardi') {
         data.method = 'auth';
       }
 
+      req.data = data;
+
       $('#' + key + 'Submit').text('Авторизация');
 
-      App.sendRequest(reqParams, function (response) {
+      App.sendRequest(req, function (response) {
           var result = false;
           var token;
           var res;

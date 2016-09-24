@@ -69,53 +69,66 @@ var Templates = (function () {
     days: ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'],
     nextMonth: '',
     cargoTypeLabel: 'Тип груза:',
-    cargoTypes: { 1: 'Тип 1', 2: 'Тип 2', 3: 'Тип 3' },
+    cargoTypes: [
+      {
+        id: 1,
+        type: 'Тип 1',
+      },
+      {
+        id: 2,
+        type: 'Тип 2',
+      },
+      { id: 3,
+        type: 'Тип 3',
+      },
+    ],
     adrLabel: 'ADR',
     adrs: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     weightLabel: 'Масса:',
     volumeLabel: 'Объём:',
     temperatureLabel: 't., C<sup>o</sup>',
     paletsLabel: 'Палеты:',
-    carcaseTypes: {
+    trailerTypes: {
         title: 'Тип кузова:',
+        placeholder: 'Другой',
         fixed: [
-            {
-              1: 'тент 82-92м<sup>3</sup>',
-              2: 'мегатрейлер 100м<sup>3</sup>',
-              3: 'тент 120м<sup>3</sup>',
-            },
-            {
-              4: '&lt; 2т, 20м<sup>3</sup>',
-              5: '&lt; 3.5т, 35м<sup>3</sup>',
-              6: '&lt; 7.5т, 50м<sup>3</sup>',
-            },
-            {
-              7: 'изотерм',
-              8: 'рефрижератор',
-              9: {
-                  placeholder: 'Другой',
-                  1: 'Опция 1',
-                  2: 'Опция 2',
-                  3: 'Опция 3',
-                },
-            },
+            [
+              { id: 2, type: 'тент 82-92м<sup>3</sup>' },
+              { id: 13, type: 'мегатрейлер 100м<sup>3</sup>' },
+              { id: 8, type: 'тент 120м<sup>3</sup>' },
+            ],
+            [
+              { id: 9, type: '&lt; 2т, 20м<sup>3</sup>' },
+              { id: 17, type: '&lt; 3.5т, 35м<sup>3</sup>' },
+              { id: 10, type: '&lt; 7.5т, 50м<sup>3</sup>' },
+            ],
+            [
+              { id: 3, type: 'изотерм' },
+              { id: 1, type: 'рефрижератор' },
+              [
+                { id: 1, type: 'Опция 1' },
+                { id: 2, type: 'Опция 2' },
+                { id: 3, type: 'Опция 3' },
+                { id: 4, type: 'Опция 4' },
+                ],
+            ],
           ],
       },
     loadTypes: {
       title: 'Тип загрузки:',
       fixed: [
           {
-            1: 'верхняя',
-            2: 'боковая',
-            3: 'задняя',
+            top: 'верхняя',
+            side: 'боковая',
+            back: 'задняя',
           },
           {
-            4: 'полная',
-            5: 'частичная',
+            full: 'полная',
+            partly: 'частичная',
           },
           {
-            7: 'лифт',
-            8: 'манипулятор',
+            lift: 'лифт',
+            manipulator: 'манипулятор',
           },
         ],
     },
@@ -123,22 +136,22 @@ var Templates = (function () {
         title: 'Документы:',
         docs: [
           {
-            1: 'CMR',
-            2: 'TIR',
+            cmr: 'CMR',
+            tir: 'TIR',
           },
           {
-            3: 'T1',
-            4: 'По декларации',
+            t1: 'T1',
+            declaration: 'По декларации',
           },
         ],
       },
     paymentLabel: 'Стоимость:',
-    currencies: {
-      1: 'грн',
-      2: 'USD',
-      3: 'EUR',
-      4: 'RUB',
-    },
+    currencies: [
+      { id: 1, type: 'грн' },
+      { id: 2, type: 'USD' },
+      { id: 3, type: 'EUR' },
+      { id: 4, type: 'RUB' },
+    ],
     paymentTypePlaceholder: 'Тип оплаты:',
     paymentTypes: {
       1: 'на выгрузке',
@@ -152,3 +165,62 @@ var Templates = (function () {
 
   return t;
 }());
+
+var Request = function (to, type, url) {
+  this.to = to;
+  this.url = url;
+  this.type = type;
+  this.data = {};
+  this.headers = {};
+
+  // var requestTypes = ['POST', 'GET'];
+  //
+  // this.setType = function (type) {
+  //   if (requestTypes.indexOf(type.toUpperCase()) > -1) {
+  //     return this.type = type;
+  //   }
+  //
+  //   return false;
+  // };
+  //
+  // this.cleaType = function () {
+  //   return this.type = '';
+  // };
+  //
+  // this.setData = function (data) {
+  //   if (data && typeof data === 'object' && data.constructor === Object) {
+  //     return this.data = data;
+  //   }
+  //
+  //   if (arguments.length === 2 &&
+  //     typeof arguments[0] === 'string' &&
+  //     (typeof arguments[1] === 'string' || typeof arguments[1] === 'number')) {
+  //     return this.data[arguments[0]] = arguments[1];
+  //   }
+  //
+  //   return false;
+  // };
+  //
+  // this.clearData = function () {
+  //   return this.data = {};
+  // };
+  //
+  // this.setHeaders = function (headers) {
+  //   if (headers && typeof headers === 'object' && headers.constructor === Object) {
+  //     return this.headers = headers;
+  //   }
+  //
+  //   if (arguments.length === 2 &&
+  //     typeof arguments[0] === 'string' &&
+  //     (typeof arguments[1] === 'string' || typeof arguments[1] === 'number')) {
+  //     return this.headers[arguments[0]] = arguments[1];
+  //   }
+  //
+  //   return false;
+  // };
+  //
+  // this.clearHeaders = function () {
+  //   return this.headers = {};
+  // };
+
+};

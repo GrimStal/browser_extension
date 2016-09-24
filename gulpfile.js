@@ -26,6 +26,7 @@ gulp.task('production:watch', function () {
     '!./package.json',
     '!./dist/**/*',
     '!./.git/**/*',
+    '!./.jscsrc',
   ],
   ['production']
 );
@@ -46,6 +47,7 @@ gulp.task('production', function () {
     '!./package.json',
     '!./dist/**/*',
     '!./.git/**/*',
+    '!./.jscsrc',
   ], {
     base: '.',
   })

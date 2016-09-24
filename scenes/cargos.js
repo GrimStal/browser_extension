@@ -3,34 +3,8 @@
 App.scenes.cargos = {
 
     show: function () {
-        function getTimestamp(obj) {
-          return parseInt($(obj).attr('timestamp'));
-        }
 
-        function getToday() {
-          if (getTimestamp(this) === today) {
-            return true;
-          }
-
-          return false;
-        };
-
-        function availableDates() {
-          if (getTimestamp(this) >= today) {
-            return true;
-          }
-
-          return false;
-        }
-
-        function pastDates() {
-          if (getTimestamp(this) < today) {
-            return true;
-          }
-
-          return false;
-        }
-
+        /** Filters to set current and next months days in calendar. */
         function currentMonth() {
           var month = getTimestamp(this) * 1000;
           month = new Date(month).toLocaleString('ru', { month: 'long' });
@@ -55,32 +29,57 @@ App.scenes.cargos = {
         var calendar = this.getCalendarDates(4, 'ru');
         var today = new Date().setHours(0, 0, 0, 0) / 1000;
         var cargosData = Templates.cargosOffer;
+        var getCargoTypes = this.getCargoTypes();
+        var getTrailerTypes = this.getTrailerTypes();
+        var getCurrencies = this.getCurrencies();
 
-        App.loading();
-        cargosData.dates = calendar.dates;
-        cargosData.currentMonth = calendar.months[0];
-        cargosData.nextMonth = calendar.months[1];
-        $('.ce__wrapper').empty().append(_.templates.cargos(cargosData));
-        $('#header-message').text('Добавление груза на Cargo.LT и Lardi-Trans');
+        $.when(getCargoTypes, getTrailerTypes, getCurrencies).then(
+          function (ctypes, ttypes, currencies) {
+            var curFtt = concatArraysInArray(cargosData.trailerTypes.fixed);
+            var cargoTypes = createSortedObjectsArray(ctypes.cargoTypes);
+            var currencies = createSortedObjectsArray(currencies.currencies);
+            var trailerTypes = createSortedObjectsArray(ttypes.trailerTypes);
+            trailerTypes = removeDuplicates(trailerTypes, curFtt);
 
-        /** Initialization of calendar: Set current date, add onClick function
-        *   for available dates to set cargos, mark past dates,
-        */
-        $('.date').filter(getToday).addClass('today');
-        $('.date').filter(availableDates).bind('click', this.selectDate.bind(this));
-        $('.date').filter(pastDates).addClass('past');
-        $('.date').filter(currentMonth).find('div').addClass('current-month');
-        $('.date').filter(nextMonth).find('div').addClass('next-month');
+            cargosData.dates = calendar.dates;
+            cargosData.currentMonth = calendar.months[0];
+            cargosData.nextMonth = calendar.months[1];
+            cargosData.cargoTypes = cargoTypes;
+            cargosData.trailerTypes.fixed[2].splice(-1, 1, trailerTypes);
+            cargosData.currencies = currencies;
+            $('.ce__wrapper').empty().append(_.templates.cargos(cargosData));
+            $('#header-message').text('Добавление груза на Cargo.LT и Lardi-Trans');
 
-        $('#removeSelection').bind('click', function () {
-          _this.removeSelection(true);
-        });
+            /** Initialization of calendar: Set current date, add onClick function
+            *   for available dates to set cargos, mark past dates,
+            */
+            $('.date').filter(getToday).addClass('today');
+            $('.date').filter(availableDates).bind('click', _this.selectDate.bind(_this));
+            $('.date').filter(pastDates).addClass('past');
+            $('.date').filter(currentMonth).find('div').addClass('current-month');
+            $('.date').filter(nextMonth).find('div').addClass('next-month');
 
-        $('.revert-cities').bind('click', this.revertCities);
+            /** Disable to enter not digital chars to input */
+            $('#price').bind('keyup keypress', onlyPositiveDigits);
+            $('#weight').bind('keyup keypress', onlyPositiveDigits);
+            $('#volume').bind('keyup keypress', onlyPositiveDigits);
+            $('#palets').bind('keyup keypress', onlyPositiveDigits);
+            $('#temperatureMin').bind('keyup keypress', onlyDigits);
+            $('#temperatureMax').bind('keyup keypress', onlyDigits);
 
-        this.setDates();
+            $('#removeSelection').bind('click', function () {
+              _this.removeSelection(true);
+            });
 
-        return App.stopLoading();
+            $('.revert-cities').bind('click', _this.revertCities);
+
+            _this.setDates();
+          },
+
+          function (errors) {
+            console.log(errors);
+          }
+        );
       },
 
     hide: function () {
@@ -246,5 +245,34 @@ App.scenes.cargos = {
       rev = $origin.val();
       $origin.val($destination.val());
       $destination.val(rev);
+    },
+
+    getDataFromCargo: function (req) {
+      var result = $.Deferred();
+
+      App.sendRequest(req, function (response) {
+        if (response.error) {
+          return result.reject(response.error);
+        }
+
+        return result.resolve(response.success);
+      });
+
+      return result.promise();
+    },
+
+    getCargoTypes: function () {
+      var req = new Request('cargo', 'GET', 'cargoTypes');
+      return this.getDataFromCargo(req);
+    },
+
+    getTrailerTypes: function () {
+      var req = new Request('cargo', 'GET', 'trailerTypes');
+      return this.getDataFromCargo(req);
+    },
+
+    getCurrencies: function () {
+      var req = new Request('cargo', 'GET', 'currencies');
+      return this.getDataFromCargo(req);
     },
   };

@@ -35,9 +35,9 @@
     ((__t = (wrapper_id)) == null ? '' : __t) +
     '">\n    <div class="ce__unbinding-container">\n        <div class="ce__image-holder center">\n            <img class="ce__unbinding-container_company-image" src="images/' +
     ((__t = (img_name)) == null ? '' : __t) +
-    '" />\n        </div>\n        <div class="ce__unbinding_holder">\n          <div class="unbinding-message-holder col-xs-7 col-sm-7">\n            <span class="glyphicon glyphicon-ok"></span>\n            <span class="unbinding_text">' +
+    '" />\n        </div>\n        <div class="ce__unbinding_holder">\n          <div class="unbinding-message-holder col-xs-8 col-sm-8">\n            <span class="glyphicon glyphicon-ok"></span>\n            <span class="unbinding_text">' +
     __e(text) +
-    '</span>\n          </div>\n          <div class="col-xs-5 col-sm-5">\n            <button id="' +
+    '</span>\n          </div>\n          <div class="col-xs-4 col-sm-4">\n            <button id="' +
     ((__t = (submit_id)) == null ? '' : __t) +
     '" type="button" class="btn ce__btn btn-defualt ce__unbind_btn-confirm binded">\n                Отвязать\n            </button>\n          </div>\n        </div>\n    </div>\n</div>\n';
 
@@ -168,11 +168,11 @@
     '</div>\n            </div>\n        </div>\n      </div>\n      <div class="row">\n        <div class="cargo-info-holder container">\n          <div class="row">\n            <form class="form-inline" role="form" id="cargo-types-holder-form" novalidate>\n                  <div class="form-group">\n                      <label for="cargo-type" class="col-xs-2 col-sm-2">' +
     __e(cargoTypeLabel) +
     '</label>\n                      <div class="col-xs-6 col-sm-6">\n                        <select class="form-control cargo-types-select input-sm" id="cargo-types" name="cargo-types">\n                            ';
-     _.forEach(cargoTypes, function(type, key) {
+     _.forEach(cargoTypes, function(type) {
     __p += '\n                              <option value="' +
-    __e(key) +
+    __e(type.id) +
     '">' +
-    __e(type) +
+    __e(type.type) +
     '</option>\n                            ';
      }) ;
     __p += '\n                        </select>\n                      </div>\n                  </div>\n                  <div class="form-group">\n                      <label for="adr" class="col-xs-1 col-sm-1">' +
@@ -191,51 +191,45 @@
     ((__t = (volumeLabel)) == null ? '' : __t) +
     '</label>\n                        <div class="col-xs-3 col-sm-3 wide-right">\n                          <input type="text" class="form-control volume-input input-sm" id="volume" name="volume" placeholder="m³"/>\n                        </div>\n                    </div>\n                    <div class="form-group">\n                        <label for="palets" class="col-xs-3 col-sm-3">' +
     ((__t = (paletsLabel)) == null ? '' : __t) +
-    '</label>\n                        <div class="col-xs-3 col-sm-3 wide-right">\n                          <input type="text" class="form-control palets-input input-sm" id="palets" name="palets" />\n                        </div>\n                    </div>\n              </div>\n              <div class="form-group">\n                  <label for="temperature" class="col-xs-1 col-sm-1">' +
+    '</label>\n                        <div class="col-xs-3 col-sm-3 wide-right">\n                          <input type="text" class="form-control palets-input input-sm" id="palets" name="palets" />\n                        </div>\n                    </div>\n              </div>\n              <fieldset id="temperature" disabled>\n                <div class="form-group">\n                    <label for="temperature" class="col-xs-3 col-sm-3">' +
     ((__t = (temperatureLabel)) == null ? '' : __t) +
-    '</label>\n                  <div class="col-wrap col-xs-3 col-sm-3 temperature">\n                    <div class="col-xs-5 col-sm-5 wide-right">\n                      <input type="text" class="form-control temperature-input input-sm" id="temperatureMin" name="temperatureMin" />\n                    </div>\n                    <div class="col-xs-2 col-sm-2 wide-right wide-left center">\n                      -\n                    </div>\n                    <div class="col-xs-5 col-sm-5 wide-left">\n                      <input type="text" class="form-control temperature-input input-sm" id="temperatureMax" name="temperatureMax" />\n                    </div>\n                  </div>\n              </div>\n            </form>\n          </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
-    __e(carcaseTypes.title) +
+    '</label>\n                    <div class="col-wrap col-xs-9 col-sm-9">\n                      <div class="col-xs-5 col-sm-5 wide-right">\n                        <input type="number" min="-50" max="50" step="1" value="0" class="form-control temperature-input input-sm" id="temperatureMin" name="temperatureMin" />\n                      </div>\n                      <div class="col-xs-2 col-sm-2 wide-right wide-left center">\n                        -\n                      </div>\n                      <div class="col-xs-5 col-sm-5 wide-left">\n                        <input type="number" min="-50" max="50" step="1" value="0" class="form-control temperature-input input-sm" id="temperatureMax" name="temperatureMax" />\n                      </div>\n                    </div>\n                </div>\n              </fieldset>\n            </form>\n          </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
+    __e(trailerTypes.title) +
     '</label>\n              <div class="checkbox col-sm-10 col-xs-10">\n                  <div class="col-xs-4 col-md-4">\n                    ';
-     _.forEach(carcaseTypes.fixed[0], function(carcase, key) {
-    __p += '\n                      <label>\n                          <input type="checkbox" class="carcase-type carcase-type-checkbox" value="' +
-    __e(key) +
+     _.forEach(trailerTypes.fixed[0], function(trailer) {
+    __p += '\n                      <label>\n                          <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
+    __e(trailer.id) +
     '" />\n                          ' +
-    ((__t = (carcase)) == null ? '' : __t) +
+    ((__t = (trailer.type)) == null ? '' : __t) +
     '\n                      </label>\n                    ';
      }); ;
     __p += '\n                  </div>\n                  <div class="col-xs-8 col-md-8 col-wrap">\n                    <div class="col-xs-6 col-md-6">\n                      ';
-     _.forEach(carcaseTypes.fixed[1], function(carcase, key) {
-    __p += '\n                        <label>\n                            <input type="checkbox" class="carcase-type carcase-type-checkbox" value="' +
-    __e(key) +
+     _.forEach(trailerTypes.fixed[1], function(trailer) {
+    __p += '\n                        <label>\n                            <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
+    __e(trailer.id) +
     '" />\n                            ' +
-    ((__t = (carcase)) == null ? '' : __t) +
+    ((__t = (trailer.type)) == null ? '' : __t) +
     '\n                        </label>\n                      ';
      }); ;
     __p += '\n                    </div>\n                    <div class="col-xs-6 col-md-6">\n                      ';
-     _.forEach(carcaseTypes.fixed[2], function(carcase, key) {
+     _.forEach(trailerTypes.fixed[2], function(trailer) {
     __p += '\n                        ';
-     if (!(_.isPlainObject(carcase))) {
-    __p += '\n                          <label>\n                              <input type="checkbox" class="carcase-type carcase-type-checkbox" value="' +
-    __e(key) +
+     if (!(_.isArray(trailer))) {
+    __p += '\n                          <label>\n                              <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
+    __e(trailer.id) +
     '" />\n                              ' +
-    ((__t = (carcase)) == null ? '' : __t) +
+    ((__t = (trailer.type)) == null ? '' : __t) +
     '\n                          </label>\n                        ';
      } else {
-    __p += '\n                          <select class="carcase-type carcase-type-select input-sm col-xs-12 col-sm-12">\n                            ';
-     _.forEach(carcase, function(option, key){
-    __p += '\n                                ';
-     if (key === 'placeholder') {
-    __p += '\n                                  <option selected value="">' +
-    ((__t = (option)) == null ? '' : __t) +
-    '</option>\n                                ';
-     } else {
-    __p += '\n                                  <option value="' +
-    __e(key) +
+    __p += '\n                          <select class="trailer-type trailer-type-select input-sm col-xs-12 col-sm-12">\n                            <option selected value="">' +
+    ((__t = (trailerTypes.placeholder)) == null ? '' : __t) +
+    '</option>\n                            ';
+     _.forEach(trailer, function(tr){
+    __p += '\n                              <option value="' +
+    __e(tr.id) +
     '">' +
-    ((__t = (option)) == null ? '' : __t) +
-    '</option>\n                                ';
-     }
-    __p += '\n                            ';
+    ((__t = (tr.type)) == null ? '' : __t) +
+    '</option>\n                            ';
      }); ;
     __p += '\n                          </select>\n                        ';
      }
@@ -285,26 +279,22 @@
     ((__t = (doc)) == null ? '' : __t) +
     '\n                        </label>\n                      </div>\n                    ';
      }); ;
-    __p += '\n                  </div>\n              </div>\n          </div>\n\n          <div class="row">\n              <form class="form-inline" role="form" id="payment-form" novalidate>\n                <div class="form-group">\n                    <label for="payment" class="col-xs-2 col-sm-2">' +
+    __p += '\n                  </div>\n              </div>\n          </div>\n\n          <div class="row">\n              <form class="form-inline" role="form" id="payment-form" novalidate>\n                <div class="form-group">\n                    <label for="price" class="col-xs-2 col-sm-2">' +
     __e(paymentLabel) +
-    '</label>\n                    <div class="col-xs-3 col-sm-3">\n                      <input type="text" class="form-control payment-input input-sm" id="payment" name="payment" />\n                    </div>\n                </div>\n                <div class="col-xs-3 col-sm-3">\n                  <select class="form-control currency-select input-sm" id="currency" name="currency">\n                      ';
-     var currencyNum = 0; ;
-    __p += '\n                      ';
-     _.forEach(currencies, function(cur, key) {
+    '</label>\n                    <div class="col-xs-3 col-sm-3">\n                      <input type="text" class="form-control payment-input input-sm" id="price" name="price" />\n                    </div>\n                </div>\n                <div class="col-xs-3 col-sm-3">\n                  <select class="form-control currency-select input-sm" id="currency" name="currency">\n                      ';
+     _.forEach(currencies, function(cur) {
     __p += '\n                          ';
-     if (!currencyNum) {
+     if (cur.id === "15") {
     __p += '\n                          <option selected value="' +
-    __e(key) +
+    __e(cur.id) +
     '">' +
-    __e(cur) +
+    __e(cur.type) +
     '</option>\n                          ';
-      currencyNum++; ;
-    __p += '\n                          ';
      } else {
     __p += '\n                          <option value="' +
-    __e(key) +
+    __e(cur.id) +
     '">' +
-    __e(cur) +
+    __e(cur.type) +
     '</option>\n                          ';
      }
     __p += '\n                      ';

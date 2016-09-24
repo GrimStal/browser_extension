@@ -127,7 +127,7 @@ label {
 }
 
 .header-message {
-  padding-top: 2px;
+    padding-top: 2px;
 }
 
 .header-icons {
@@ -198,8 +198,8 @@ label {
         margin: 0 0 5px;
         padding-right: 0;
 
-         > div > div,
-        > div {
+         > div,
+        > div > div {
             padding-left: 0;
         }
 
@@ -264,6 +264,22 @@ label {
             padding-right: 0;
         }
     }
+
+    fieldset {
+        > .form-group {
+            margin-top: 0;
+        }
+
+        &:disabled {
+          .form-group {
+            color: $lighterGrey;
+
+            input {
+              opacity: 0.4;
+            }
+          }
+        }
+    }
 }
 
 #removeSelection {
@@ -279,7 +295,7 @@ label {
     }
 
     .month {
-      margin: 1px 0;
+        margin: 1px 0;
     }
 
     .current-month {
@@ -318,9 +334,9 @@ label {
         }
 
         &.past {
-          div {
-            opacity: 0.3;
-          }
+            div {
+                opacity: 0.3;
+            }
         }
 
         &.selected {

@@ -143,10 +143,10 @@ label input[type=checkbox] {
 .city-holder .checkbox {
   margin: 0 0 5px;
   padding-right: 0; }
-  .cargo-info-holder .checkbox > div > div,
   .cargo-info-holder .checkbox > div,
-  .city-holder .checkbox > div > div,
-  .city-holder .checkbox > div {
+  .cargo-info-holder .checkbox > div > div,
+  .city-holder .checkbox > div,
+  .city-holder .checkbox > div > div {
     padding-left: 0; }
   .cargo-info-holder .checkbox label,
   .city-holder .checkbox label {
@@ -188,6 +188,14 @@ label input[type=checkbox] {
 
 .cargo-info-holder .col-wrap div:last-child {
   padding-right: 0; }
+
+.cargo-info-holder fieldset > .form-group {
+  margin-top: 0; }
+
+.cargo-info-holder fieldset:disabled .form-group {
+  color: #eee; }
+  .cargo-info-holder fieldset:disabled .form-group input {
+    opacity: 0.4; }
 
 #removeSelection {
   display: none; }
