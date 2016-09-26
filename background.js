@@ -40,7 +40,7 @@ function sendRequest(data, uid, callback) {
       reqParams.dataType = 'json';
       reqParams.contentType = 'application/json';
       reqParams.url = 'https://io-dev.cargo.lt/' + data.url;
-      reqParams.data = (reqParams.dataType === 'POST') ? JSON.stringify(data.data) : data.data;
+      reqParams.data = (reqParams.type === 'POST') ? JSON.stringify(data.data) : data.data;
       break;
     default:
       return callback('Unknown request target');

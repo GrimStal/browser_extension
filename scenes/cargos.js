@@ -102,6 +102,45 @@ App.scenes.cargos = {
 
             $('.revert-cities').bind('click', _this.revertCities.bind(_this));
 
+            $('.trailer-type-select').change('change', function () {
+              var $select = $(this);
+              var $currentSelect = $select.find(':selected');
+              var element;
+              var container = $select.closest('.checkbox');
+              var len = 100;
+              var $target;
+
+              /** Get elements with label elements and search wich element contains
+              * the least of elements to add checkbox there.
+              */
+              container.children().find('label').parent().each(function (i, el) {
+                var length = $(el).children().length;
+                if (length < len) {
+                  $target = $(el);
+                  len = length++;
+                } else {
+                  len = length;
+                }
+              });
+
+              if ($currentSelect && $currentSelect.val() !== '') {
+                element = '<label>' +
+                          '<input type="checkbox" ' +
+                          'class="trailer-type trailer-type-checkbox" ' +
+                          'value="' + $currentSelect.val() + '" checked/>' +
+                              $currentSelect.text() +
+                          '</label>';
+
+                if ($target.get(0) === $select.parent().get(0)) {
+                  $(element).insertBefore($select);
+                } else {
+                  $target.append(element);
+                }
+
+                $currentSelect.remove();
+              }
+            });
+
             _this.setDates();
           },
 
