@@ -22,7 +22,8 @@
     'cargos': {},
     'intro': {},
     'loading': {},
-    'settingsNav': {}
+    'settingsNav': {},
+    'trailerCheckbox': {}
   };
 
   templates['accountUnbinding'] =   function(obj) {
@@ -167,7 +168,9 @@
     __e(nextMonth) +
     '</div>\n            </div>\n        </div>\n      </div>\n      <div class="row">\n        <div class="cargo-info-holder container">\n          <div class="row">\n            <form class="form-inline" role="form" id="cargo-types-holder-form" novalidate>\n                  <div class="form-group">\n                      <label for="cargo-type" class="col-xs-2 col-sm-2">' +
     __e(cargoTypeLabel) +
-    '</label>\n                      <div class="col-xs-6 col-sm-6">\n                        <select class="form-control cargo-types-select input-sm" id="cargo-types" name="cargo-types">\n                            ';
+    ':</label>\n                      <div class="col-xs-6 col-sm-6">\n                        <select class="form-control cargo-types-select input-sm" id="cargo-types" name="cargo-types">\n                          <option value="" selected>' +
+    __e(cargoTypeLabel) +
+    '</option>\n                            ';
      _.forEach(cargoTypes, function(type) {
     __p += '\n                              <option value="' +
     __e(type.id) +
@@ -178,13 +181,13 @@
     __p += '\n                        </select>\n                      </div>\n                  </div>\n                  <div class="form-group">\n                      <label for="adr" class="col-xs-1 col-sm-1">' +
     __e(adrLabel) +
     '</label>\n                      <div class="col-xs-3 col-sm-3">\n                        <select class="form-control adr-select input-sm" id="adr" name="adr">\n                          <option value="" selected></option>\n                            ';
-     for (var adr in adrs) {
+     _.forEach(adrs, function(adr) {
     __p += '\n                              <option value="' +
     __e(adr) +
     '">' +
     __e(adr) +
     '</option>\n                            ';
-     }
+     }) ;
     __p += '\n                        </select>\n                      </div>\n                  </div>\n            </form>\n          </div>\n\n          <div class="row">\n            <form class="form-inline" role="form" id="cargo-info-holder-form" novalidate>\n              <div class="form-group">\n                  <label for="weight" class="col-xs-2 col-sm-2">' +
     ((__t = (weightLabel)) == null ? '' : __t) +
     '</label>\n                  <div class="col-xs-1 col-sm-1 wide-right">\n                    <input type="text" class="form-control weight-input input-sm" id="weight" name="weight" placeholder="T"/>\n                  </div>\n              </div>\n              <div class="col-wrap col-xs-5 col-sm-5">\n                    <div class="form-group">\n                        <label for="volume" class="col-xs-3 col-sm-3">' +
@@ -355,6 +358,20 @@
     '-button col-xs-2 col-sm-2">item.text</button>\n      ';
      }); ;
     __p += '\n    </div>\n</div>\n';
+
+    }
+    return __p
+  };
+
+  templates['trailerCheckbox'] =   function(obj) {
+    obj || (obj = {});
+    var __t, __p = '';
+    with (obj) {
+    __p += '<label>\n  <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
+    ((__t = (value)) == null ? '' : __t) +
+    '" checked/>\n  ' +
+    ((__t = (type)) == null ? '' : __t) +
+    '\n</label>\n';
 
     }
     return __p

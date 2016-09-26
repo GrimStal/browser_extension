@@ -59,9 +59,10 @@
           <div class="row">
             <form class="form-inline" role="form" id="cargo-types-holder-form" novalidate>
                   <div class="form-group">
-                      <label for="cargo-type" class="col-xs-2 col-sm-2"><%-cargoTypeLabel%></label>
+                      <label for="cargo-type" class="col-xs-2 col-sm-2"><%-cargoTypeLabel%>:</label>
                       <div class="col-xs-6 col-sm-6">
                         <select class="form-control cargo-types-select input-sm" id="cargo-types" name="cargo-types">
+                          <option value="" selected><%-cargoTypeLabel%></option>
                             <% _.forEach(cargoTypes, function(type) { %>
                               <option value="<%-type.id%>"><%-type.type%></option>
                             <% }) %>
@@ -73,9 +74,9 @@
                       <div class="col-xs-3 col-sm-3">
                         <select class="form-control adr-select input-sm" id="adr" name="adr">
                           <option value="" selected></option>
-                            <% for (var adr in adrs) { %>
+                            <% _.forEach(adrs, function(adr) { %>
                               <option value="<%-adr%>"><%-adr%></option>
-                            <% } %>
+                            <% }) %>
                         </select>
                       </div>
                   </div>

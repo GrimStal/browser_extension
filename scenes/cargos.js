@@ -25,6 +25,11 @@ App.scenes.cargos = {
           return false;
         }
 
+        /**
+         * JQuery-UI Autocomplete data setting function.
+         * @param  {Object} request  Has 'term' param, data set in input.
+         * @param  {function} response Must get as argument an array or array of objects with label and value params.
+         */
         function parseForAutocomplete(request, response) {
           _this.getLocations(request.term).then(
             function (res) {
@@ -50,6 +55,8 @@ App.scenes.cargos = {
         var getCargoTypes = this.getCargoTypes();
         var getTrailerTypes = this.getTrailerTypes();
         var getCurrencies = this.getCurrencies();
+
+        this.cargo = new CargoObject();
 
         $.when(getCargoTypes, getTrailerTypes, getCurrencies).then(
           function (ctypes, ttypes, currencies) {
@@ -81,18 +88,18 @@ App.scenes.cargos = {
             $('#price, #weight, #volume, #palets').bind('keyup keypress', onlyPositiveDigits);
             $('#temperatureMin, #temperatureMax').bind('keyup keypress', onlyDigits);
 
-            /** Save the origin and destination objects on authocomplete select*/
+            /** Save the origin and destination objects on authocomplete select */
             $('#origin').autocomplete({
               source: parseForAutocomplete,
               select: function (event, obj) {
-                _this.origin = obj.item.object;
+                _this.cargo.origins.push(obj.item.object);
               },
             });
 
             $('#destination').autocomplete({
               source: parseForAutocomplete,
               select: function (event, obj) {
-                _this.destination = obj.item.object;
+                _this.cargo.destinations.push(obj.item.object);
               },
             });
 
@@ -101,45 +108,9 @@ App.scenes.cargos = {
             });
 
             $('.revert-cities').bind('click', _this.revertCities.bind(_this));
-
-            $('.trailer-type-select').change('change', function () {
-              var $select = $(this);
-              var $currentSelect = $select.find(':selected');
-              var element;
-              var container = $select.closest('.checkbox');
-              var len = 100;
-              var $target;
-
-              /** Get elements with label elements and search wich element contains
-              * the least of elements to add checkbox there.
-              */
-              container.children().find('label').parent().each(function (i, el) {
-                var length = $(el).children().length;
-                if (length < len) {
-                  $target = $(el);
-                  len = length++;
-                } else {
-                  len = length;
-                }
-              });
-
-              if ($currentSelect && $currentSelect.val() !== '') {
-                element = '<label>' +
-                          '<input type="checkbox" ' +
-                          'class="trailer-type trailer-type-checkbox" ' +
-                          'value="' + $currentSelect.val() + '" checked/>' +
-                              $currentSelect.text() +
-                          '</label>';
-
-                if ($target.get(0) === $select.parent().get(0)) {
-                  $(element).insertBefore($select);
-                } else {
-                  $target.append(element);
-                }
-
-                $currentSelect.remove();
-              }
-            });
+            $('.trailer-type-select').change(insertCheckbox);
+            $('#cargo-types').change(setCargoDependencies);
+            $('.trailer-type-checkbox[value=1], .trailer-type-checkbox[value=3]').change(checkTemperature);
 
             _this.setDates();
           },
@@ -318,9 +289,9 @@ App.scenes.cargos = {
       $origin.val($destination.val());
       $destination.val($rev);
 
-      revObj = cloneObj(this.origin);
-      this.origin = cloneObj(this.destination);
-      this.destination = cloneObj(revObj);
+      revObj = cloneObj(this.cargo.origins);
+      this.cargo.origins = cloneObj(this.cargo.destinations);
+      this.cargo.destinations = cloneObj(revObj);
     },
 
     getDataFromServer: function (req) {

@@ -68,7 +68,7 @@ var Templates = (function () {
     currentMonth: '',
     days: ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'],
     nextMonth: '',
-    cargoTypeLabel: 'Тип груза:',
+    cargoTypeLabel: 'Тип груза',
     cargoTypes: [
       {
         id: 1,
@@ -224,3 +224,39 @@ var Request = function (to, type, url) {
   // };
 
 };
+
+function CargoObject() {
+  this.origins = [];
+  this.destinations = [];
+  this.type = 0;
+  this.fromDate = 0;
+  this.tillDate = 0;
+
+  // this.fromDateto = 0;
+  // this.tillDateto = 0;
+  this.notes = '';
+  this.trailers = [];
+  this.pallets = 0;
+  this.pallettype = 1;
+  this.volume = 0;
+  this.volumeldm = 13.6;
+  this.weight = 0;
+  this.minTemperature = 0;
+  this.maxTemperature = 0;
+  this.price = 0;
+  this.currency = 0;
+  this.top = 0;
+  this.side = 0;
+  this.back = 0;
+  this.full = 0;
+  this.partly = 0;
+  this.adr = 0;
+  this.tir = 0;
+  this.declaration = 0;
+  this.manipulator = 0;
+  this.lift = 0;
+
+  // this.boxes = [];
+  // this.boxtype = 0;
+  // this.accountId = 0;
+}

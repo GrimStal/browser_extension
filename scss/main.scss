@@ -62,7 +62,7 @@ label {
 }
 
 .ui-widget {
-  font-size: 10px;
+    font-size: 10px;
 }
 
 .center {
@@ -202,8 +202,8 @@ label {
         margin: 0 0 5px;
         padding-right: 0;
 
-         > div,
-        > div > div {
+         > div > div,
+        > div {
             padding-left: 0;
         }
 
@@ -275,13 +275,15 @@ label {
         }
 
         &:disabled {
-          .form-group {
-            color: $lighterGrey;
 
-            input {
-              opacity: 0.4;
+            .form-group {
+                color: $lighterGrey;
+
+                input {
+                    opacity: 0.4;
+                    cursor: pointer;
+                }
             }
-          }
         }
     }
 }

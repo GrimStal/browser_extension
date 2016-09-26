@@ -173,7 +173,7 @@ var App = (function () {
       to: 'lardi',
       url: '',
       type: 'GET',
-      data: { method: 'my.gruz.list', sig: this.appData.lardi.token },
+      data: { method: 'test.sig', sig: this.appData.lardi.token },
     };
 
     if (this.appData.lardi.token) {
