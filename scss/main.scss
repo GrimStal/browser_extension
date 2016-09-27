@@ -88,18 +88,28 @@ label {
     height: 100%;
     min-height: 500px;
     background-color: rgba(0,0,0,0.8);
+    z-index: 3;
+}
 
-    .loading-img-holder,
-    .loading-text-holder {
-        text-align: center;
-        margin: 30px 0;
-        color: $white;
-    }
+.success-img-holder,
+.loading-img-holder,
+.success-text-holder,
+.loading-text-holder {
+    text-align: center;
+    margin: 30px 0;
+    color: $white;
+}
 
-    .loading-img {
-        width: 128px;
-        height: 128px;
-    }
+.success-text-holder {
+  text-align: center;
+  margin: 15px 0;
+  color: $greyText;
+}
+
+.success-img,
+.loading-img {
+    width: 128px;
+    height: 128px;
 }
 
 .ce__header {

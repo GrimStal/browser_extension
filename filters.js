@@ -365,6 +365,143 @@ function checkTemperature() {
     $temp.prop('disabled', false);
   } else {
     $temp.prop('disabled', true);
-    $('#temperatureMin, #temperatureMax').val(0);
+    $('#temperatureMin, #temperatureMax').val(18);
+  }
+}
+
+function setParam (param, defaultVal) {
+  return parseInt(param) ? parseInt(param) : defaultVal;
+}
+
+function getCountry(name) {
+  if (!name) {
+    return false;
+  }
+
+  switch (name.toUpperCase()) {
+    case 'AFGANISTAN':
+      return 'AF';
+    case 'ALBANIA':
+      return 'AL';
+    case 'ALGERIA':
+      return 'DZ';
+    case 'AMERICAN SAMOA':
+      return 'AS';
+    case 'ANDORRA':
+      return 'AD';
+    case 'ANGOLA':
+      return 'AO';
+    case 'ANGUILLA':
+      return 'AI';
+    case 'ANTARCTICA':
+      return 'AQ';
+    case 'ANTIGUA AND BARBUDA':
+      return 'AG';
+    case 'ARGENTINA':
+      return 'AR';
+    case 'ARMENIA':
+      return 'AM';
+    case 'ARUBA':
+      return 'AW';
+    case 'AUSTRALIA':
+      return 'AU';
+    case 'AUSTRIA':
+      return 'AT';
+    case 'AZERBAIJAN':
+      return 'AZ';
+    case 'BAHAMAS':
+      return 'BS';
+    case 'BAHRAIN':
+      return 'BH';
+    case 'BANGLADESH':
+      return 'BD';
+    case 'BARBADOS':
+      return 'BB';
+    case 'BELARUS':
+      return 'BY';
+    case 'BELGIUM':
+      return 'BE';
+    case 'BELIZE':
+      return 'BZ';
+    case 'BENIN':
+      return 'BJ';
+    case 'BERMUDA':
+      return 'BM';
+    case 'BHUTAN':
+      return 'BT';
+    case 'BOLIVIA':
+      return 'BO';
+    case 'BONAIRE':
+      return 'BQ';
+    case 'BOSNIA AND HERZEGOVINA':
+      return 'BA';
+    case 'BOTSWANA':
+      return 'BW';
+    case 'BOUVET ISLAND':
+      return 'BV';
+    case 'BRASIL':
+      return 'BR';
+    case 'BRITISH INDIAN OCEAN TERRITORY':
+      return 'IO';
+    case 'BRUNEI DARUSSALAM':
+      return 'BN';
+    case 'BULGARIA':
+      return 'BG';
+    case 'BURKINA FASO':
+      return 'BF';
+    case 'BURUNDI':
+      return 'BI';
+    case 'CABO VERDE':
+      return 'CV';
+    case 'CAMBODIA':
+      return 'KH';
+    case 'CAMEROON':
+      return 'CM';
+    case 'CANADA':
+      return 'CA';
+    case 'CAYMAN ISLANDS':
+      return 'KY';
+    case 'CENTRAL AFRICAN REPUBLIC':
+      return 'CF';
+    case 'CHAD':
+      return 'TD';
+    case 'CHILE':
+      return 'CL';
+    case 'CHINA':
+      return 'CN';
+    case 'CHRISTMAS ISLAND':
+      return 'CX';
+    case 'COCOS ISLANDS':
+      return 'CC';
+    case 'COLOMBIA':
+      return 'CO';
+    case 'COMOROS':
+      return 'KM';
+    case 'CONGO':
+      return 'CG';
+    case 'DEMOCRATIC REPUBLIC OF THE CONGO':
+      return 'CD';
+    case 'COOK ISLANDS':
+      return 'CK';
+    case 'COSTA RICA':
+      return 'CR';
+    case 'CROATIA':
+      return 'HR';
+    case 'CUBA':
+      return 'CU';
+    case 'CURACAO':
+      return 'CW';
+    case 'CYPRUS':
+      return 'CY';
+    case 'CZECHIA':
+      return 'CZ';
+    case 'DENMARK':
+      return 'DK';
+    case 'DJIBOUTI':
+      return 'DJ';
+    case 'Ukraine':
+      return 'UA';
+    default:
+      return false;
   }
 }

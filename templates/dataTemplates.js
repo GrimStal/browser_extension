@@ -226,11 +226,11 @@ var Request = function (to, type, url) {
 };
 
 function CargoObject() {
-  this.origins = [];
-  this.destinations = [];
+  this.from = [];
+  this.to = [];
   this.type = 0;
-  this.fromDate = 0;
-  this.tillDate = 0;
+  this.fromDate = null;
+  this.tillDate = null;
 
   // this.fromDateto = 0;
   // this.tillDateto = 0;
@@ -241,8 +241,8 @@ function CargoObject() {
   this.volume = 0;
   this.volumeldm = 13.6;
   this.weight = 0;
-  this.minTemperature = 0;
-  this.maxTemperature = 0;
+  this.minTemperature = null;
+  this.maxTemperature = null;
   this.price = 0;
   this.currency = 0;
   this.top = 0;

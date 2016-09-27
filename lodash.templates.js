@@ -19,6 +19,7 @@
     'accountUnbinding': {},
     'addOrder': {},
     'auth': {},
+    'cargoAdded': {},
     'cargos': {},
     'intro': {},
     'loading': {},
@@ -95,6 +96,18 @@
     return __p
   };
 
+  templates['cargoAdded'] =   function(obj) {
+    obj || (obj = {});
+    var __t, __p = '', __e = _.escape;
+    with (obj) {
+    __p += '<div class="ce__success">\n    <div class="row">\n        <div class="success-img-holder">\n            <img src="images/success.png" class=\'success-img\' />\n        </div>\n        <div class="success-text-holder">\n            <span class="ce__success-text">' +
+    __e(text) +
+    '</span>\n        </div>\n    </div>\n</div>\n';
+
+    }
+    return __p
+  };
+
   templates['cargos'] =   function(obj) {
     obj || (obj = {});
     var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -125,7 +138,7 @@
     __p += '\n                      <tr>\n                        <td class="date weekday date-' +
     ((__t = (dates[date].getDate())) == null ? '' : __t) +
     '" timestamp="' +
-    ((__t = ((dates[date].setHours(0,0,0,0)/1000))) == null ? '' : __t) +
+    ((__t = ((dates[date].setUTCHours(0,0,0,0)/1000))) == null ? '' : __t) +
     '"><div>' +
     __e(dates[date].getDate()) +
     '</div></td>\n                      ';
@@ -133,7 +146,7 @@
     __p += '\n                        <td class="date weekday thursday date-' +
     ((__t = (dates[date].getDate())) == null ? '' : __t) +
     '" timestamp="' +
-    ((__t = ((dates[date].setHours(0,0,0,0)/1000))) == null ? '' : __t) +
+    ((__t = ((dates[date].setUTCHours(0,0,0,0)/1000))) == null ? '' : __t) +
     '"><div>' +
     __e(dates[date].getDate()) +
     '</div></td>\n                      ';
@@ -141,7 +154,7 @@
     __p += '\n                        <td class="date weekend date-' +
     ((__t = (dates[date].getDate())) == null ? '' : __t) +
     '" timestamp="' +
-    ((__t = ((dates[date].setHours(0,0,0,0)/1000))) == null ? '' : __t) +
+    ((__t = ((dates[date].setUTCHours(0,0,0,0)/1000))) == null ? '' : __t) +
     '"><div>' +
     __e(dates[date].getDate()) +
     '</div></td>\n                      ';
@@ -149,7 +162,7 @@
     __p += '\n                        <td class="date weekend date-' +
     ((__t = (dates[date].getDate())) == null ? '' : __t) +
     '" timestamp="' +
-    ((__t = ((dates[date].setHours(0,0,0,0)/1000))) == null ? '' : __t) +
+    ((__t = ((dates[date].setUTCHours(0,0,0,0)/1000))) == null ? '' : __t) +
     '"><div>' +
     __e(dates[date].getDate()) +
     '</div></td>\n                      </tr>\n                      ';
@@ -157,7 +170,7 @@
     __p += '\n                        <td class="date weekday date-' +
     ((__t = (dates[date].getDate())) == null ? '' : __t) +
     '" timestamp="' +
-    ((__t = ((dates[date].setHours(0,0,0,0)/1000))) == null ? '' : __t) +
+    ((__t = ((dates[date].setUTCHours(0,0,0,0)/1000))) == null ? '' : __t) +
     '"><div>' +
     __e(dates[date].getDate()) +
     '</div></td>\n                      ';
@@ -196,7 +209,7 @@
     ((__t = (paletsLabel)) == null ? '' : __t) +
     '</label>\n                        <div class="col-xs-3 col-sm-3 wide-right">\n                          <input type="text" class="form-control palets-input input-sm" id="palets" name="palets" />\n                        </div>\n                    </div>\n              </div>\n              <fieldset id="temperature" disabled>\n                <div class="form-group">\n                    <label for="temperature" class="col-xs-3 col-sm-3">' +
     ((__t = (temperatureLabel)) == null ? '' : __t) +
-    '</label>\n                    <div class="col-wrap col-xs-9 col-sm-9">\n                      <div class="col-xs-5 col-sm-5 wide-right">\n                        <input type="number" min="-50" max="50" step="1" value="0" class="form-control temperature-input input-sm" id="temperatureMin" name="temperatureMin" />\n                      </div>\n                      <div class="col-xs-2 col-sm-2 wide-right wide-left center">\n                        -\n                      </div>\n                      <div class="col-xs-5 col-sm-5 wide-left">\n                        <input type="number" min="-50" max="50" step="1" value="0" class="form-control temperature-input input-sm" id="temperatureMax" name="temperatureMax" />\n                      </div>\n                    </div>\n                </div>\n              </fieldset>\n            </form>\n          </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
+    '</label>\n                    <div class="col-wrap col-xs-9 col-sm-9">\n                      <div class="col-xs-5 col-sm-5 wide-right">\n                        <input type="number" min="-50" max="50" step="1" value="18" class="form-control temperature-input input-sm" id="temperatureMin" name="temperatureMin" />\n                      </div>\n                      <div class="col-xs-2 col-sm-2 wide-right wide-left center">\n                        -\n                      </div>\n                      <div class="col-xs-5 col-sm-5 wide-left">\n                        <input type="number" min="-50" max="50" step="1" value="18" class="form-control temperature-input input-sm" id="temperatureMax" name="temperatureMax" />\n                      </div>\n                    </div>\n                </div>\n              </fieldset>\n            </form>\n          </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
     __e(trailerTypes.title) +
     '</label>\n              <div class="checkbox col-sm-10 col-xs-10">\n                  <div class="col-xs-4 col-md-4">\n                    ';
      _.forEach(trailerTypes.fixed[0], function(trailer) {
