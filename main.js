@@ -151,7 +151,7 @@ var App = (function () {
 
       var res = XMLtoJson(response.success);
       if (res.response.error &&
-        res.response.error._text === 'SIG идентификатор устарел или указан не верно') {
+        res.response.error === 'SIG идентификатор устарел или указан не верно') {
         return lardiDef.reject('lardi error');
       }
 
@@ -282,3 +282,21 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 var x2js = new X2JS();
+
+var regions = {};
+
+$.get('regions.json').then(function(regionsFile){
+  regions = JSON.parse(regionsFile);
+})
+
+if (!Array.prototype.last) {
+    Array.prototype.last = function() {
+        return this[this.length - 1];
+    }
+}
+
+if (!Array.prototype.first) {
+    Array.prototype.first = function() {
+        return this[0];
+    }
+}

@@ -314,13 +314,13 @@ label {
         margin: 1px 0;
     }
 
+    .next-month {
+        background-color: $lightGrey;
+    }
+
     .current-month {
         background-color: $lime;
         color: $white;
-    }
-
-    .next-month {
-        background-color: $lighterGrey;
     }
 
     #removeSelection {

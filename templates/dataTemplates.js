@@ -260,3 +260,55 @@ function CargoObject() {
   // this.boxtype = 0;
   // this.accountId = 0;
 }
+
+function LardiTransCargoObject() {
+  this.method = 'my.gruz.add';
+  this.sig = undefined;
+  this.country_from_id = undefined;
+  this.area_from_id = undefined;
+  this.city_from = '';
+  this.country_to_id = undefined;
+  this.area_to_id = undefined;
+  this.city_to = '';
+  this.date_from = '';       //Date format DD.MM.YYYY
+  this.date_to = '';         //Date format DD.MM.YYYY
+  // this.custom_control = false;   //
+
+  this.adr = 0;
+  this.t1 = false;
+  this.cmr = false;
+  this.gruz = '';
+  this.tir = false;
+  // this.stavka = '';
+
+  this.body_type_id = undefined;
+  this.body_type_group_id = undefined;
+  this.note = '';           //Max length 40 symbols
+  // this.mass_select = [];
+  this.mass = 0;
+
+  // this.mass2 = null;
+  // this.value_select = [];
+  this.value = undefined;
+
+  // this.value2 = null;
+  // this.payment_forma_id = null;
+  this.payment_moment_id = undefined;
+
+  // this.payment_vat = false;
+  // this.payment_prepay = 0;
+  // this.payment_delay = 0;
+
+  this.payment_currency_id = undefined;
+  // this.payment_unit_id = null;
+
+  this.zagruz_set = '';         //Mnemonic of load types, comma as delimiter, no spaces
+  // this.auto_col_tip = null;  //ID of auto type
+  // this.auto_col = 1;         //Amount of autos
+  // this.user_contact = 0;     //№ of subordinate contact. 0 is main
+  // this.gab_dl = 0;
+  // this.gab_sh = 0;
+  // this.gab_v = 0;
+  // this.ext_url = '';         //URL for tendors
+  this.add_info = '';        //Additional info, max length 255 symbols
+}

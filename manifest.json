@@ -16,15 +16,18 @@
 
   "background": {
     "scripts": [
+      "bower_components/abdmob/x2js/xml2json.min.js",
       "background.js",
       "bower_components/jquery/dist/jquery.min.js"
+
     ]
   },
 
   "permissions": [
     "tabs",
     "https://io-dev.cargo.lt/*",
-    "http://api.lardi-trans.com/*"
+    "http://api.lardi-trans.com/*",
+    "https://restcountries.eu/*"
   ],
 
   "author": "Borshchov Dimitriy"

@@ -83,14 +83,14 @@ App.scenes.cargos = {
             $('#origin').autocomplete({
                 source: parseForAutocomplete,
                 select: function(event, obj) {
-                    _this.cargo.from.push(obj.item.object);
+                    _this.cargo.from[0] = obj.item.object;
                 }
             });
 
             $('#destination').autocomplete({
                 source: parseForAutocomplete,
                 select: function(event, obj) {
-                    _this.cargo.to.push(obj.item.object);
+                    _this.cargo.to[0] = obj.item.object;
                 }
             });
 
@@ -152,7 +152,7 @@ App.scenes.cargos = {
                 allowed = 4;
             }
 
-            message += allowed + (allowed % 5
+            message += allowed + ((allowed % 5)
                 ? ' дня'
                 : ' дней');
             return alert(message);
@@ -332,6 +332,76 @@ App.scenes.cargos = {
         return this.getDataFromServer(req);
     },
 
+    getLardiPaymentMoments: function() {
+        var def = $.Deferred();
+        var req = new Request('lardi', 'POST');
+
+        if (!App.appData.lardi.token) {
+            def.reject('Lardi not authorized');
+            return def.promise();
+        } else {
+            req.data = {
+                method: 'get.payment.moment.ref',
+                sig: App.appData.lardi.token
+            };
+            return this.getDataFromServer(req);
+        }
+    },
+
+    getLardiLoadTypes: function() {
+        var def = $.Deferred();
+        var req = new Request('lardi', 'POST');
+
+        if (!App.appData.lardi.token) {
+            def.reject('Lardi not authorized');
+            return def.promise();
+        } else {
+            req.data = {
+                method: 'base.zagruz',
+                sig: App.appData.lardi.token
+            };
+            return this.getDataFromServer(req);
+        }
+    },
+
+    getLardiBodyTypes: function() {
+        var def = $.Deferred();
+        var req = new Request('lardi', 'POST');
+
+        if (!App.appData.lardi.token) {
+            def.reject('Lardi not authorized');
+            return def.promise();
+        } else {
+            req.data = {
+                method: 'body.type.group',
+                sig: App.appData.lardi.token
+            };
+            return this.getDataFromServer(req);
+        }
+    },
+
+    getLardiCountries: function() {
+        var def = $.Deferred();
+        var req = new Request('lardi', 'POST');
+
+        if (!App.appData.lardi.token) {
+            def.reject('Lardi not authorized');
+            return def.promise();
+        } else {
+            req.data = {
+                method: 'base.country',
+                sig: App.appData.lardi.token
+            };
+            return this.getDataFromServer(req);
+        }
+    },
+
+    getCountryCode: function(name) {
+        var req = new Request('countries', 'GET');
+        req.url = encodeURIComponent(name)
+        return this.getDataFromServer(req);
+    },
+
     sendCargosData: function() {
         var _this = this;
         var cargo = this.cargo;
@@ -349,96 +419,208 @@ App.scenes.cargos = {
         var $currency = $('#currency');
         var $paymentType = $('#payment-type');
         var $note = $('#note');
-        var note = [];
-
+        var cnote = [];
+        var lnote = [];
+        var lardi = new LardiTransCargoObject();
+        var dateOptions = {
+            day: 'numeric',
+            month: 'numeric',
+            year: 'numeric'
+        };
+        var creq = new Request('cargo', 'POST', 'cargos');
+        var lreq = new Request('lardi', 'POST');
+        var cargoDef = $.Deferred();
+        var lardiDef = $.Deferred();
 
         $('.trailer-type-checkbox:checked').each(function(i, el) {
-            trailers.push($(el).val());
+            trailers.push(parseInt($(el).val()));
         });
 
         if (!cargo.from.length || !cargo.to.length) {
-            return alert('Укажите место отправления и назначения');
+            return alert('Укажите место отправления и назначения.');
         }
 
         if (!this.dates.length) {
-            return alert('Укажите даты отправки');
+            return alert('Укажите даты отправки.');
         }
 
         if (!$cargoType.val()) {
-            return alert('Укажите тип груза');
+            return alert('Укажите тип груза.');
+        }
+
+        if (trailers.length === 0) {
+            return alert('Укажите тип кузова.');
         }
 
         if (!$weight.val() && !$value.val() && !$pallets.val()) {
-            return alert('Укажите информацию о грузе');
+            return alert('Укажите информацию о грузе.');
         }
 
+        if (!$price.val() && $price.val() !== 0) {
+            return alert('Не указана сумма.');
+        }
+
+        cargo.fromDate = this.dates[0];
+        cargo.tillDate = this.dates[this.dates.length - 1];
+        lardi.date_from = new Date(this.dates[0] * 1000).toLocaleString('ru', dateOptions);
+        lardi.date_to = new Date(this.dates[this.dates.length - 1] * 1000).toLocaleString('ru', dateOptions);
+
         cargo.type = $cargoType.val();
+        lardi.gruz = $cargoType.find(':selected').text();
+
         cargo.weight = setParam($weight.val(), null);
+        lardi.mass = setParam($weight.val(), null);
+
         cargo.volume = setParam($volume.val(), null);
+        lardi.value = setParam($volume.val(), null);
+
         cargo.pallets = setParam($pallets.val(), null);
 
         if (!$('#temperature').prop('disabled')) {
             cargo.minTemperature = setParam($tempMin.val(), 0);
             cargo.maxTemperature = setParam($tempMax.val(), 0);
+            lnote.push('Температура от ' + setParam($tempMin.val(), 0) + ' до ' + setParam($tempMax.val(), 0));
         }
 
         cargo.trailers = trailers;
         cargo.price = setParam($price.val(), null);
         cargo.currency = $currency.val();
 
-        $loadTypes.each(function (i, el) {
-          cargo[$(el).val()] = 1;
+        $loadTypes.each(function(i, el) {
+            cargo[$(el).val()] = 1;
         });
 
-        $documents.each(function (i, el) {
-          switch ($(el).val()) {
-            case 'tir':
-              cargo.tir = 1;
-              break;
-            case 'declaration':
-              cargo.declaration = 1;
-              break;
-            default:
-              note.push($(el).val().toUpperCase());
-              break;
-          }
+        $documents.each(function(i, el) {
+            switch ($(el).val()) {
+                case 'tir':
+                    cargo.tir = 1;
+                    lardi.tir = true;
+                    break;
+                case 'declaration':
+                    cargo.declaration = 1;
+                    lnote.push('по декларации');
+                    break;
+                case 'cmr':
+                    lardi.cmr = true;
+                    cnote.push($(el).val().toUpperCase());
+                    break;
+                case 't1':
+                    lardi.t1 = true;
+                    cnote.push($(el).val().toUpperCase());
+                    break;
+                default:
+                    cnote.push($(el).val().toUpperCase());
+                    lnote.push($(el).val().toUpperCase());
+                    break;
+            }
         });
 
         if ($paymentType.val()) {
-          note.push('Оплата: ' + $paymentType.find(':selected').text());
+            cnote.push('Оплата: ' + $paymentType.find(':selected').text());
         }
 
         if ($adr.val()) {
-          cargo.adr = 1;
-          note.push('ADR: ' + $adr.val());
+            cargo.adr = 1;
+            cnote.push('ADR: ' + $adr.val());
+            lardi.adr = Number($adr.val());
         }
 
         if ($note.val()) {
-          note.push($note.val());
+            cnote.push($note.val());
+            lardi.note = $note.val();
         }
 
-        cargo.notes = note.join(', ');
+        cargo.notes = cnote.join(', ');
 
-        cargo.fromDate = this.dates[0];
-        cargo.tillDate = this.dates[this.dates.length - 1];
+        creq.data = cargo;
+        creq.headers = {
+            'Access-Token': App.appData.cargo.token
+        };
 
-        var req = new Request('cargo', 'POST','cargos');
-        req.data = cargo;
-        req.headers = { 'Access-Token': App.appData.cargo.token };
+        cargoDef = this.getDataFromServer(creq);
 
         App.loading('Отправка данных');
 
-        App.sendRequest(req, function (response) {
-            App.stopLoading();
+        if (App.appData.lardi.token) {
+            var getMoments = this.getLardiPaymentMoments();
+            var getLoadTypes = this.getLardiLoadTypes();
+            var getBodyTypes = this.getLardiBodyTypes();
+            var getCountries = this.getLardiCountries();
+            var originAddress = splitAddress(cargo.from[0].name);
+            var destinationAddress = splitAddress(cargo.to[0].name);
+            var getOriginCountryCode = this.getCountryCode(originAddress[0]);
+            var getDestinationCountryCode = this.getCountryCode(destinationAddress[0]);
 
-            if (response.error && !response.success) {
-              if (response.error.message) {
-                return alert(response.error.message);
-              }
-              return alert(response.error);
+            $.when(getMoments, getLoadTypes, getBodyTypes, getCountries, getOriginCountryCode, getDestinationCountryCode).then(function(moments, loads, bodies, countries, origin, destination) {
+                var paymentMoments = XMLtoJson(moments).response.item;
+                var loadTypes = XMLtoJson(loads).response.item;
+                var notSupportedLoadTypes = getAdditionalLoadTypes(loadTypes, $loadTypes);
+                var bodyTypes = XMLtoJson(bodies).response.item;
+                var countries = XMLtoJson(countries).response.item;
+                var originCC = origin[0]['alpha2Code'];
+                var destinationCC = destination[0]['alpha2Code'];
+
+                lardi.payment_moment_id = getPaymentMomentID(paymentMoments, parseInt($paymentType.val()));
+                if (!lardi.payment_moment_id && ($paymentType.val() === "3" || $paymentType.val() === "2")) {
+                    lnote.push($paymentType.find(':selected').text());
+                }
+
+                lardi.payment_currency_id = getCurrencyID(parseInt($currency.val()));
+
+                lardi.zagruz_set = getLoadTypesMnemos(loadTypes, $loadTypes);
+                if (notSupportedLoadTypes) {
+                    lnote.push('Загрузка: ' + notSupportedLoadTypes);
+                }
+
+                lardi = setBodyType(lardi, parseInt($cargoType.val()), trailers, bodyTypes);
+
+                lardi.country_from_id = getLardiCountryID(originCC, countries);
+                lardi.country_to_id = getLardiCountryID(destinationCC, countries);
+
+                lardi.area_from_id = getLardiAreaID(originCC, originAddress[1], countries);
+                lardi.area_to_id = getLardiAreaID(destinationCC, destinationAddress[1], countries);
+
+                lardi.city_from = originAddress.last();
+                lardi.city_to = destinationAddress.last();
+
+                lardi.add_info = lnote.join('; ');
+                lardi.sig = App.appData.lardi.token;
+
+                lreq.data = lardi;
+                console.log(lardi);
+
+                App.sendRequest(lreq, function (response) {
+                  var resp;
+                  if (response.error && !response.success) {
+                    return lardiDef.reject(response.error);
+                  }
+
+                  resp = XMLtoJson(response.success);
+                  if (resp.response.error) {
+                    return lardiDef.reject(resp.response.error);
+                  }
+                  return lardiDef.resolve();
+                });
+
+            }, function(error) {
+                console.log(error);
+                alert(error.responseText);
+            });
+        } else {
+            lardiDef.resolve();
+        }
+
+        $.when(cargoDef, lardiDef).then(function(cargoResp, lardiResp) {
+            App.stopLoading();
+            return App.showScene('cargoAdded');
+        }, function(error) {
+            App.stopLoading();
+            if (error.message) {
+                return alert(error.message);
+            } else {
+                return alert(error);
             }
 
-            return App.showScene('cargoAdded');
-          });
+        });
     }
 };

@@ -31,8 +31,8 @@ function sendRequest(data, uid, callback) {
 
   switch (data.to){
     case 'lardi':
-      reqParams.dataType = 'x-www-form-urlencoded';
-      reqParams.contentType = 'application/xml';
+      reqParams.dataType = 'application/xml';
+      reqParams.contentType = 'application/x-www-form-urlencoded';
       reqParams.url = 'http://api.lardi-trans.com/api/';
       reqParams.data = data.data;
       break;
@@ -42,8 +42,12 @@ function sendRequest(data, uid, callback) {
       reqParams.url = 'https://io-dev.cargo.lt/' + data.url;
       reqParams.data = (reqParams.type === 'POST') ? JSON.stringify(data.data) : data.data;
       break;
+    case 'countries':
+      reqParams.dataType = 'json';
+      reqParams.contentType = 'application/json';
+      reqParams.url = 'https://restcountries.eu/rest/v1/name/' + data.url;
     default:
-      return callback('Unknown request target');
+      console.log(reqParams);
   }
 
   $.ajax(reqParams);

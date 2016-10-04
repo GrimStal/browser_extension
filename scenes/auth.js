@@ -169,7 +169,7 @@ App.scenes.auth = {
     },
 
     showOrderForm: function () {
-      App.changeScene('settings');
+      App.changeScene('cargos');
     },
 
     initForm: function (keys, callback) {
