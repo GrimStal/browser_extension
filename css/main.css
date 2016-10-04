@@ -170,9 +170,11 @@ label input[type=checkbox] {
 .city-holder {
   padding: 18px 5px; }
   .city-holder .revert-cities .revert-cities-img {
-    width: 24px;
+    width: 28px;
     height: 28px;
-    transform: rotate(90deg); }
+    padding: 6px; }
+    .city-holder .revert-cities .revert-cities-img:active {
+      background-color: rgba(0, 0, 0, 0.1); }
 
 .wide-right {
   padding-right: 0; }
