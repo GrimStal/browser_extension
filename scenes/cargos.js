@@ -429,6 +429,8 @@ App.scenes.cargos = {
         };
         var creq = new Request('cargo', 'POST', 'cargos');
         var lreq = new Request('lardi', 'POST');
+        var originAddress = splitAddress(cargo.from[0].name);
+        var destinationAddress = splitAddress(cargo.to[0].name);
         var cargoDef = $.Deferred();
         var lardiDef = $.Deferred();
 
@@ -438,6 +440,10 @@ App.scenes.cargos = {
 
         if (!cargo.from.length || !cargo.to.length) {
             return alert('Укажите место отправления и назначения.');
+        }
+
+        if ((!originAddress[1] && !originAddress[2]) || (!destinationAddress[1] && !destinationAddress[2])) {
+            return alert('Необходимо указать регион или город отправки и доставки');
         }
 
         if (!this.dates.length) {
@@ -547,8 +553,6 @@ App.scenes.cargos = {
             var getLoadTypes = this.getLardiLoadTypes();
             var getBodyTypes = this.getLardiBodyTypes();
             var getCountries = this.getLardiCountries();
-            var originAddress = splitAddress(cargo.from[0].name);
-            var destinationAddress = splitAddress(cargo.to[0].name);
             var getOriginCountryCode = this.getCountryCode(originAddress[0]);
             var getDestinationCountryCode = this.getCountryCode(destinationAddress[0]);
 
@@ -581,8 +585,8 @@ App.scenes.cargos = {
                 lardi.area_from_id = getLardiAreaID(originCC, originAddress[1], countries);
                 lardi.area_to_id = getLardiAreaID(destinationCC, destinationAddress[1], countries);
 
-                lardi.city_from = originAddress.last();
-                lardi.city_to = destinationAddress.last();
+                lardi.city_from = originAddress.last() || 'Не указано';
+                lardi.city_to = destinationAddress.last() || 'Не указано';
 
                 lardi.add_info = lnote.join('; ');
                 lardi.sig = App.appData.lardi.token;

@@ -705,7 +705,7 @@ function getLardiAreaID(code, area, countries) {
 function splitAddress(address) {
     var country;
     var area;
-    var city = 'Не указано';
+    var city;
     var addressArr = address.split(', ');
 
     switch (addressArr.length) {

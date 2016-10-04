@@ -136,8 +136,7 @@ App.scenes.auth = {
       var password = $('#' + key + '_password').val();
 
       if ((!lpRegExp.exec(login) && !emailRegExp.exec(login)) || !lpRegExp.exec(password)) {
-        console.error(key);
-        console.error('Не прошло регулярку');
+        console.error(key + ': Не прошло регулярку');
         return false;
       }
 
