@@ -279,7 +279,7 @@ function LardiTransCargoObject() {
   this.cmr = false;
   this.gruz = '';
   this.tir = false;
-  // this.stavka = '';
+  this.stavka = 0;
 
   this.body_type_id = undefined;
   this.body_type_group_id = undefined;

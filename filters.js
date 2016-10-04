@@ -3,7 +3,7 @@ function getTimestamp(obj) {
 }
 
 function getToday() {
-    if (getTimestamp(this) === (new Date().setHours(0, 0, 0, 0) / 1000)) {
+    if (getTimestamp(this) === (new Date().setUTCHours(0, 0, 0, 0) / 1000)) {
         return true;
     }
 

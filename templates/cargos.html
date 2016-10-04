@@ -1,27 +1,23 @@
 <div class="ce__cargo-wrapper col-xs-12 col-sm-12 col-md-12 col-lg-12 <%=wrapper_class%>" id="<%=wrapper_id%>">
     <div class="container cargos-container">
-        <div class="row">
-            <div class="city-holder col-xs-8 col-md-8">
-                <form class="form-horizontal" role="form" id="city-holder-form" novalidate>
-                    <div class="form-group">
-                        <label for="origin" class="col-xs-4 col-sm-4"><%-originLabel%></label>
-                        <div class="col-xs-8 col-sm-8">
-                            <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12">
-                        <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">
-                            <img class="revert-cities-img" src="images/reverse.png" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="destination" class="col-xs-4 col-sm-4"><%-destinationLabel%></label>
-                        <div class="col-xs-8 col-sm-8">
-                            <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />
-                        </div>
-                    </div>
-                </form>
-            </div>
+        <div class="row city-holder ">
+          <div class="city col-xs-2 col-sm-2">
+            <label><%-originLabel%></label>
+            <label><%-destinationLabel%></label>
+          </div>
+          <div class="city col-xs-6 col-sm-6">
+              <div>
+                  <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />
+              </div>
+                  <div class="col-xs-8 col-sm-8">
+                      <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">
+                          <img class="revert-cities-img" src="images/reverse.png" />
+                      </div>
+                  </div>
+              <div>
+                  <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />
+              </div>
+          </div>
             <div class="calendar-holder col-xs-4 col-md-4">
                 <div class="calendar">
                     <div class="month current-month">
@@ -52,6 +48,7 @@
                 </table>
                 <div class="month next-month"><%-nextMonth%></div>
             </div>
+        </div>
         </div>
       </div>
       <div class="row">

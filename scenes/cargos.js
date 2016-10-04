@@ -456,9 +456,9 @@ App.scenes.cargos = {
             return alert('Укажите информацию о грузе.');
         }
 
-        if (!$price.val() && $price.val() !== 0) {
-            return alert('Не указана сумма.');
-        }
+        // if (!$price.val() && $price.val() !== 0) {
+        //     return alert('Не указана сумма.');
+        // }
 
         cargo.fromDate = this.dates[0];
         cargo.tillDate = this.dates[this.dates.length - 1];
@@ -483,9 +483,10 @@ App.scenes.cargos = {
         }
 
         cargo.trailers = trailers;
-        cargo.price = setParam($price.val(), null);
         cargo.currency = $currency.val();
 
+        cargo.price = setParam($price.val(), 0);
+        lardi.stavka = setParam($price.val(), 0);
         $loadTypes.each(function(i, el) {
             cargo[$(el).val()] = 1;
         });
@@ -589,17 +590,17 @@ App.scenes.cargos = {
                 lreq.data = lardi;
                 console.log(lardi);
 
-                App.sendRequest(lreq, function (response) {
-                  var resp;
-                  if (response.error && !response.success) {
-                    return lardiDef.reject(response.error);
-                  }
+                App.sendRequest(lreq, function(response) {
+                    var resp;
+                    if (response.error && !response.success) {
+                        return lardiDef.reject(response.error);
+                    }
 
-                  resp = XMLtoJson(response.success);
-                  if (resp.response.error) {
-                    return lardiDef.reject(resp.response.error);
-                  }
-                  return lardiDef.resolve();
+                    resp = XMLtoJson(response.success);
+                    if (resp.response.error) {
+                        return lardiDef.reject(resp.response.error);
+                    }
+                    return lardiDef.resolve();
                 });
 
             }, function(error) {

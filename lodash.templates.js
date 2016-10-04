@@ -117,11 +117,11 @@
     ((__t = (wrapper_class)) == null ? '' : __t) +
     '" id="' +
     ((__t = (wrapper_id)) == null ? '' : __t) +
-    '">\n    <div class="container cargos-container">\n        <div class="row">\n            <div class="city-holder col-xs-8 col-md-8">\n                <form class="form-horizontal" role="form" id="city-holder-form" novalidate>\n                    <div class="form-group">\n                        <label for="origin" class="col-xs-4 col-sm-4">' +
+    '">\n    <div class="container cargos-container">\n        <div class="row city-holder ">\n          <div class="city col-xs-2 col-sm-2">\n            <label>' +
     __e(originLabel) +
-    '</label>\n                        <div class="col-xs-8 col-sm-8">\n                            <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />\n                        </div>\n                    </div>\n                    <div class="col-xs-12 col-sm-12">\n                        <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">\n                            <img class="revert-cities-img" src="images/reverse.png" />\n                        </div>\n                    </div>\n                    <div class="form-group">\n                        <label for="destination" class="col-xs-4 col-sm-4">' +
+    '</label>\n            <label>' +
     __e(destinationLabel) +
-    '</label>\n                        <div class="col-xs-8 col-sm-8">\n                            <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />\n                        </div>\n                    </div>\n                </form>\n            </div>\n            <div class="calendar-holder col-xs-4 col-md-4">\n                <div class="calendar">\n                    <div class="month current-month">\n                        ' +
+    '</label>\n          </div>\n          <div class="city col-xs-6 col-sm-6">\n              <div>\n                  <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />\n              </div>\n                  <div class="col-xs-8 col-sm-8">\n                      <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">\n                          <img class="revert-cities-img" src="images/reverse.png" />\n                      </div>\n                  </div>\n              <div>\n                  <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />\n              </div>\n          </div>\n            <div class="calendar-holder col-xs-4 col-md-4">\n                <div class="calendar">\n                    <div class="month current-month">\n                        ' +
     __e(currentMonth) +
     '<span id="removeSelection" class="glyphicon glyphicon-remove"></div>\n                <table class="table dates">\n                    <tr>\n                    ';
      for(var i=0; i < days.length; i++) {
@@ -179,7 +179,7 @@
      }
     __p += '\n                </table>\n                <div class="month next-month">' +
     __e(nextMonth) +
-    '</div>\n            </div>\n        </div>\n      </div>\n      <div class="row">\n        <div class="cargo-info-holder container">\n          <div class="row">\n            <form class="form-inline" role="form" id="cargo-types-holder-form" novalidate>\n                  <div class="form-group">\n                      <label for="cargo-type" class="col-xs-2 col-sm-2">' +
+    '</div>\n            </div>\n        </div>\n        </div>\n      </div>\n      <div class="row">\n        <div class="cargo-info-holder container">\n          <div class="row">\n            <form class="form-inline" role="form" id="cargo-types-holder-form" novalidate>\n                  <div class="form-group">\n                      <label for="cargo-type" class="col-xs-2 col-sm-2">' +
     __e(cargoTypeLabel) +
     ':</label>\n                      <div class="col-xs-6 col-sm-6">\n                        <select class="form-control cargo-types-select input-sm" id="cargo-types" name="cargo-types">\n                          <option value="" selected>' +
     __e(cargoTypeLabel) +
