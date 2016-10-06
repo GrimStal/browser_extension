@@ -236,10 +236,26 @@ var App = (function () {
 
   app.init = function () {
     var _this = this;
+
+    setInterval(function () {
+      if ($('.loading-img-colored').css('height') === '0px') {
+        $('.loading-img-colored').css('transition', 'null');
+        $('.loading-img-colored').css('height', '100%');
+      } else {
+        $('.loading-img-colored').css('transition', 'all 0.8s linear');
+        $('.loading-img-colored').css('height', '0px');
+      }
+    },1000);
+
     this.loading('Проверка авторизации');
     this.updateAppData();
-    $('.header-icons .glyphicon-cog').bind('click', App.changeScene.bind(App, 'settings'));
-    $('.header-icons .glyphicon-bell').bind('click', App.changeScene.bind(App, 'cargos'));
+    $('.header-icons .cog-icon').bind('click', function() {
+      if (_this.currentScene === _this.scenes.settings) {
+        return _this.changeScene('cargos');
+      }
+      return _this.changeScene('settings');
+    });
+    $('.header-icons .message-icon').bind('click', App.changeScene.bind(App, 'cargos'));
 
     if (this.checkToken()) {
       this.checkAuth().then(
@@ -273,30 +289,14 @@ var App = (function () {
   return app;
 }());
 
-function XMLtoJson(xml) {
-  return x2js.xml_str2json(xml);
-}
+
 
 document.addEventListener('DOMContentLoaded', function () {
   App.init();
 });
-
-var x2js = new X2JS();
 
 var regions = {};
 
 $.get('regions.json').then(function(regionsFile){
   regions = JSON.parse(regionsFile);
 })
-
-if (!Array.prototype.last) {
-    Array.prototype.last = function() {
-        return this[this.length - 1];
-    }
-}
-
-if (!Array.prototype.first) {
-    Array.prototype.first = function() {
-        return this[0];
-    }
-}

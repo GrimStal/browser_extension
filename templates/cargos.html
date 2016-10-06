@@ -6,16 +6,18 @@
             <label><%-destinationLabel%></label>
           </div>
           <div class="city col-xs-6 col-sm-6">
-              <div>
+              <div class="form-group has-feedback">
                   <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />
+                  <span class="form-control-feedback glyphicon glyphicon-remove origin-remove"></span>
               </div>
                   <div class="col-xs-8 col-sm-8">
                       <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">
                           <img class="revert-cities-img" src="images/reverse.png" />
                       </div>
                   </div>
-              <div>
+              <div class="form-group has-feedback">
                   <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />
+                  <span class="form-control-feedback glyphicon glyphicon-remove destination-remove"></span>
               </div>
           </div>
             <div class="calendar-holder col-xs-4 col-md-4">
@@ -128,7 +130,7 @@
                     <% _.forEach(trailerTypes.fixed[0], function(trailer) { %>
                       <label>
                           <input type="checkbox" class="trailer-type trailer-type-checkbox" value="<%-trailer.id%>" />
-                          <%=trailer.type%>
+                          <span class="checkbox-text"><%=trailer.type%></span>
                       </label>
                     <% }); %>
                   </div>
@@ -137,7 +139,7 @@
                       <% _.forEach(trailerTypes.fixed[1], function(trailer) { %>
                         <label>
                             <input type="checkbox" class="trailer-type trailer-type-checkbox" value="<%-trailer.id%>" />
-                            <%=trailer.type%>
+                            <span class="checkbox-text"><%=trailer.type%></span>
                         </label>
                       <% }); %>
                     </div>
@@ -146,7 +148,7 @@
                         <% if (!(_.isArray(trailer))) { %>
                           <label>
                               <input type="checkbox" class="trailer-type trailer-type-checkbox" value="<%-trailer.id%>" />
-                              <%=trailer.type%>
+                              <span class="check-text"><%=trailer.type%></span>
                           </label>
                         <% } else { %>
                           <select class="trailer-type trailer-type-select input-sm col-xs-12 col-sm-12">
@@ -169,7 +171,7 @@
                     <% _.forEach(loadTypes.fixed[0], function(type, key) { %>
                       <label>
                           <input type="checkbox" class="load-type load-type-checkbox" value="<%-key%>" />
-                          <%-type%>
+                          <span class="check-text"><%-type%></span>
                       </label>
                     <% }); %>
                   </div>
@@ -178,7 +180,7 @@
                       <% _.forEach(loadTypes.fixed[1], function(type, key) { %>
                         <label>
                             <input type="checkbox" class="load-type load-type-checkbox" value="<%-key%>" />
-                            <%-type%>
+                            <span class="check-text"><%-type%></span>
                         </label>
                       <% }); %>
                     </div>
@@ -186,7 +188,7 @@
                       <% _.forEach(loadTypes.fixed[2], function(type, key) { %>
                         <label>
                             <input type="checkbox" class="load-type load-type-checkbox" value="<%-key%>" />
-                            <%-type%>
+                            <span class="check-text"><%-type%></span>
                         </label>
                       <% }); %>
                     </div>
@@ -202,7 +204,7 @@
                       <div class="col-xs-6 col-md-6">
                         <label>
                             <input type="checkbox" class="document-type document-type-checkbox" value="<%-key%>" />
-                            <%=doc%>
+                            <span class="check-text"><%=doc%></span>
                         </label>
                       </div>
                     <% }); %>
@@ -212,7 +214,7 @@
                       <div class="col-xs-6 col-md-6">
                         <label>
                             <input type="checkbox" class="document-type document-type-checkbox" value="<%-key%>" />
-                            <%=doc%>
+                            <span class="check-text"><%=doc%></span>
                         </label>
                       </div>
                     <% }); %>

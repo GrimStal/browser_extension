@@ -172,57 +172,6 @@ var Request = function (to, type, url) {
   this.type = type;
   this.data = {};
   this.headers = {};
-
-  // var requestTypes = ['POST', 'GET'];
-  //
-  // this.setType = function (type) {
-  //   if (requestTypes.indexOf(type.toUpperCase()) > -1) {
-  //     return this.type = type;
-  //   }
-  //
-  //   return false;
-  // };
-  //
-  // this.cleaType = function () {
-  //   return this.type = '';
-  // };
-  //
-  // this.setData = function (data) {
-  //   if (data && typeof data === 'object' && data.constructor === Object) {
-  //     return this.data = data;
-  //   }
-  //
-  //   if (arguments.length === 2 &&
-  //     typeof arguments[0] === 'string' &&
-  //     (typeof arguments[1] === 'string' || typeof arguments[1] === 'number')) {
-  //     return this.data[arguments[0]] = arguments[1];
-  //   }
-  //
-  //   return false;
-  // };
-  //
-  // this.clearData = function () {
-  //   return this.data = {};
-  // };
-  //
-  // this.setHeaders = function (headers) {
-  //   if (headers && typeof headers === 'object' && headers.constructor === Object) {
-  //     return this.headers = headers;
-  //   }
-  //
-  //   if (arguments.length === 2 &&
-  //     typeof arguments[0] === 'string' &&
-  //     (typeof arguments[1] === 'string' || typeof arguments[1] === 'number')) {
-  //     return this.headers[arguments[0]] = arguments[1];
-  //   }
-  //
-  //   return false;
-  // };
-  //
-  // this.clearHeaders = function () {
-  //   return this.headers = {};
-  // };
-
 };
 
 function CargoObject() {

@@ -32,9 +32,19 @@ App.scenes.cargos = {
          */
         function parseForAutocomplete(request, response) {
             _this.getLocations(request.term).then(function(res) {
-                response($.map(res.locations, function(v, i) {
-                    return {label: v.name, value: v.name, object: v};
-                }));
+              var results = $.map(res.locations, function(v, i) {
+                  switch (v.type) {
+                    case 0:
+                      return;
+                    case 1:
+                      if (v.name !== 'Russia Kaliningrad') {
+                        return;
+                      }
+                    default:
+                      return {label: v.name, value: v.name, object: v};
+                  }
+              });
+              response(results.sort(sortCities));
             }, function(err) {
                 console.error(err);
             });
@@ -98,11 +108,14 @@ App.scenes.cargos = {
                 _this.removeSelection(true);
             });
 
+            $('#origin, #destination').bind('keyup', toggleClear);
+            $('.origin-remove, .destination-remove').bind('click', _this.removeCity);
             $('.revert-cities').bind('click', _this.revertCities.bind(_this));
             $('.trailer-type-select').change(insertCheckbox);
             $('#cargo-types').change(setCargoDependencies);
             $('.trailer-type-checkbox[value=1], .trailer-type-checkbox[value=3]').change(checkTemperature);
             $('#sendOrder').bind('click', _this.sendCargosData.bind(_this));
+            $('#clean').bind('click', _this.clearForm.bind(_this));
 
             _this.setDates();
         }, function(errors) {
@@ -112,17 +125,21 @@ App.scenes.cargos = {
 
     hide: function() {
         this.removeSelection();
-        $('.date').unbind('click', this.selectDate);
+        $('.date').unbind('click');
         $('#removeSelection').unbind('click');
-        $('.revert-cities').unbind('click', this.revertCities);
+        $('.revert-cities').unbind('click');
 
-        $('#price, #weight, #volume, #palets').unbind('keyup keypress', onlyPositiveDigits);
-        $('#temperatureMin, #temperatureMax').unbind('keyup keypress', onlyDigits);
+        $('#price, #weight, #volume, #palets').unbind('keyup keypress');
+        $('#temperatureMin, #temperatureMax').unbind('keyup keypress');
 
         $('.trailer-type-select').unbind('change');
         $('#cargo-types').unbind('change');
         $('.trailer-type-checkbox[value=1], .trailer-type-checkbox[value=3]').unbind('change');
         $('#sendOrder').unbind('click');
+        $('#clean').unbind('click');
+
+        $('#origin, #destination').unbind('keyup');
+        $('.origin-remove, .destination-remove').unbind('click');
 
         $('.ce__wrapper').empty();
     },
@@ -200,6 +217,22 @@ App.scenes.cargos = {
         if (hide) {
             $('#removeSelection').hide();
         }
+    },
+
+    removeCity: function () {
+      var input = $(this).prev('input');
+      $(input).val('');
+      $(this).hide();
+      switch ($(input).attr('id')) {
+        case 'origin':
+          App.scenes.cargos.cargo.from.pop();
+          break;
+        case 'destination':
+          App.scenes.cargos.cargo.to.pop();
+          break;
+        default:
+          console.log('Unknown id');
+      }
     },
 
     selectDate: function(e) {
@@ -429,8 +462,8 @@ App.scenes.cargos = {
         };
         var creq = new Request('cargo', 'POST', 'cargos');
         var lreq = new Request('lardi', 'POST');
-        var originAddress = splitAddress(cargo.from[0].name);
-        var destinationAddress = splitAddress(cargo.to[0].name);
+        var originAddress = splitAddress(cargo.from[0]);
+        var destinationAddress = splitAddress(cargo.to[0]);
         var cargoDef = $.Deferred();
         var lardiDef = $.Deferred();
 
@@ -485,7 +518,7 @@ App.scenes.cargos = {
         if (!$('#temperature').prop('disabled')) {
             cargo.minTemperature = setParam($tempMin.val(), 0);
             cargo.maxTemperature = setParam($tempMax.val(), 0);
-            lnote.push('Температура от ' + setParam($tempMin.val(), 0) + ' до ' + setParam($tempMax.val(), 0));
+            lnote.push('t от ' + setParam($tempMin.val(), 0) + ' до ' + setParam($tempMax.val(), 0));
         }
 
         cargo.trailers = trailers;
@@ -592,7 +625,6 @@ App.scenes.cargos = {
                 lardi.sig = App.appData.lardi.token;
 
                 lreq.data = lardi;
-                console.log(lardi);
 
                 App.sendRequest(lreq, function(response) {
                     var resp;
@@ -627,5 +659,14 @@ App.scenes.cargos = {
             }
 
         });
+    },
+
+    clearForm: function() {
+      this.removeCity.call($('.origin-remove, .destination-remove'));
+      this.removeSelection(true);
+      $('input[type=text], textarea').val('');
+      $('select:not("#currency")').val('');
+      $('input[type=checkbox]').prop('checked', false);
+      $('#temperature').prop('disabled', true);
     }
 };

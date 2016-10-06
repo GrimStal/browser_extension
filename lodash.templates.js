@@ -51,7 +51,7 @@
     obj || (obj = {});
     var __t, __p = '', __e = _.escape;
     with (obj) {
-    __p += '<div class="ce__order_btn">\n  <button id="addOrder" type="button" class="btn btn-defualt ce__btn ce__order_btn-confirm col-xs-6 col-sm-6 col-sm-offset-3 col-xs-offset-3">\n    ' +
+    __p += '<div class="ce__order_btn">\n  <button id="addOrder" type="button" class="btn btn-defualt ce__btn ce__order_btn-confirm col-xs-4 col-sm-4 col-sm-offset-4 col-xs-offset-4">\n    ' +
     __e(buttonText) +
     '\n  </button>\n</div>\n';
 
@@ -121,7 +121,7 @@
     __e(originLabel) +
     '</label>\n            <label>' +
     __e(destinationLabel) +
-    '</label>\n          </div>\n          <div class="city col-xs-6 col-sm-6">\n              <div>\n                  <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />\n              </div>\n                  <div class="col-xs-8 col-sm-8">\n                      <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">\n                          <img class="revert-cities-img" src="images/reverse.png" />\n                      </div>\n                  </div>\n              <div>\n                  <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />\n              </div>\n          </div>\n            <div class="calendar-holder col-xs-4 col-md-4">\n                <div class="calendar">\n                    <div class="month current-month">\n                        ' +
+    '</label>\n          </div>\n          <div class="city col-xs-6 col-sm-6">\n              <div class="form-group has-feedback">\n                  <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />\n                  <span class="form-control-feedback glyphicon glyphicon-remove origin-remove"></span>\n              </div>\n                  <div class="col-xs-8 col-sm-8">\n                      <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">\n                          <img class="revert-cities-img" src="images/reverse.png" />\n                      </div>\n                  </div>\n              <div class="form-group has-feedback">\n                  <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />\n                  <span class="form-control-feedback glyphicon glyphicon-remove destination-remove"></span>\n              </div>\n          </div>\n            <div class="calendar-holder col-xs-4 col-md-4">\n                <div class="calendar">\n                    <div class="month current-month">\n                        ' +
     __e(currentMonth) +
     '<span id="removeSelection" class="glyphicon glyphicon-remove"></div>\n                <table class="table dates">\n                    <tr>\n                    ';
      for(var i=0; i < days.length; i++) {
@@ -215,17 +215,17 @@
      _.forEach(trailerTypes.fixed[0], function(trailer) {
     __p += '\n                      <label>\n                          <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
     __e(trailer.id) +
-    '" />\n                          ' +
+    '" />\n                          <span class="checkbox-text">' +
     ((__t = (trailer.type)) == null ? '' : __t) +
-    '\n                      </label>\n                    ';
+    '</span>\n                      </label>\n                    ';
      }); ;
     __p += '\n                  </div>\n                  <div class="col-xs-8 col-md-8 col-wrap">\n                    <div class="col-xs-6 col-md-6">\n                      ';
      _.forEach(trailerTypes.fixed[1], function(trailer) {
     __p += '\n                        <label>\n                            <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
     __e(trailer.id) +
-    '" />\n                            ' +
+    '" />\n                            <span class="checkbox-text">' +
     ((__t = (trailer.type)) == null ? '' : __t) +
-    '\n                        </label>\n                      ';
+    '</span>\n                        </label>\n                      ';
      }); ;
     __p += '\n                    </div>\n                    <div class="col-xs-6 col-md-6">\n                      ';
      _.forEach(trailerTypes.fixed[2], function(trailer) {
@@ -233,9 +233,9 @@
      if (!(_.isArray(trailer))) {
     __p += '\n                          <label>\n                              <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
     __e(trailer.id) +
-    '" />\n                              ' +
+    '" />\n                              <span class="check-text">' +
     ((__t = (trailer.type)) == null ? '' : __t) +
-    '\n                          </label>\n                        ';
+    '</span>\n                          </label>\n                        ';
      } else {
     __p += '\n                          <select class="trailer-type trailer-type-select input-sm col-xs-12 col-sm-12">\n                            <option selected value="">' +
     ((__t = (trailerTypes.placeholder)) == null ? '' : __t) +
@@ -257,25 +257,25 @@
      _.forEach(loadTypes.fixed[0], function(type, key) {
     __p += '\n                      <label>\n                          <input type="checkbox" class="load-type load-type-checkbox" value="' +
     __e(key) +
-    '" />\n                          ' +
+    '" />\n                          <span class="check-text">' +
     __e(type) +
-    '\n                      </label>\n                    ';
+    '</span>\n                      </label>\n                    ';
      }); ;
     __p += '\n                  </div>\n                  <div class="col-xs-8 col-md-8 col-wrap">\n                    <div class="col-xs-6 col-md-6">\n                      ';
      _.forEach(loadTypes.fixed[1], function(type, key) {
     __p += '\n                        <label>\n                            <input type="checkbox" class="load-type load-type-checkbox" value="' +
     __e(key) +
-    '" />\n                            ' +
+    '" />\n                            <span class="check-text">' +
     __e(type) +
-    '\n                        </label>\n                      ';
+    '</span>\n                        </label>\n                      ';
      }); ;
     __p += '\n                    </div>\n                    <div class="col-xs-6 col-md-6">\n                      ';
      _.forEach(loadTypes.fixed[2], function(type, key) {
     __p += '\n                        <label>\n                            <input type="checkbox" class="load-type load-type-checkbox" value="' +
     __e(key) +
-    '" />\n                            ' +
+    '" />\n                            <span class="check-text">' +
     __e(type) +
-    '\n                        </label>\n                      ';
+    '</span>\n                        </label>\n                      ';
      }); ;
     __p += '\n                    </div>\n                  </div>\n              </div>\n          </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
     __e(documents.title) +
@@ -283,17 +283,17 @@
      _.forEach(documents.docs[0], function(doc, key) {
     __p += '\n                      <div class="col-xs-6 col-md-6">\n                        <label>\n                            <input type="checkbox" class="document-type document-type-checkbox" value="' +
     __e(key) +
-    '" />\n                            ' +
+    '" />\n                            <span class="check-text">' +
     ((__t = (doc)) == null ? '' : __t) +
-    '\n                        </label>\n                      </div>\n                    ';
+    '</span>\n                        </label>\n                      </div>\n                    ';
      }); ;
     __p += '\n                  </div>\n                  <div class="col-xs-7 col-md-7">\n                    ';
      _.forEach(documents.docs[1], function(doc, key) {
     __p += '\n                      <div class="col-xs-6 col-md-6">\n                        <label>\n                            <input type="checkbox" class="document-type document-type-checkbox" value="' +
     __e(key) +
-    '" />\n                            ' +
+    '" />\n                            <span class="check-text">' +
     ((__t = (doc)) == null ? '' : __t) +
-    '\n                        </label>\n                      </div>\n                    ';
+    '</span>\n                        </label>\n                      </div>\n                    ';
      }); ;
     __p += '\n                  </div>\n              </div>\n          </div>\n\n          <div class="row">\n              <form class="form-inline" role="form" id="payment-form" novalidate>\n                <div class="form-group">\n                    <label for="price" class="col-xs-2 col-sm-2">' +
     __e(paymentLabel) +
@@ -351,9 +351,9 @@
     obj || (obj = {});
     var __t, __p = '', __e = _.escape;
     with (obj) {
-    __p += '<div class="ce__loading">\n  <div class="row">\n    <div class="loading-img-holder">\n      <img src="images/loading.gif" class=\'loading-img\'/>\n    </div>\n    <div class="loading-text-holder">\n      <span class="ce__loading-text">' +
+    __p += '<div class="ce__loading">\n    <div class="loading-container">\n      <div class="loading-wrap">\n        <div class="loading-img-holder">\n            <div class="loading-img-background">\n              <div class="loading-img-colored"></div>\n            </div>\n\n        </div>\n        <div class="loading-text-holder">\n            <span class="ce__loading-text">' +
     __e(text) +
-    '</span>\n    </div>\n  </div>\n</div>\n';
+    '</span>\n        </div>\n      </div>\n    </div>\n</div>\n';
 
     }
     return __p
@@ -382,9 +382,9 @@
     with (obj) {
     __p += '<label>\n  <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
     ((__t = (value)) == null ? '' : __t) +
-    '" checked/>\n  ' +
+    '" checked/>\n  <span class="check-text">' +
     ((__t = (type)) == null ? '' : __t) +
-    '\n</label>\n';
+    '</span>\n</label>\n';
 
     }
     return __p

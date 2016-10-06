@@ -8,6 +8,7 @@ App.scenes.settings = {
       var settingsContext = App.scenes.settings;
       var authCargo = authContext.cargoSubmit.bind(authContext, settingsContext.showUnbind);
       var authLardi = authContext.lardiSubmit.bind(authContext, settingsContext.showUnbind);
+      var addOrder = _.templates.addOrder({ buttonText: "Вернуться назад" });
 
       if (App.appData.cargo.token) {
         cargoHTML = _.templates.accountUnbinding(Templates.cargoUnbind);
@@ -21,7 +22,7 @@ App.scenes.settings = {
         lardiHTML = _.templates.auth(Templates.lardiLogin);
       }
 
-      $('.ce__wrapper').empty().append(cargoHTML + lardiHTML);
+      $('.ce__wrapper').empty().append(cargoHTML + lardiHTML + addOrder);
 
       if (App.appData.cargo.token) {
         $('#cargoUnbind').bind('click', this.cargoUnbind.bind(settingsContext));
@@ -38,6 +39,9 @@ App.scenes.settings = {
       }
 
       $('#header-message').text('Настройки');
+      $('#addOrder').bind('click', function () {
+        App.showScene('cargos');
+      });
     },
 
   hide: function () {
@@ -57,7 +61,11 @@ App.scenes.settings = {
         $('#cargoUnbind').bind('click');
       }
 
-      $$('.ce__wrapper').empty();
+      $('#addOrder').unbind('click', function () {
+        App.showScene('cargos');
+      });
+
+      $('.ce__wrapper').empty();
     },
 
   cargoUnbind: function () {
