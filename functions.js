@@ -823,6 +823,13 @@ function toggleClear() {
   return $(this).next('.form-control-feedback').show();
 }
 
+function onEnter(func, event) {
+  event = event || window.event;
+  if (event.keyCode === 13) {
+    return func();
+  }
+}
+
 if (!Array.prototype.last) {
     Array.prototype.last = function() {
         return this[this.length - 1];

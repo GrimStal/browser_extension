@@ -32,19 +32,19 @@ App.scenes.cargos = {
          */
         function parseForAutocomplete(request, response) {
             _this.getLocations(request.term).then(function(res) {
-              var results = $.map(res.locations, function(v, i) {
-                  switch (v.type) {
-                    case 0:
-                      return;
-                    case 1:
-                      if (v.name !== 'Russia Kaliningrad') {
-                        return;
-                      }
-                    default:
-                      return {label: v.name, value: v.name, object: v};
-                  }
-              });
-              response(results.sort(sortCities));
+                var results = $.map(res.locations, function(v, i) {
+                    switch (v.type) {
+                        case 0:
+                            return;
+                        case 1:
+                            if (v.name !== 'Russia Kaliningrad') {
+                                return;
+                            }
+                        default:
+                            return {label: v.name, value: v.name, object: v};
+                    }
+                });
+                response(results.sort(sortCities));
             }, function(err) {
                 console.error(err);
             });
@@ -163,8 +163,10 @@ App.scenes.cargos = {
         } else {
             if (!weekends && weekdays > 3) {
                 allowed = 3;
-            } else if (weekends === 2 && weekdays > 3) {
+            } else if (weekends === 2 && weekdays > 3 && !thursday) {
                 allowed = 5;
+            } else if (weekends === 2 && weekdays > 3 && thursday) {
+                allowed = 3;
             } else if (weekends === 1 && weekdays > 3) {
                 allowed = 4;
             }
@@ -172,7 +174,7 @@ App.scenes.cargos = {
             message += allowed + ((allowed % 5)
                 ? ' дня'
                 : ' дней');
-            return alert(message);
+            return swal(message);
         }
 
     },
@@ -219,20 +221,20 @@ App.scenes.cargos = {
         }
     },
 
-    removeCity: function () {
-      var input = $(this).prev('input');
-      $(input).val('');
-      $(this).hide();
-      switch ($(input).attr('id')) {
-        case 'origin':
-          App.scenes.cargos.cargo.from.pop();
-          break;
-        case 'destination':
-          App.scenes.cargos.cargo.to.pop();
-          break;
-        default:
-          console.log('Unknown id');
-      }
+    removeCity: function() {
+        var input = $(this).prev('input');
+        $(input).val('');
+        $(this).hide();
+        switch ($(input).attr('id')) {
+            case 'origin':
+                App.scenes.cargos.cargo.from.pop();
+                break;
+            case 'destination':
+                App.scenes.cargos.cargo.to.pop();
+                break;
+            default:
+                console.log('Unknown id');
+        }
     },
 
     selectDate: function(e) {
@@ -462,8 +464,8 @@ App.scenes.cargos = {
         };
         var creq = new Request('cargo', 'POST', 'cargos');
         var lreq = new Request('lardi', 'POST');
-        var originAddress = splitAddress(cargo.from[0]);
-        var destinationAddress = splitAddress(cargo.to[0]);
+        var originAddress;
+        var destinationAddress;
         var cargoDef = $.Deferred();
         var lardiDef = $.Deferred();
 
@@ -472,32 +474,31 @@ App.scenes.cargos = {
         });
 
         if (!cargo.from.length || !cargo.to.length) {
-            return alert('Укажите место отправления и назначения.');
+            return swal('Ошибка!', 'Укажите место отправления и назначения.');
         }
 
+        originAddress = splitAddress(cargo.from[0]);
+        destinationAddress = splitAddress(cargo.to[0]);
+
         if ((!originAddress[1] && !originAddress[2]) || (!destinationAddress[1] && !destinationAddress[2])) {
-            return alert('Необходимо указать регион или город отправки и доставки');
+            return swal('Ошибка!', 'Необходимо указать регион или город отправки и доставки');
         }
 
         if (!this.dates.length) {
-            return alert('Укажите даты отправки.');
+            return swal('Ошибка!', 'Укажите даты отправки.');
         }
 
         if (!$cargoType.val()) {
-            return alert('Укажите тип груза.');
+            return swal('Ошибка!', 'Укажите тип груза.');
         }
 
         if (trailers.length === 0) {
-            return alert('Укажите тип кузова.');
+            return swal('Ошибка!', 'Укажите тип кузова.');
         }
 
         if (!$weight.val() && !$value.val() && !$pallets.val()) {
-            return alert('Укажите информацию о грузе.');
+            return swal('Ошибка!', 'Укажите информацию о грузе.');
         }
-
-        // if (!$price.val() && $price.val() !== 0) {
-        //     return alert('Не указана сумма.');
-        // }
 
         cargo.fromDate = this.dates[0];
         cargo.tillDate = this.dates[this.dates.length - 1];
@@ -577,8 +578,6 @@ App.scenes.cargos = {
             'Access-Token': App.appData.cargo.token
         };
 
-        cargoDef = this.getDataFromServer(creq);
-
         App.loading('Отправка данных');
 
         if (App.appData.lardi.token) {
@@ -639,11 +638,14 @@ App.scenes.cargos = {
                     return lardiDef.resolve();
                 });
 
+                cargoDef = this.getDataFromServer(creq);
+
             }, function(error) {
                 console.log(error);
-                alert(error.responseText);
+                swal('Ошибка!', 'Не удалось получить данные от Lardi-Trans: ' + error.responseText);
             });
         } else {
+            cargoDef = this.getDataFromServer(creq);
             lardiDef.resolve();
         }
 
@@ -652,21 +654,21 @@ App.scenes.cargos = {
             return App.showScene('cargoAdded');
         }, function(error) {
             App.stopLoading();
-            if (error.message) {
-                return alert(error.message);
+            if (error.error && error.error.message) {
+                return swal('Ошибка!', 'Данные на Cargo.LT не отправлены: ' + error.error.message, 'error');
             } else {
-                return alert(error);
+                return swal('Ошибка!', 'Данные на Lardi-Trans не отправлены: ' + error, 'error');
             }
 
         });
     },
 
     clearForm: function() {
-      this.removeCity.call($('.origin-remove, .destination-remove'));
-      this.removeSelection(true);
-      $('input[type=text], textarea').val('');
-      $('select:not("#currency")').val('');
-      $('input[type=checkbox]').prop('checked', false);
-      $('#temperature').prop('disabled', true);
+        this.removeCity.call($('.origin-remove, .destination-remove'));
+        this.removeSelection(true);
+        $('input[type=text], textarea').val('');
+        $('select:not("#currency")').val('');
+        $('input[type=checkbox]').prop('checked', false);
+        $('#temperature').prop('disabled', true);
     }
 };

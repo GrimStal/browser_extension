@@ -237,15 +237,17 @@ var App = (function () {
   app.init = function () {
     var _this = this;
 
-    setInterval(function () {
-      if ($('.loading-img-colored').css('height') === '0px') {
-        $('.loading-img-colored').css('transition', 'null');
-        $('.loading-img-colored').css('height', '100%');
-      } else {
-        $('.loading-img-colored').css('transition', 'all 0.8s linear');
-        $('.loading-img-colored').css('height', '0px');
-      }
-    },1000);
+    if (swal && typeof swal === 'function') {
+      swal.setDefaults({
+        imageUrl: '/images/error.png',
+        imageSize: '50x50',
+        confirmButtonColor: '#91b247',
+        allowEscapeKey: true,
+        allowOutsideClick: true,
+        customClass: 'alert-window',
+        confirmButtonText: 'Закрыть'
+      });
+    }
 
     this.loading('Проверка авторизации');
     this.updateAppData();

@@ -6,11 +6,15 @@ App.scenes.auth = {
         var cargoHTML = _.templates.auth(Templates.cargoLogin);
         var lardiHTML = _.templates.auth(Templates.lardiLogin);
         var addOrder = _.templates.addOrder({ buttonText: 'Добавить предложение' });
+        var cargoSubmit = this.cargoSubmit.bind(this);
+        var lardiSubmit = this.lardiSubmit.bind(this);
 
         $('.ce__wrapper').empty().append(introHTML + cargoHTML + lardiHTML + addOrder);
 
-        $('#cargoSubmit').bind('click', this.cargoSubmit.bind(this));
-        $('#lardiSubmit').bind('click', this.lardiSubmit.bind(this));
+        $('#cargoSubmit').bind('click', cargoSubmit);
+        $('#cargo_password').bind('keyup', onEnter.bind(null, cargoSubmit));
+        $('#lardiSubmit').bind('click', lardiSubmit);
+        $('#lardi_password').bind('keyup', onEnter.bind(null, lardiSubmit));
         $('#addOrder').bind('click', this.showOrderForm.bind(this));
         $('.auth-input').bind('input', this.onChange.bind(this));
         this.initForm(['cargo', 'lardi'], this.checkAccess);
@@ -21,6 +25,8 @@ App.scenes.auth = {
     hide: function () {
         $('#cargoSubmit').unbind('click', this.cargoSubmit);
         $('#lardiSubmit').unbind('click', this.lardiSubmit);
+        $('#cargo_password').unbind('keyup', onEnter.bind(null, cargoSubmit));
+        $('#lardi_password').unbind('keyup', onEnter.bind(null, lardiSubmit));
         $('#addOrder').unbind('click', this.showOrderForm);
         $('.auth-input').unbind('input', this.onChange);
 

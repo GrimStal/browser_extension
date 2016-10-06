@@ -39,7 +39,7 @@ function sendRequest(data, uid, callback) {
     case 'cargo':
       reqParams.dataType = 'json';
       reqParams.contentType = 'application/json';
-      reqParams.url = 'https://io-dev.cargo.lt/' + data.url;
+      reqParams.url = 'https://io.cargo.lt/' + data.url;
       reqParams.data = (reqParams.type === 'POST') ? JSON.stringify(data.data) : data.data;
       break;
     case 'countries':

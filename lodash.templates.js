@@ -351,9 +351,9 @@
     obj || (obj = {});
     var __t, __p = '', __e = _.escape;
     with (obj) {
-    __p += '<div class="ce__loading">\n    <div class="loading-container">\n      <div class="loading-wrap">\n        <div class="loading-img-holder">\n            <div class="loading-img-background">\n              <div class="loading-img-colored"></div>\n            </div>\n\n        </div>\n        <div class="loading-text-holder">\n            <span class="ce__loading-text">' +
+    __p += '<div class="ce__loading">\n    <div class="loading-wrap">\n        <div class="loading-img-holder">\n            <div class="loading-img-background">\n                <div class="loading-img-colored"></div>\n            </div>\n\n        </div>\n        <div class="loading-text-holder">\n            <span class="ce__loading-text">' +
     __e(text) +
-    '</span>\n        </div>\n      </div>\n    </div>\n</div>\n';
+    '</span>\n        </div>\n    </div>\n</div>\n';
 
     }
     return __p

@@ -28,6 +28,7 @@ App.scenes.settings = {
         $('#cargoUnbind').bind('click', this.cargoUnbind.bind(settingsContext));
       } else {
         $('#cargoSubmit').bind('click', authCargo);
+        $('#cargo_password').bind('keyup', onEnter.bind(null, authCargo));
         authContext.initForm('cargo');
       }
 
@@ -35,6 +36,7 @@ App.scenes.settings = {
         $('#lardiUnbind').bind('click', this.lardiUnbind.bind(settingsContext));
       } else {
         $('#lardiSubmit').bind('click', authLardi);
+        $('#lardi_password').bind('keyup', onEnter.bind(null, authLardi));
         authContext.initForm('lardi');
       }
 
@@ -47,10 +49,12 @@ App.scenes.settings = {
   hide: function () {
       if ($('#cargoSubmit')[0]) {
         $('#cargoSubmit').unbind('click');
+        $('#cargo_password').unbind('keyup');
       }
 
       if ($('#lardiSubmit')[0]) {
         $('#lardiSubmit').unbind('click');
+        $('#lardi_password').unbind('keyup');
       }
 
       if ($('#lardiUnbind')[0]) {
@@ -99,6 +103,7 @@ App.scenes.settings = {
 
     $('#' + key + 'Bind').replaceWith(_.templates.auth(Templates[key + 'Login']));
     $('#' + key + 'Submit').bind('click', context[key + 'Submit'].bind(context, this.showUnbind));
+    $('#' + key + '_password').bind('keyup', context[key + 'Submit'].bind(context, this.showUnbind));
     context.initForm(key);
   },
 };
