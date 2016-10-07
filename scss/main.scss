@@ -98,6 +98,10 @@ label {
 
 .ce__btn {
     padding: 5px;
+
+    &#addOrder {
+      margin-bottom: 10px;
+    }
 }
 
 .ce__loading {
@@ -181,7 +185,7 @@ label {
 
 .ce__company-name {
     color: $lime;
-    cursor: pointer; 
+    cursor: pointer;
 
     &:hover {
       color: $darkGreen;
@@ -194,12 +198,17 @@ label {
 }
 
 .ce__auth-wrapper {
-    margin: 15px 0;
-    padding: 20px 0;
+    margin: 30px 0;
+    padding: 0;
 }
 
 .ce__form-container {
     margin: 0 20px;
+
+    label {
+      font-weight: 400;
+      font-size: 12px;
+    }
 }
 
 .header-holder {

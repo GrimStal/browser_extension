@@ -12,12 +12,12 @@ var Templates = (function () {
     fields: [
       {
         id: 'lardi_login',
-        label: 'логин',
+        label: 'Логин',
         type: 'text',
       },
       {
         id: 'lardi_password',
-        label: 'пароль',
+        label: 'Пароль',
         type: 'password',
       },
     ],
@@ -32,12 +32,12 @@ var Templates = (function () {
     fields: [
       {
         id: 'cargo_login',
-        label: 'логин',
+        label: 'Логин',
         type: 'text',
       },
       {
         id: 'cargo_password',
-        label: 'пароль',
+        label: 'Пароль',
         type: 'password',
       },
     ],

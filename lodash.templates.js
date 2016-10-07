@@ -77,7 +77,7 @@
     __p += '\n                    <div class="form-group has-feedback">\n                        <label for="' +
     ((__t = (field.id)) == null ? '' : __t) +
     '">' +
-    ((__t = (field.label.toUpperCase())) == null ? '' : __t) +
+    ((__t = (field.label)) == null ? '' : __t) +
     '</label>\n                        <input type="' +
     ((__t = (field.type)) == null ? '' : __t) +
     '" class="form-control auth-input" id="' +
@@ -341,7 +341,7 @@
     obj || (obj = {});
     var __t, __p = '';
     with (obj) {
-    __p += '<div class="ce__wrapper_auth-message auth-message center col-xs-12 col-sm-12 col-md-12 col-lg-12">\n    Расширение "CARGO" позволяет одновременно добавлять Ваши грузы и транспорт на транспортные биржи\n    <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span> и <span class="ce__company-name lardi-site" title="https://lardi-trans.com/">Lardi-Trans.COM</span>. Для того, чтобы добавить предложение привяжите свой аккаунт.\n</div>\n';
+    __p += '<div class="ce__wrapper_auth-message auth-message center col-xs-12 col-sm-12 col-md-12 col-lg-12">\n    Расширение "CARGO" позволяет одновременно добавлять Ваши грузы и транспорт на транспортные биржи\n    <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span> и <span class="ce__company-name lardi-site" title="https://lardi-trans.com/">Lardi-Trans.com</span>. Для того, чтобы добавить предложение привяжите свой аккаунт.\n</div>\n';
 
     }
     return __p

@@ -1,15 +1,21 @@
 {
   "manifest_version": 2,
   "name": "CARGO",
-  "version": "1.0.1",
+  "version": "1.0.0",
+  "version_name": "1.0.0 alpha",
 
   "description": "Расширение \"CARGO\" позволяет одновременно добавлять Ваши грузы на транспортные биржи Cargo.LT и Lardi-Trans.com",
   "icons": {
-    "19": "images/GB-19.png"
+    "16": "images/icons/16x16.png",
+    "32": "images/icons/32x32.png",
+    "48": "images/icons/48x48.png",
+    "64": "images/icons/64x64.png",
+    "96": "images/icons/96x96.png",
+    "128": "images/icons/128x128.png"
   },
 
   "browser_action": {
-    "default_icon": "images/logo.png",
+    "default_icon": "images/icons/16x16.png",
     "default_popup": "popup.html",
     "default_title": "1Click Cargo"
   },
