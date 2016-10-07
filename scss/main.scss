@@ -181,6 +181,11 @@ label {
 
 .ce__company-name {
     color: $lime;
+    cursor: pointer; 
+
+    &:hover {
+      color: $darkGreen;
+    }
 }
 
 .ce__wrapper {

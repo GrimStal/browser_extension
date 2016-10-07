@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "1Click Cargo",
+  "name": "CARGO",
   "version": "1.0.1",
 
-  "description": "Extension to leave vacancies for cargo transport",
+  "description": "Расширение \"CARGO\" позволяет одновременно добавлять Ваши грузы на транспортные биржи Cargo.LT и Lardi-Trans.com",
   "icons": {
     "19": "images/GB-19.png"
   },

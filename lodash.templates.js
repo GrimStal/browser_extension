@@ -341,7 +341,7 @@
     obj || (obj = {});
     var __t, __p = '';
     with (obj) {
-    __p += '<div class="ce__wrapper_auth-message auth-message center col-xs-12 col-sm-12 col-md-12 col-lg-12">\n    Расширение "1Click Cargo" позволяет одновременно добавлять Ваши грузы и транспорт на транспортные биржи\n    <span class="ce__company-name" title="https://www.cargo.lt">Cargo.LT</span> и <span class="ce__company-name" title="https://lardi-trans.com/">Lardi-Trans</span>. Для того, чтобы добавить предложение привяжите свой аккаунт.\n</div>\n';
+    __p += '<div class="ce__wrapper_auth-message auth-message center col-xs-12 col-sm-12 col-md-12 col-lg-12">\n    Расширение "CARGO" позволяет одновременно добавлять Ваши грузы и транспорт на транспортные биржи\n    <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span> и <span class="ce__company-name lardi-site" title="https://lardi-trans.com/">Lardi-Trans.COM</span>. Для того, чтобы добавить предложение привяжите свой аккаунт.\n</div>\n';
 
     }
     return __p

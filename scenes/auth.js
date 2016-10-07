@@ -17,6 +17,9 @@ App.scenes.auth = {
         $('#lardi_password').bind('keyup', onEnter.bind(null, lardiSubmit));
         $('#addOrder').bind('click', this.showOrderForm.bind(this));
         $('.auth-input').bind('input', this.onChange.bind(this));
+        $('.cargo-site').bind('click', App.openTab.bind(null, 'https://www.cargo.lt'));
+        $('.lardi-site').bind('click', App.openTab.bind(null, 'https://lardi-trans.com'));
+
         this.initForm(['cargo', 'lardi'], this.checkAccess);
 
         $('#header-message').text('Добавление груза на Cargo.LT и Lardi-Trans');
@@ -29,6 +32,8 @@ App.scenes.auth = {
         $('#lardi_password').unbind('keyup', onEnter.bind(null, lardiSubmit));
         $('#addOrder').unbind('click', this.showOrderForm);
         $('.auth-input').unbind('input', this.onChange);
+        $('.cargo-site').unbind('click');
+        $('.lardi-site').unbind('click');
 
         $$('.ce__wrapper').empty();
       },

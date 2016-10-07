@@ -220,6 +220,12 @@ var App = (function () {
 
   };
 
+  app.openTab = function (url) {
+    if (navigator.userAgent.search(/Chrome/) > -1) {
+      chrome.tabs.create({ url: url });
+    }
+  };
+
   app.loading = function (text) {
     if ($('.ce__loading')[0] === undefined) {
       return $('.scene').prepend(_.templates.loading({ text: text }));

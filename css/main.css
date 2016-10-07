@@ -131,7 +131,10 @@ label input[type=checkbox] {
   margin-bottom: 0.8em; }
 
 .ce__company-name {
-  color: #91b247; }
+  color: #91b247;
+  cursor: pointer; }
+  .ce__company-name:hover {
+    color: #55692a; }
 
 .ce__wrapper {
   color: #666;
