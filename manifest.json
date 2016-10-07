@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "CargoExtension",
+  "name": "1Click Cargo",
   "version": "1.0.1",
 
   "description": "Extension to leave vacancies for cargo transport",
@@ -9,9 +9,9 @@
   },
 
   "browser_action": {
-    "default_icon": "images/GB-19.png",
+    "default_icon": "images/logo.png",
     "default_popup": "popup.html",
-    "default_title": "Leave order"
+    "default_title": "1Click Cargo"
   },
 
   "background": {
@@ -25,10 +25,12 @@
 
   "permissions": [
     "tabs",
-    "https://io-dev.cargo.lt/*",
+    "https://io.cargo.lt/*",
     "http://api.lardi-trans.com/*",
     "https://restcountries.eu/*"
   ],
+
+  "offline_enabled": false,
 
   "author": "Borshchov Dimitriy"
 }

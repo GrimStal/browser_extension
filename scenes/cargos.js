@@ -496,8 +496,12 @@ App.scenes.cargos = {
             return swal('Ошибка!', 'Укажите тип кузова.');
         }
 
-        if (!$weight.val() && !$value.val() && !$pallets.val()) {
+        if (!$weight.val() && !$volume.val() && !$pallets.val()) {
             return swal('Ошибка!', 'Укажите информацию о грузе.');
+        }
+
+        if ($price.val().length > 6) {
+            return swal('Ошибка!', 'Укажите правильную сумму!');
         }
 
         cargo.fromDate = this.dates[0];
@@ -509,10 +513,10 @@ App.scenes.cargos = {
         lardi.gruz = $cargoType.find(':selected').text();
 
         cargo.weight = setParam($weight.val(), null);
-        lardi.mass = setParam($weight.val(), null);
+        lardi.mass = setParam($weight.val(), undefined);
 
         cargo.volume = setParam($volume.val(), null);
-        lardi.value = setParam($volume.val(), null);
+        lardi.value = setParam($volume.val(), undefined);
 
         cargo.pallets = setParam($pallets.val(), null);
 
@@ -578,6 +582,8 @@ App.scenes.cargos = {
             'Access-Token': App.appData.cargo.token
         };
 
+        cargoDef = this.getDataFromServer(creq);
+
         App.loading('Отправка данных');
 
         if (App.appData.lardi.token) {
@@ -624,6 +630,7 @@ App.scenes.cargos = {
                 lardi.sig = App.appData.lardi.token;
 
                 lreq.data = lardi;
+                console.log(lardi);
 
                 App.sendRequest(lreq, function(response) {
                     var resp;
@@ -638,14 +645,11 @@ App.scenes.cargos = {
                     return lardiDef.resolve();
                 });
 
-                cargoDef = this.getDataFromServer(creq);
-
             }, function(error) {
                 console.log(error);
                 swal('Ошибка!', 'Не удалось получить данные от Lardi-Trans: ' + error.responseText);
             });
         } else {
-            cargoDef = this.getDataFromServer(creq);
             lardiDef.resolve();
         }
 
@@ -655,9 +659,9 @@ App.scenes.cargos = {
         }, function(error) {
             App.stopLoading();
             if (error.error && error.error.message) {
-                return swal('Ошибка!', 'Данные на Cargo.LT не отправлены: ' + error.error.message, 'error');
+                return swal('Ошибка!', 'Данные на Cargo.LT не отправлены: ' + error.error.message);
             } else {
-                return swal('Ошибка!', 'Данные на Lardi-Trans не отправлены: ' + error, 'error');
+                return swal('Ошибка!', 'Данные на Lardi-Trans не отправлены: ' + error);
             }
 
         });

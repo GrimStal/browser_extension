@@ -489,6 +489,7 @@ function setBodyType(object, cargoType, trailers, bodyTypes) {
         case 25:
         case 26:
         case 28:
+        case 29:
         case 31:
         case 32:
         case 33:
@@ -531,7 +532,6 @@ function setBodyType(object, cargoType, trailers, bodyTypes) {
         case 67:
             defaultGroup = 3;
             break;
-        case 29:
         case 56:
             defaultGroup = 4;
             break;

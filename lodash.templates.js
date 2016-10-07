@@ -297,7 +297,7 @@
      }); ;
     __p += '\n                  </div>\n              </div>\n          </div>\n\n          <div class="row">\n              <form class="form-inline" role="form" id="payment-form" novalidate>\n                <div class="form-group">\n                    <label for="price" class="col-xs-2 col-sm-2">' +
     __e(paymentLabel) +
-    '</label>\n                    <div class="col-xs-3 col-sm-3">\n                      <input type="text" class="form-control payment-input input-sm" id="price" name="price" />\n                    </div>\n                </div>\n                <div class="col-xs-3 col-sm-3">\n                  <select class="form-control currency-select input-sm" id="currency" name="currency">\n                      ';
+    '</label>\n                    <div class="col-xs-3 col-sm-3">\n                      <input type="text" class="form-control payment-input input-sm" maxlength=6 id="price" name="price" />\n                    </div>\n                </div>\n                <div class="col-xs-3 col-sm-3">\n                  <select class="form-control currency-select input-sm" id="currency" name="currency">\n                      ';
      _.forEach(currencies, function(cur) {
     __p += '\n                          ';
      if (cur.id === "15") {
@@ -341,7 +341,7 @@
     obj || (obj = {});
     var __t, __p = '';
     with (obj) {
-    __p += '<div class="ce__wrapper_auth-message auth-message center col-xs-12 col-sm-12 col-md-12 col-lg-12">\n    Расширение "CargoExtension" позволяет одновременно добавлять Ваши грузы и транспорт на транспортные биржи\n    <span class="ce__company-name" title="https://www.cargo.lt">Cargo.LT</span> и <span class="ce__company-name" title="https://lardi-trans.com/">Lardi-Trans</span>. Для того, чтобы добавить предложение привяжите свой аккаунт.\n</div>\n';
+    __p += '<div class="ce__wrapper_auth-message auth-message center col-xs-12 col-sm-12 col-md-12 col-lg-12">\n    Расширение "1Click Cargo" позволяет одновременно добавлять Ваши грузы и транспорт на транспортные биржи\n    <span class="ce__company-name" title="https://www.cargo.lt">Cargo.LT</span> и <span class="ce__company-name" title="https://lardi-trans.com/">Lardi-Trans</span>. Для того, чтобы добавить предложение привяжите свой аккаунт.\n</div>\n';
 
     }
     return __p

@@ -3,7 +3,7 @@ App.scenes.cargoAdded = {
     show: function () {
       var successWrap = _.templates.cargoAdded({
         text: 'Ваш груз был успешно добавлен на Cargo.LT' + (App.appData.lardi.token ? ' и Lardi-Trans' : '')});
-      var addOrder = _.templates.addOrder({ buttonText: 'Добавить новое предложение' });
+      var addOrder = _.templates.addOrder({ buttonText: 'Добавить новый груз' });
       $('.ce__wrapper').empty().append(successWrap + addOrder);
       $('#header-message').text('Добавление груза на Cargo.LT и Lardi-Trans');
       $('#addOrder').addClass('btn-accept');
