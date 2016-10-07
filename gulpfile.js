@@ -70,7 +70,7 @@ gulp.task('production', function () {
     './scenes/**/*.js',
   ])
   .pipe(concat('javascript.js'))
-  .pipe(uglify())
+  // .pipe(uglify())
   .pipe(gulp.dest('dist/'));
 
   gulp.src([
