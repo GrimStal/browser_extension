@@ -9,6 +9,7 @@ var Templates = (function () {
     img_name: 'lardi.png',
     form_id: 'lardiAuth',
     submit_id: 'lardiSubmit',
+    placeholder: 'Аккаунт Lardi-Trans',
     fields: [
       {
         id: 'lardi_login',
@@ -29,6 +30,7 @@ var Templates = (function () {
     img_name: 'cargo.png',
     form_id: 'cargoAuth',
     submit_id: 'cargoSubmit',
+    placeholder: 'Аккаунт Cargo.LT',
     fields: [
       {
         id: 'cargo_login',
@@ -47,6 +49,7 @@ var Templates = (function () {
     wrapper_class: '',
     wrapper_id: 'cargoBind',
     img_name: 'cargo.png',
+    placeholder: 'Cargo.LT',
     submit_id: 'cargoUnbind',
     text: 'Аккаунт привязан',
   };
@@ -55,6 +58,7 @@ var Templates = (function () {
     wrapper_class: 'show-left-border',
     wrapper_id: 'lardiBind',
     img_name: 'lardi.png',
+    placeholder: 'Lardi-Trans',
     submit_id: 'lardiUnbind',
     text: 'Аккаунт привязан',
   };

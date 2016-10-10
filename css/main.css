@@ -68,6 +68,17 @@ label input[type=checkbox] {
   .ce__btn#addOrder {
     margin-bottom: 10px; }
 
+.ce__image-holder {
+  margin: 10px 0;
+  padding: 5px;
+  background-color: #91b247;
+  opacity: 0.8;
+  border-radius: 4px; }
+  .ce__image-holder span {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff; }
+
 .ce__loading {
   position: fixed;
   top: 38px;
@@ -146,8 +157,10 @@ label input[type=checkbox] {
   margin: 30px 0;
   padding: 0; }
 
+.ce__unbinding-container,
 .ce__form-container {
   margin: 0 20px; }
+  .ce__unbinding-container label,
   .ce__form-container label {
     font-weight: 400;
     font-size: 12px; }
@@ -189,10 +202,7 @@ label input[type=checkbox] {
 .unbinding-message-holder {
   margin-top: 5px; }
   .unbinding-message-holder .glyphicon {
-    color: #91b247;
-    margin-left: 10px; }
-  .unbinding-message-holder .unbinding_text {
-    margin: 0 10px 0 5px; }
+    color: #91b247; }
 
 .cargo-info-holder label,
 .city-holder label {

@@ -35,9 +35,9 @@
     ((__t = (wrapper_class)) == null ? '' : __t) +
     '" id="' +
     ((__t = (wrapper_id)) == null ? '' : __t) +
-    '">\n    <div class="ce__unbinding-container">\n        <div class="ce__image-holder center">\n            <img class="ce__unbinding-container_company-image" src="images/' +
-    ((__t = (img_name)) == null ? '' : __t) +
-    '" />\n        </div>\n        <div class="ce__unbinding_holder">\n          <div class="unbinding-message-holder col-xs-8 col-sm-8">\n            <span class="glyphicon glyphicon-ok"></span>\n            <span class="unbinding_text">' +
+    '">\n    <div class="ce__unbinding-container">\n        <div class="ce__image-holder center">\n          <span>\n              ' +
+    ((__t = (placeholder)) == null ? '' : __t) +
+    '\n          </span>\n        </div>\n        <div class="ce__unbinding_holder">\n          <div class="unbinding-message-holder col-xs-8 col-sm-8">\n            <span class="glyphicon glyphicon-ok"></span>\n            <span class="unbinding_text">' +
     __e(text) +
     '</span>\n          </div>\n          <div class="col-xs-4 col-sm-4">\n            <button id="' +
     ((__t = (submit_id)) == null ? '' : __t) +
@@ -68,9 +68,9 @@
     ((__t = (wrapper_class)) == null ? '' : __t) +
     '" id="' +
     ((__t = (wrapper_id)) == null ? '' : __t) +
-    '">\n    <div class="ce__form-container">\n        <div class="ce__image-holder center">\n            <img class="ce__form-container_company-image" src="images/' +
-    ((__t = (img_name)) == null ? '' : __t) +
-    '" />\n        </div>\n        <div class="ce_form-holder">\n            <form novalidate id="' +
+    '">\n    <div class="ce__form-container">\n        <div class="ce__image-holder center">\n          <span>\n              ' +
+    ((__t = (placeholder)) == null ? '' : __t) +
+    '\n          </span>\n        </div>\n        <div class="ce_form-holder">\n            <form novalidate id="' +
     ((__t = (form_id)) == null ? '' : __t) +
     '">\n                <fieldset>\n                  ';
     _.each(fields, function(field){
