@@ -111,15 +111,12 @@ var App = (function () {
     this.removeToken('lardi');
     this.scenes.auth.signIn('lardi', lardiData.login, lardiData.password, callback(lardiRelogin));
 
-    $.when(cargoRelogin.promise(), lardiRelogin.promise()).then(
-      function () {
-        result.resolve();
-      },
+    $.when(cargoRelogin.promise(), lardiRelogin.promise()).then(function () {
+      result.resolve();
+    }, function (err1, err2) {
 
-      function (err1, err2) {
-        result.reject(err1 + ' ' + err2);
-      }
-    );
+      result.reject(err1 + ' ' + err2);
+    });
   };
 
   app.checkAuth = function () {
@@ -150,8 +147,7 @@ var App = (function () {
       }
 
       var res = XMLtoJson(response.success);
-      if (res.response.error &&
-        res.response.error === 'SIG идентификатор устарел или указан не верно') {
+      if (res.response.error && res.response.error === 'SIG идентификатор устарел или указан не верно') {
         return lardiDef.reject('lardi error');
       }
 
@@ -167,13 +163,18 @@ var App = (function () {
       to: 'cargo',
       url: 'cargos/' + random,
       type: 'GET',
-      headers: { 'Access-Token': this.appData.cargo.token },
+      headers: {
+        'Access-Token': this.appData.cargo.token,
+      },
     };
     var lardiTest = {
       to: 'lardi',
       url: '',
       type: 'GET',
-      data: { method: 'test.sig', sig: this.appData.lardi.token },
+      data: {
+        method: 'test.sig',
+        sig: this.appData.lardi.token,
+      },
     };
 
     if (this.appData.lardi.token) {
@@ -184,16 +185,14 @@ var App = (function () {
 
     this.sendRequest(cargoTest, cargoCB.bind(this));
 
-    $.when(cargoDef, lardiDef).then(
-      function (cargoRes, lardiRes) {
-        checkResult.resolve();
-      },
+    $.when(cargoDef, lardiDef).then(function (cargoRes, lardiRes) {
+      checkResult.resolve();
+    }, function (cargoErr, lardiErr) {
 
-      function (cargoErr, lardiErr) {
-        console.log(cargoErr);
-        console.warn('relogin called');
-        _this.tryToRelogin(checkResult, [cargoErr, lardiErr]);
-      });
+      console.log(cargoErr);
+      console.warn('relogin called');
+      _this.tryToRelogin(checkResult, [cargoErr, lardiErr]);
+    });
 
     return checkResult.promise();
   };
@@ -207,12 +206,12 @@ var App = (function () {
   };
 
   /**
-   * Function wrapper to send and get data from server. Used to not
-   * get Cross-Domain requests error.
-   * @param  {Object}   data      Request object.
-   * @param  {Function} callback  Callback function.
-   * @return {object}   response  Response object. Has error and success keys
-   */
+ction wrapper to send and get data from server. Used to not
+ Cross-Domain requests error.
+ram  {Object}   data      Request object.
+ram  {Function} callback  Callback function.
+turn {object}   response  Response object. Has error and success keys
+*/
   app.sendRequest = function (data, callback) {
     if (navigator.userAgent.search(/Chrome/) > -1) {
       chrome.runtime.sendMessage(data, callback);
@@ -251,31 +250,31 @@ var App = (function () {
         allowEscapeKey: true,
         allowOutsideClick: true,
         customClass: 'alert-window',
-        confirmButtonText: 'Закрыть'
+        confirmButtonText: 'Закрыть',
       });
     }
 
     this.loading('Проверка авторизации');
     this.updateAppData();
-    $('.header-icons .cog-icon').bind('click', function() {
+    $('.header-icons .cog-icon').bind('click', function () {
       if (_this.currentScene === _this.scenes.settings) {
         return _this.changeScene('cargos');
       }
+
       return _this.changeScene('settings');
     });
+
     $('.header-icons .message-icon').bind('click', App.changeScene.bind(App, 'cargos'));
 
     if (this.checkToken()) {
-      this.checkAuth().then(
-        function () {
-          _this.changeScene('cargos');
-        },
+      this.checkAuth().then(function () {
+        _this.changeScene('cargos');
+      }, function (err) {
 
-        function (err) {
-          console.warn(err);
-          _this.updateAppData();
-          _this.changeScene('auth');
-        });
+        console.warn(err);
+        _this.updateAppData();
+        _this.changeScene('auth');
+      });
     } else {
       this.changeScene('auth');
     }
@@ -288,16 +287,14 @@ var App = (function () {
     lardi.token = app.getToken('lardi');
 
     return this.appData = {
-        cargo: cargo,
-        lardi: lardi,
-      };
+      cargo: cargo,
+      lardi: lardi,
+    };
 
   };
 
   return app;
 }());
-
-
 
 document.addEventListener('DOMContentLoaded', function () {
   App.init();
@@ -305,6 +302,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var regions = {};
 
-$.get('regions.json').then(function(regionsFile){
+$.get('regions.json').then(function (regionsFile) {
   regions = JSON.parse(regionsFile);
-})
+});

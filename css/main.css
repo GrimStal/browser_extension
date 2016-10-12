@@ -71,7 +71,6 @@ label input[type=checkbox] {
 .ce__image-holder {
   margin: 10px 0;
   padding: 5px;
-  background-color: #91b247;
   opacity: 0.8;
   border-radius: 4px; }
   .ce__image-holder span {
@@ -157,11 +156,11 @@ label input[type=checkbox] {
   margin: 30px 0;
   padding: 0; }
 
-.ce__unbinding-container,
-.ce__form-container {
-  margin: 0 20px; }
-  .ce__unbinding-container label,
-  .ce__form-container label {
+.ce__form-container,
+.ce__unbinding-container {
+  margin: 0 14px; }
+  .ce__form-container label,
+  .ce__unbinding-container label {
     font-weight: 400;
     font-size: 12px; }
 
@@ -202,7 +201,8 @@ label input[type=checkbox] {
 .unbinding-message-holder {
   margin-top: 5px; }
   .unbinding-message-holder .glyphicon {
-    color: #91b247; }
+    color: #91b247;
+    margin-right: 5px; }
 
 .cargo-info-holder label,
 .city-holder label {
@@ -226,10 +226,10 @@ label input[type=checkbox] {
 .city-holder .checkbox {
   margin: 0 0 5px;
   padding-right: 0; }
-  .cargo-info-holder .checkbox > div > div,
   .cargo-info-holder .checkbox > div,
-  .city-holder .checkbox > div > div,
-  .city-holder .checkbox > div {
+  .cargo-info-holder .checkbox > div > div,
+  .city-holder .checkbox > div,
+  .city-holder .checkbox > div > div {
     padding-left: 0; }
   .cargo-info-holder .checkbox label,
   .city-holder .checkbox label {
