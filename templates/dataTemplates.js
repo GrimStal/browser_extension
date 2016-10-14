@@ -52,6 +52,22 @@ var Templates = (function () {
     placeholder: 'Cargo.LT',
     submit_id: 'cargoUnbind',
     text: 'Аккаунт привязан',
+    //
+    form_id: 'cargo-unbind-form',
+    fields: [
+      {
+        id: 'cargo_login_name',
+        label: 'Учётная запись',
+        type: 'text',
+        value: '',
+      },
+      {
+        id: 'cargo_contact_name',
+        label: 'Контактное лицо',
+        type: 'text',
+        value: '',
+      },
+    ],
   };
 
   t.lardiUnbind = {
@@ -61,6 +77,23 @@ var Templates = (function () {
     placeholder: 'Lardi-Trans',
     submit_id: 'lardiUnbind',
     text: 'Аккаунт привязан',
+    //
+    form_id: 'lardi-unbind-form',
+    fields: [
+      {
+        id: 'lardi_login_name',
+        label: 'Учётная запись',
+        type: 'text',
+        value: '',
+      },
+      {
+        id: 'lardi_contact_name',
+        label: 'Контактное лицо',
+        type: 'select',
+        users: [],
+        default: '',
+      },
+    ],
   };
 
   t.cargosOffer = {

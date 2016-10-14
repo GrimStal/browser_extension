@@ -16,7 +16,7 @@ gulp.task('styles:watch', function () {
 
 gulp.task('production:watch', function () {
   gulp.watch([
-    'css/**/*.css',
+    'css/**/*.*',
     'bower_components/**/*.*',
     'images/**/*.*',
     'scenes/**/*.js',
@@ -59,12 +59,14 @@ gulp.task('production', function () {
 
   gulp.src([
     './bower_components/**/*.*',
-    './images/**/*.*',
     './popup.html',
     './lodash.templates.min.js',
     './background.js',
+    './css/**/*.*',
     './*.json',
     '!./package.json',
+    '!./bower.json',
+    '!./css/**/*.css'
   ], {
     base: '.',
   })

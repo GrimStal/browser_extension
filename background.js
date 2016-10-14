@@ -53,7 +53,7 @@ function sendRequest(data, uid, callback) {
   $.ajax(reqParams);
 }
 
-if (navigator.userAgent.search(/Chrome/) > -1) {
+if (navigator.userAgent.search(/Gecko/) > -1) {
   chrome.runtime.onMessage.addListener(function (request, uid, callback) {
     sendRequest(request, uid, callback);
     return true;

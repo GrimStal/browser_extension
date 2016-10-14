@@ -40,13 +40,19 @@ var App = (function () {
     SM.put(key + 'Password', data.password);
     SM.put(key + 'Name', data.name);
     SM.put(key + 'ID', data.id);
+    SM.put(key + 'companyID', data.cid);
   };
+
+  app.updateUserData = function (key, variable, data) {
+    return SM.put(key + variable, data);
+  }
 
   app.removeUserData = function (key) {
     SM.delete(key + 'Login');
     SM.delete(key + 'Password');
     SM.delete(key + 'Name');
     SM.delete(key + 'ID');
+    SM.delete(key + 'companyID');
   };
 
   app.getUserData = function (key) {
@@ -54,7 +60,8 @@ var App = (function () {
       login: SM.get(key + 'Login'),
       password: SM.get(key + 'Password'),
       name: SM.get(key + 'Name'),
-      id: SM.put(key + 'ID'),
+      id: SM.get(key + 'ID'),
+      cid: SM.get(key + 'companyID'),
     };
   };
 
@@ -146,8 +153,8 @@ var App = (function () {
         return lardiDef.reject(err);
       }
 
-      var res = XMLtoJson(response.success);
-      if (res.response.error && res.response.error === 'SIG идентификатор устарел или указан не верно') {
+      var res = XMLtoJson(response.success).response;
+      if (res.error && res.error === 'SIG идентификатор устарел или указан не верно') {
         return lardiDef.reject('lardi error');
       }
 
@@ -185,14 +192,14 @@ var App = (function () {
 
     this.sendRequest(cargoTest, cargoCB.bind(this));
 
-    $.when(cargoDef, lardiDef).then(function (cargoRes, lardiRes) {
-      checkResult.resolve();
-    }, function (cargoErr, lardiErr) {
-
-      console.log(cargoErr);
-      console.warn('relogin called');
-      _this.tryToRelogin(checkResult, [cargoErr, lardiErr]);
-    });
+    $.when(cargoDef, lardiDef).then(
+      function (cargoRes, lardiRes) {
+        checkResult.resolve();
+      },
+      function (cargoErr, lardiErr) {
+        console.log(cargoErr);
+        _this.tryToRelogin(checkResult, [cargoErr, lardiErr]);
+      });
 
     return checkResult.promise();
   };
@@ -205,18 +212,16 @@ var App = (function () {
     return true;
   };
 
-  /**
-ction wrapper to send and get data from server. Used to not
- Cross-Domain requests error.
-ram  {Object}   data      Request object.
-ram  {Function} callback  Callback function.
-turn {object}   response  Response object. Has error and success keys
-*/
+  /** Function wrapper to send and get data from server. Used to not
+      Cross-Domain requests error.
+      @param  {Object}   data      Request object.
+      @param  {Function} callback  Callback function.
+      @return {object}   response  Response object. Has error and success keys
+  */
   app.sendRequest = function (data, callback) {
-    if (navigator.userAgent.search(/Chrome/) > -1) {
+    if (navigator.userAgent.search(/Gecko/) > -1) {
       chrome.runtime.sendMessage(data, callback);
     }
-
   };
 
   app.openTab = function (url) {
@@ -242,17 +247,7 @@ turn {object}   response  Response object. Has error and success keys
   app.init = function () {
     var _this = this;
 
-    if (swal && typeof swal === 'function') {
-      swal.setDefaults({
-        imageUrl: '/images/error.png',
-        imageSize: '50x50',
-        confirmButtonColor: '#91b247',
-        allowEscapeKey: true,
-        allowOutsideClick: true,
-        customClass: 'alert-window',
-        confirmButtonText: 'Закрыть',
-      });
-    }
+    setSweetAlertDefaults();
 
     this.loading('Проверка авторизации');
     this.updateAppData();
@@ -267,14 +262,23 @@ turn {object}   response  Response object. Has error and success keys
     $('.header-icons .message-icon').bind('click', App.changeScene.bind(App, 'cargos'));
 
     if (this.checkToken()) {
-      this.checkAuth().then(function () {
-        _this.changeScene('cargos');
-      }, function (err) {
-
-        console.warn(err);
-        _this.updateAppData();
-        _this.changeScene('auth');
-      });
+      this.checkAuth().then(
+        function () {
+          var data = _this.appData.lardi;
+          if (data && data.token) {
+            _this.scenes.auth.checkLardiContact(data.login, data.cid, data.token, function(name, id){
+              _this.updateUserData('lardi', 'Name', name);
+              _this.updateUserData('lardi', 'ID', id);
+              _this.updateAppData();
+              return _this.changeScene('cargos');
+            });
+          }
+          return _this.changeScene('cargos');
+        },
+        function (err) {
+          _this.updateAppData();
+          _this.changeScene('auth');
+        });
     } else {
       this.changeScene('auth');
     }

@@ -1,5 +1,19 @@
 'use strict';
 
+function setSweetAlertDefaults() {
+  if (swal && typeof swal === 'function') {
+    swal.setDefaults({
+      imageUrl: '/images/error.png',
+      imageSize: '50x50',
+      confirmButtonColor: '#91b247',
+      allowEscapeKey: true,
+      allowOutsideClick: true,
+      customClass: 'alert-window',
+      confirmButtonText: 'Закрыть',
+    });
+  }
+}
+
 function createSortedObjectsArray(data) {
     var arr = [];
     for (var key in data) {

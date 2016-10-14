@@ -29,19 +29,58 @@
 
   templates['accountUnbinding'] =   function(obj) {
     obj || (obj = {});
-    var __t, __p = '', __e = _.escape;
+    var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+    function print() { __p += __j.call(arguments, '') }
     with (obj) {
     __p += '<div class="ce__auth-wrapper col-xs-6 col-sm-6 col-md-6 col-lg-6 ' +
     ((__t = (wrapper_class)) == null ? '' : __t) +
     '" id="' +
     ((__t = (wrapper_id)) == null ? '' : __t) +
-    '">\n    <div class="ce__unbinding-container">\n        <div class="ce__image-holder center">\n          <img class="ce__unbinding-container_company-image" src="images/' +
+    '">\n    <div class="ce__unbinding-container">\n        <div class="ce__image-holder center">\n          <img class="ce__unbinding-container_company-image" src="css/images/' +
     ((__t = (img_name)) == null ? '' : __t) +
-    '" />\n        </div>\n        <div class="ce__unbinding_holder">\n          <div class="unbinding-message-holder col-xs-8 col-sm-8">\n            <span class="glyphicon glyphicon-ok"></span>\n            <span class="unbinding_text">' +
-    __e(text) +
-    '</span>\n          </div>\n          <div class="col-xs-4 col-sm-4">\n            <button id="' +
+    '" />\n        </div>\n        \n        <div class="ce_form-holder">\n            <form novalidate id="' +
+    ((__t = (form_id)) == null ? '' : __t) +
+    '">\n                  ';
+    _.each(fields, function(field){
+    __p += '\n                    <div class="form-group">\n                        <label for="' +
+    ((__t = (field.id)) == null ? '' : __t) +
+    '">' +
+    ((__t = (field.label)) == null ? '' : __t) +
+    '</label>\n                        ';
+     if (field.type !== 'select') {
+    __p += '\n                        <input type="' +
+    ((__t = (field.type)) == null ? '' : __t) +
+    '" class="form-control login-input" id="' +
+    ((__t = (field.id)) == null ? '' : __t) +
+    '" name="' +
+    ((__t = (field.id)) == null ? '' : __t) +
+    '" value="' +
+    __e(field.value) +
+    '" disabled/>\n                        ';
+     } else {
+    __p += '\n                          <select class="form-control contact-select" id="' +
+    ((__t = (field.id)) == null ? '' : __t) +
+    '" name="' +
+    ((__t = (field.id)) == null ? '' : __t) +
+    '">\n                            ';
+     _.forEach(field.users, function(user) {
+    __p += '\n                              <option value="' +
+    __e(user.id) +
+    '" ';
+     if (user.id == field.default) {
+    __p += ' selected';
+     }
+    __p += '> ' +
+    ((__t = (user.name)) == null ? '' : __t) +
+    ' </option>\n                            ';
+     }) ;
+    __p += '\n                          </select>\n                        ';
+     }
+    __p += '\n                    </div>\n                  ';
+     }); ;
+    __p += '\n                </div>\n                <div class="ce__unbind_btn">\n                    <button id="' +
     ((__t = (submit_id)) == null ? '' : __t) +
-    '" type="button" class="btn ce__btn btn-defualt ce__unbind_btn-confirm binded">\n                Отвязать\n            </button>\n          </div>\n        </div>\n    </div>\n</div>\n';
+    '" type="button" class="btn ce__btn btn-defualt ce__unbind_btn-confirm binded col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">\n                      Отвязать\n                    </button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n';
 
     }
     return __p
@@ -68,7 +107,7 @@
     ((__t = (wrapper_class)) == null ? '' : __t) +
     '" id="' +
     ((__t = (wrapper_id)) == null ? '' : __t) +
-    '">\n    <div class="ce__form-container">\n        <div class="ce__image-holder center">\n          <img class="ce__form-container_company-image" src="images/' +
+    '">\n    <div class="ce__form-container">\n        <div class="ce__image-holder center">\n          <img class="ce__form-container_company-image" src="css/images/' +
     ((__t = (img_name)) == null ? '' : __t) +
     '" />\n        </div>\n        <div class="ce_form-holder">\n            <form novalidate id="' +
     ((__t = (form_id)) == null ? '' : __t) +
@@ -90,7 +129,7 @@
      }); ;
     __p += '\n                </fieldset>\n                <div class="ce__auth_btn">\n                    <button id="' +
     ((__t = (submit_id)) == null ? '' : __t) +
-    '" type="button" class="btn ce__btn btn-defualt ce__auth_btn-confirm col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">\n                  Привязать аккаунт\n                </button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n';
+    '" type="button" class="btn ce__btn btn-defualt ce__auth_btn-confirm col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">\n                      Привязать аккаунт\n                    </button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n';
 
     }
     return __p
@@ -100,7 +139,7 @@
     obj || (obj = {});
     var __t, __p = '', __e = _.escape;
     with (obj) {
-    __p += '<div class="ce__success">\n    <div class="row">\n        <div class="success-img-holder">\n            <img src="images/success.png" class=\'success-img\' />\n        </div>\n        <div class="success-text-holder">\n            <span class="ce__success-text">' +
+    __p += '<div class="ce__success">\n    <div class="row">\n        <div class="success-img-holder">\n            <img src="css/images/success.png" class=\'success-img\' />\n        </div>\n        <div class="success-text-holder">\n            <span class="ce__success-text">' +
     __e(text) +
     '</span>\n        </div>\n    </div>\n</div>\n';
 
@@ -121,7 +160,7 @@
     __e(originLabel) +
     '</label>\n            <label>' +
     __e(destinationLabel) +
-    '</label>\n          </div>\n          <div class="city col-xs-6 col-sm-6">\n              <div class="form-group has-feedback">\n                  <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />\n                  <span class="form-control-feedback glyphicon glyphicon-remove origin-remove"></span>\n              </div>\n                  <div class="col-xs-8 col-sm-8">\n                      <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">\n                          <img class="revert-cities-img" src="images/reverse.png" />\n                      </div>\n                  </div>\n              <div class="form-group has-feedback">\n                  <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />\n                  <span class="form-control-feedback glyphicon glyphicon-remove destination-remove"></span>\n              </div>\n          </div>\n            <div class="calendar-holder col-xs-4 col-md-4">\n                <div class="calendar">\n                    <div class="month current-month">\n                        ' +
+    '</label>\n          </div>\n          <div class="city col-xs-6 col-sm-6">\n              <div class="form-group has-feedback">\n                  <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />\n                  <span class="form-control-feedback glyphicon glyphicon-remove origin-remove"></span>\n              </div>\n                  <div class="col-xs-8 col-sm-8">\n                      <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">\n                          <img class="revert-cities-img" src="css/images/reverse.png" />\n                      </div>\n                  </div>\n              <div class="form-group has-feedback">\n                  <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />\n                  <span class="form-control-feedback glyphicon glyphicon-remove destination-remove"></span>\n              </div>\n          </div>\n            <div class="calendar-holder col-xs-4 col-md-4">\n                <div class="calendar">\n                    <div class="month current-month">\n                        ' +
     __e(currentMonth) +
     '<span id="removeSelection" class="glyphicon glyphicon-remove"></div>\n                <table class="table dates">\n                    <tr>\n                    ';
      for(var i=0; i < days.length; i++) {

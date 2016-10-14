@@ -1,18 +1,32 @@
 <div class="ce__auth-wrapper col-xs-6 col-sm-6 col-md-6 col-lg-6 <%=wrapper_class%>" id="<%=wrapper_id%>">
     <div class="ce__unbinding-container">
         <div class="ce__image-holder center">
-          <img class="ce__unbinding-container_company-image" src="images/<%=img_name%>" />
+          <img class="ce__unbinding-container_company-image" src="css/images/<%=img_name%>" />
         </div>
-        <div class="ce__unbinding_holder">
-          <div class="unbinding-message-holder col-xs-8 col-sm-8">
-            <span class="glyphicon glyphicon-ok"></span>
-            <span class="unbinding_text"><%-text%></span>
-          </div>
-          <div class="col-xs-4 col-sm-4">
-            <button id="<%=submit_id%>" type="button" class="btn ce__btn btn-defualt ce__unbind_btn-confirm binded">
-                Отвязать
-            </button>
-          </div>
+        
+        <div class="ce_form-holder">
+            <form novalidate id="<%=form_id%>">
+                  <%_.each(fields, function(field){%>
+                    <div class="form-group">
+                        <label for="<%=field.id%>"><%=field.label%></label>
+                        <% if (field.type !== 'select') { %>
+                        <input type="<%=field.type%>" class="form-control login-input" id="<%=field.id%>" name="<%=field.id%>" value="<%-field.value%>" disabled/>
+                        <% } else { %>
+                          <select class="form-control contact-select" id="<%=field.id%>" name="<%=field.id%>">
+                            <% _.forEach(field.users, function(user) { %>
+                              <option value="<%-user.id%>" <% if (user.id == field.default) { %> selected<% } %>> <%=user.name%> </option>
+                            <% }) %>
+                          </select>
+                        <% } %>
+                    </div>
+                  <% }); %>
+                </div>
+                <div class="ce__unbind_btn">
+                    <button id="<%=submit_id%>" type="button" class="btn ce__btn btn-defualt ce__unbind_btn-confirm binded col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">
+                      Отвязать
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
