@@ -193,9 +193,7 @@ App.scenes.auth = {
     var req = new Request(key, 'POST', link);
     var data = {
       login: login,
-      password: (key !== 'lardi')
-          ? password
-          : md5(password),
+      password: (key !== 'lardi') ? password : md5(password),
     };
 
     if (key === 'lardi') {
@@ -211,6 +209,7 @@ App.scenes.auth = {
       var token;
       var res;
       var cid;
+      var contact;
       var processing = $.Deferred();
       var userData = {
         id: '',
@@ -218,6 +217,7 @@ App.scenes.auth = {
         login: '',
         password: '',
         cid: '',
+        contact: false,
       };
 
       processing.then(function (name, id) {
@@ -226,6 +226,7 @@ App.scenes.auth = {
         userData.name = name;
         userData.login = login;
         userData.password = password;
+        userData.contact = contact;
         App.saveToken(key, token);
         App.saveUserData(key, userData);
       },
@@ -248,14 +249,21 @@ App.scenes.auth = {
           result = true;
           token = res.sig;
           cid = res.uid;
-          _this.checkLardiContact(login, cid, token, function (name, id) {
-            processing.resolve(name, id);
-          });
+          if (!res.is_contact) {
+            _this.checkLardiContact(login, cid, token, function (name, id) {
+              processing.resolve(name, id);
+            });
+          } else {
+            contact = true;
+            processing.resolve('Нет данных', 0);
+          }
+
         } else {
           result = true;
           res = response.success;
           token = res.accessToken;
           cid = res.userId;
+          contact = true;
           processing.resolve(res.fullName, cid);
         }
       } else {

@@ -40,7 +40,8 @@ var App = (function () {
     SM.put(key + 'Password', data.password);
     SM.put(key + 'Name', data.name);
     SM.put(key + 'ID', data.id);
-    SM.put(key + 'companyID', data.cid);
+    SM.put(key + 'CompanyID', data.cid);
+    SM.put(key + 'Contact', data.contact);
   };
 
   app.updateUserData = function (key, variable, data) {
@@ -52,7 +53,8 @@ var App = (function () {
     SM.delete(key + 'Password');
     SM.delete(key + 'Name');
     SM.delete(key + 'ID');
-    SM.delete(key + 'companyID');
+    SM.delete(key + 'CompanyID');
+    SM.delete(key + 'Contact');
   };
 
   app.getUserData = function (key) {
@@ -61,7 +63,8 @@ var App = (function () {
       password: SM.get(key + 'Password'),
       name: SM.get(key + 'Name'),
       id: SM.get(key + 'ID'),
-      cid: SM.get(key + 'companyID'),
+      cid: SM.get(key + 'CompanyID'),
+      contact: SM.get(key + 'Contact'),
     };
   };
 
@@ -265,7 +268,7 @@ var App = (function () {
       this.checkAuth().then(
         function () {
           var data = _this.appData.lardi;
-          if (data && data.token) {
+          if (data && data.token && !data.contact) {
             _this.scenes.auth.checkLardiContact(data.login, data.cid, data.token, function(name, id){
               _this.updateUserData('lardi', 'Name', name);
               _this.updateUserData('lardi', 'ID', id);
