@@ -1,0 +1,5 @@
+<select class="form-control contact-select" id="<%=id%>" name="<%=id%>">
+  <% _.forEach(users, function(user) { %>
+    <option value="<%-user.id%>" <% if (user.id == defaultID) { %> selected<% } %>> <%=user.name%> </option>
+  <% }) %>
+</select>

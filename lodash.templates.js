@@ -21,6 +21,7 @@
     'auth': {},
     'cargoAdded': {},
     'cargos': {},
+    'contacts': {},
     'intro': {},
     'loading': {},
     'settingsNav': {},
@@ -29,7 +30,7 @@
 
   templates['accountUnbinding'] =   function(obj) {
     obj || (obj = {});
-    var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+    var __t, __p = '', __j = Array.prototype.join;
     function print() { __p += __j.call(arguments, '') }
     with (obj) {
     __p += '<div class="ce__auth-wrapper col-xs-6 col-sm-6 col-md-6 col-lg-6 ' +
@@ -38,7 +39,7 @@
     ((__t = (wrapper_id)) == null ? '' : __t) +
     '">\n    <div class="ce__unbinding-container">\n        <div class="ce__image-holder center">\n          <img class="ce__unbinding-container_company-image" src="css/images/' +
     ((__t = (img_name)) == null ? '' : __t) +
-    '" />\n        </div>\n        \n        <div class="ce_form-holder">\n            <form novalidate id="' +
+    '" />\n        </div>\n\n        <div class="ce_form-holder">\n            <form novalidate id="' +
     ((__t = (form_id)) == null ? '' : __t) +
     '">\n                  ';
     _.each(fields, function(field){
@@ -50,31 +51,23 @@
      if (field.type !== 'select') {
     __p += '\n                        <input type="' +
     ((__t = (field.type)) == null ? '' : __t) +
-    '" class="form-control login-input" id="' +
-    ((__t = (field.id)) == null ? '' : __t) +
-    '" name="' +
-    ((__t = (field.id)) == null ? '' : __t) +
-    '" value="' +
-    __e(field.value) +
-    '" disabled/>\n                        ';
-     } else {
-    __p += '\n                          <select class="form-control contact-select" id="' +
-    ((__t = (field.id)) == null ? '' : __t) +
-    '" name="' +
-    ((__t = (field.id)) == null ? '' : __t) +
-    '">\n                            ';
-     _.forEach(field.users, function(user) {
-    __p += '\n                              <option value="' +
-    __e(user.id) +
-    '" ';
-     if (user.id == field.default) {
-    __p += ' selected';
+    '" class="form-control ';
+     if (field.changeable) {
+    __p += 'width-80 inline-block ';
      }
-    __p += '> ' +
-    ((__t = (user.name)) == null ? '' : __t) +
-    ' </option>\n                            ';
-     }) ;
-    __p += '\n                          </select>\n                        ';
+    __p += '" id="' +
+    ((__t = (field.id)) == null ? '' : __t) +
+    '" name="' +
+    ((__t = (field.id)) == null ? '' : __t) +
+    '" value=\'' +
+    ((__t = (field.value)) == null ? '' : __t) +
+    '\' disabled/>\n                          ';
+     if (field.changeable) {
+    __p += '\n                            <button id="' +
+    ((__t = (field.change_id)) == null ? '' : __t) +
+    '" type="button" class="btn ce__btn btn-accept col-xs-2 col-sm-2 right">\n                              <img src="css/images/edit.png" width="16" height="16"/>\n                            </button>\n                          ';
+     }
+    __p += '\n                        ';
      }
     __p += '\n                    </div>\n                  ';
      }); ;
@@ -371,6 +364,33 @@
     '\n            </button>\n          </div>\n          <div class="col-xs-3 col-sm-3">\n            <button id="sendOrder" type="button" class="btn btn-accept ce__btn ce__order_btn-confirm col-xs-12 col-sm-12">\n              ' +
     __e(orderButtonText) +
     '\n            </button>\n          </div>\n    </div>\n\n  </div>\n</div>\n';
+
+    }
+    return __p
+  };
+
+  templates['contacts'] =   function(obj) {
+    obj || (obj = {});
+    var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+    function print() { __p += __j.call(arguments, '') }
+    with (obj) {
+    __p += '<select class="form-control contact-select" id="' +
+    ((__t = (id)) == null ? '' : __t) +
+    '" name="' +
+    ((__t = (id)) == null ? '' : __t) +
+    '">\n  ';
+     _.forEach(users, function(user) {
+    __p += '\n    <option value="' +
+    __e(user.id) +
+    '" ';
+     if (user.id == defaultID) {
+    __p += ' selected';
+     }
+    __p += '> ' +
+    ((__t = (user.name)) == null ? '' : __t) +
+    ' </option>\n  ';
+     }) ;
+    __p += '\n</select>\n';
 
     }
     return __p

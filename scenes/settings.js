@@ -14,33 +14,23 @@ App.scenes.settings = {
       var addOrder = _.templates.addOrder({ buttonText: "Вернуться назад" });
       var cargoBinds = cloneObj(Templates.cargoUnbind);
       var lardiBinds = cloneObj(Templates.lardiUnbind);
-      var cargoDef = $.Deferred();
-      var lardiDef = $.Deferred();
 
       if (cargoData.token) {
         cargoBinds.fields[0].value = cargoData.login;
         cargoBinds.fields[1].value = cargoData.name;
         cargoHTML = _.templates.accountUnbinding(cargoBinds);
-        cargoDef.resolve();
       } else {
         cargoHTML = _.templates.auth(Templates.cargoBinds);
-        cargoDef.resolve();
       }
 
       if (lardiData.token) {
         lardiBinds.fields[0].value = lardiData.login;
-        lardiBinds.fields[1].default = lardiData.id;
-        App.scenes.auth.getLardiUsersData(lardiData.cid, lardiData.token, function(array) {
-          lardiBinds.fields[1].users = array;
-          lardiHTML = _.templates.accountUnbinding(lardiBinds);
-          lardiDef.resolve();
-        });
+        lardiBinds.fields[1].value = lardiData.name.replace(/[\"]/g, "&quot;");
+        lardiHTML = _.templates.accountUnbinding(lardiBinds);
       } else {
         lardiHTML = _.templates.auth(Templates.lardiLogin);
-        lardiDef.resolve();
       }
 
-      $.when(cargoDef, lardiDef).always(function(){
         $('.ce__wrapper').empty().append(cargoHTML + lardiHTML + addOrder);
 
         if (cargoData.token) {
@@ -53,7 +43,7 @@ App.scenes.settings = {
 
         if (lardiData.token) {
           $('#lardiUnbind').bind('click', _this.lardiUnbind.bind(_this));
-          $('#lardi_contact_name').bind('change', _this.resetLardiContact.bind(_this));
+          $("#lardi_change_contact").bind('click', _this.getLardiContacts.bind(_this));
         } else {
           $('#lardiSubmit').bind('click', authLardi);
           $('#lardi_password').bind('keyup', onEnter.bind(null, authLardi));
@@ -66,7 +56,7 @@ App.scenes.settings = {
         });
 
         $('#addOrder').addClass('white');
-      });
+
     },
 
   hide: function () {
@@ -101,14 +91,14 @@ App.scenes.settings = {
 
   cargoUnbind: function () {
     App.removeToken('cargo');
-    App.removeUserData('cargo');
+    // App.removeUserData('cargo');
     App.updateAppData();
     App.changeScene('auth');
   },
 
   lardiUnbind: function () {
     App.removeToken('lardi');
-    App.removeUserData('lardi');
+    // App.removeUserData('lardi');
     App.updateAppData();
     this.showLogin('lardi');
   },
@@ -117,7 +107,6 @@ App.scenes.settings = {
     var context = App.scenes.settings;
     var binds = cloneObj(Templates[key + 'Unbind']);
     var data = App.appData[key];
-    var def = $.Deferred();
     if (!key || !result) {
       return false;
     }
@@ -126,32 +115,44 @@ App.scenes.settings = {
       if (key === 'cargo') {
         binds.fields[0].value = data.login;
         binds.fields[1].value = data.name;
-        def.resolve();
       } else if (key === 'lardi') {
         binds.fields[0].value = data.login;
-        binds.fields[1].default = data.id;
-        App.scenes.auth.getLardiUsersData(data.cid, data.token, function(array) {
-          binds.fields[1].users = array;
-          def.resolve();
-        });
+        binds.fields[1].value = data.name.replace(/[\"\']/g, "");
       }
 
-      def.always(function(){
-        $('#' + key + 'Login').replaceWith(_.templates.accountUnbinding(binds));
-        $('#' + key + 'Unbind').bind('click', context[key + 'Unbind'].bind(context));
-        if (key === 'lardi') {
-          $('#lardi_contact_name').bind('change', context.resetLardiContact.bind(context));
-        }
-      });
+      $('#' + key + 'Login').replaceWith(_.templates.accountUnbinding(binds));
+      $('#' + key + 'Unbind').bind('click', context[key + 'Unbind'].bind(context));
+      if (key === 'lardi') {
+        $("#lardi_change_contact").bind('click', context.getLardiContacts.bind(context));
+      }
+
     } else {
       return false;
     }
   },
 
   resetLardiContact: function () {
-    App.updateUserData('lardi', 'ID', $('#lardi_contact_name').val());
-    App.updateUserData('lardi', 'Name', $('#lardi_contact_name').find(':selected').text().trim());
+    App.updateUserData('lardi', 'ID', $('#lardi_contact_select').val());
+    App.updateUserData('lardi', 'Name', $('#lardi_contact_select').find(':selected').text().trim());
     App.updateAppData();
+  },
+
+  getLardiContacts: function () {
+    var _this = this;
+    var lardiHTML;
+    var lardiData = App.appData.lardi;
+    var data = {};
+
+    data.id = 'lardi_contact_select';
+    data.defaultID = lardiData.id;
+    App.scenes.auth.getLardiUsersData(lardiData.cid, lardiData.token, function(array) {
+      data.users = array;
+      lardiHTML = _.templates.contacts(data);
+      $("#lardi_contact_name").replaceWith(lardiHTML);
+      $("#lardi_change_contact").unbind('click');
+      $("#lardi_change_contact").remove();
+      $('#lardi_contact_select').bind('change', _this.resetLardiContact.bind(_this));
+    });
   },
 
   showLogin: function (key) {

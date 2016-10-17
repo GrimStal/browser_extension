@@ -89,9 +89,10 @@ var Templates = (function () {
       {
         id: 'lardi_contact_name',
         label: 'Контактное лицо',
-        type: 'select',
-        users: [],
-        default: '',
+        type: 'text',
+        value: '',
+        changeable: true,
+        change_id: 'lardi_change_contact'
       },
     ],
   };
@@ -291,7 +292,7 @@ function LardiTransCargoObject() {
   this.zagruz_set = '';         //Mnemonic of load types, comma as delimiter, no spaces
   // this.auto_col_tip = null;  //ID of auto type
   // this.auto_col = 1;         //Amount of autos
-  // this.user_contact = 0;     //№ of subordinate contact. 0 is main
+  this.user_contact = 0;     //№ of subordinate contact. 0 is main
   // this.gab_dl = 0;
   // this.gab_sh = 0;
   // this.gab_v = 0;

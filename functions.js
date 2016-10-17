@@ -3,7 +3,7 @@
 function setSweetAlertDefaults() {
   if (swal && typeof swal === 'function') {
     swal.setDefaults({
-      imageUrl: '/images/error.png',
+      imageUrl: '/css/images/error.png',
       imageSize: '50x50',
       confirmButtonColor: '#91b247',
       allowEscapeKey: true,

@@ -3,20 +3,19 @@
         <div class="ce__image-holder center">
           <img class="ce__unbinding-container_company-image" src="css/images/<%=img_name%>" />
         </div>
-        
+
         <div class="ce_form-holder">
             <form novalidate id="<%=form_id%>">
                   <%_.each(fields, function(field){%>
                     <div class="form-group">
                         <label for="<%=field.id%>"><%=field.label%></label>
                         <% if (field.type !== 'select') { %>
-                        <input type="<%=field.type%>" class="form-control login-input" id="<%=field.id%>" name="<%=field.id%>" value="<%-field.value%>" disabled/>
-                        <% } else { %>
-                          <select class="form-control contact-select" id="<%=field.id%>" name="<%=field.id%>">
-                            <% _.forEach(field.users, function(user) { %>
-                              <option value="<%-user.id%>" <% if (user.id == field.default) { %> selected<% } %>> <%=user.name%> </option>
-                            <% }) %>
-                          </select>
+                        <input type="<%=field.type%>" class="form-control <% if (field.changeable) { %>width-80 inline-block <% } %>" id="<%=field.id%>" name="<%=field.id%>" value='<%=field.value%>' disabled/>
+                          <% if (field.changeable) { %>
+                            <button id="<%=field.change_id%>" type="button" class="btn ce__btn btn-accept col-xs-2 col-sm-2 right">
+                              <img src="css/images/edit.png" width="16" height="16"/>
+                            </button>
+                          <% } %>
                         <% } %>
                     </div>
                   <% }); %>
