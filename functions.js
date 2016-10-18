@@ -14,6 +14,33 @@ function setSweetAlertDefaults() {
   }
 }
 
+function cloneObj(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
+function onEnter(func, event) {
+  event = event || window.event;
+  if (event.keyCode === 13) {
+    return func();
+  }
+}
+
+if (!Array.prototype.last) {
+    Array.prototype.last = function() {
+        return this[this.length - 1];
+    }
+}
+
+if (!Array.prototype.first) {
+    Array.prototype.first = function() {
+        return this[0];
+    }
+}
+
+function XMLtoJson(xml) {
+  return x2js.xml_str2json(xml);
+}
+
 function createSortedObjectsArray(data) {
     var arr = [];
     for (var key in data) {
@@ -47,10 +74,6 @@ function concatArraysInArray(array) {
     });
 
     return result;
-}
-
-function cloneObj(obj) {
-    return JSON.parse(JSON.stringify(obj));
 }
 
 function insertCheckbox() {
@@ -837,27 +860,16 @@ function toggleClear() {
   return $(this).next('.form-control-feedback').show();
 }
 
-function onEnter(func, event) {
-  event = event || window.event;
-  if (event.keyCode === 13) {
-    return func();
-  }
-}
-
-if (!Array.prototype.last) {
-    Array.prototype.last = function() {
-        return this[this.length - 1];
+function getID(object, name) {
+  var result = -1;
+  name = name.trim().toLowerCase();
+  _.forEach(object, function(objName, key){
+    if (name === objName.trim().toLowerCase()) {
+      result = Number(key);
     }
-}
+  });
 
-if (!Array.prototype.first) {
-    Array.prototype.first = function() {
-        return this[0];
-    }
-}
-
-function XMLtoJson(xml) {
-  return x2js.xml_str2json(xml);
+  return result;
 }
 
 var x2js = new X2JS();

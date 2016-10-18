@@ -509,7 +509,7 @@ App.scenes.cargos = {
     }
 
     cargo.fromDate = this.dates[0];
-    cargo.tillDate = this.dates[this.dates.length - 1];
+    cargo.tillDate = new Date(this.dates[this.dates.length - 1] * 1000).setHours(23,59) /1000; //потому что карго нужно время конца погрузки 23:59, иначе ставит предыдущую дату
     lardi.date_from = new Date(this.dates[0] * 1000).toLocaleString('ru', dateOptions);
     lardi.date_to = new Date(this.dates[this.dates.length - 1] * 1000).toLocaleString('ru', dateOptions);
 
