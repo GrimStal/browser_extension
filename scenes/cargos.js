@@ -1,10 +1,6 @@
 'use strict';
-
 App.scenes.cargos = {
-
   show: function () {
-
-    /** Filters to set current and next months days in calendar. */
     function currentMonth() {
       var month = getTimestamp(this) * 1000;
       month = new Date(month).toLocaleString('ru', { month: 'long' });
@@ -47,8 +43,8 @@ App.scenes.cargos = {
         });
 
         response(results.sort(sortCities));
-      }, function (err) {
-
+      },
+      function (err) {
         console.error(err);
       });
     }
@@ -111,7 +107,7 @@ App.scenes.cargos = {
         _this.removeSelection(true);
       });
 
-      $('#origin, #destination').bind('keyup', toggleClear);
+      $('#origin, #destination').bind('keyup', _this.toggleClear);
       $('.origin-remove, .destination-remove').bind('click', _this.removeCity);
       $('.revert-cities').bind('click', _this.revertCities.bind(_this));
       $('.trailer-type-select').change(insertCheckbox);
@@ -444,6 +440,7 @@ App.scenes.cargos = {
   sendCargosData: function () {
     var _this = this;
     var cargo = this.cargo;
+    var dates = this.dates;
     var $cargoType = $('#cargo-types');
     var $adr = $('#adr');
     var $weight = $('#weight');
@@ -484,11 +481,12 @@ App.scenes.cargos = {
     originAddress = splitAddress(cargo.from[0]);
     destinationAddress = splitAddress(cargo.to[0]);
 
-    if ((!originAddress[1] && !originAddress[2]) || (!destinationAddress[1] && !destinationAddress[2])) {
+    if ((!originAddress[1] && !originAddress[2]) ||
+      (!destinationAddress[1] && !destinationAddress[2])) {
       return swal('Ошибка!', 'Необходимо указать регион или город отправки и доставки');
     }
 
-    if (!this.dates.length) {
+    if (!dates.length) {
       return swal('Ошибка!', 'Укажите даты отправки.');
     }
 
@@ -509,9 +507,10 @@ App.scenes.cargos = {
     }
 
     cargo.fromDate = this.dates[0];
-    cargo.tillDate = new Date(this.dates[this.dates.length - 1] * 1000).setHours(23,59) /1000; //потому что карго нужно время конца погрузки 23:59, иначе ставит предыдущую дату
-    lardi.date_from = new Date(this.dates[0] * 1000).toLocaleString('ru', dateOptions);
-    lardi.date_to = new Date(this.dates[this.dates.length - 1] * 1000).toLocaleString('ru', dateOptions);
+    cargo.tillDate = new Date(dates[dates.length - 1] * 1000).setHours(23, 59) / 1000;
+    //потому что карго нужно время конца погрузки 23:59, иначе ставит предыдущую дату
+    lardi.date_from = new Date(dates[0] * 1000).toLocaleString('ru', dateOptions);
+    lardi.date_to = new Date(dates[dates.length - 1] * 1000).toLocaleString('ru', dateOptions);
 
     cargo.type = $cargoType.val();
     lardi.gruz = $cargoType.find(':selected').text();
@@ -683,5 +682,17 @@ App.scenes.cargos = {
     $('select:not("#currency")').val('');
     $('input[type=checkbox]').prop('checked', false);
     $('#temperature').prop('disabled', true);
+  },
+
+  /**
+   * Shows or hides icon to clear field depending on if data entered
+   * @return {function} show/hide icon
+   */
+  toggleClear: function () {
+    if (checkEmpty(this)) {
+      return $(this).next('.form-control-feedback').hide();
+    }
+
+    return $(this).next('.form-control-feedback').show();
   },
 };

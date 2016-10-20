@@ -273,13 +273,12 @@ App.scenes.auth = {
   },
 
   validateData: function (key) {
-    var lpRegExp = /^[0-9a-z]{6,15}$/i;
-    var emailRegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var lpRegExp = /^[0-9a-z\_\-\!\?\*\\\/\.\,\@]{6,15}$/i;
+    var emailRegExp = /^\s*(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))\s*$/;
     var login = $('#' + key + '_login').val();
     var password = $('#' + key + '_password').val();
 
     if ((!lpRegExp.exec(login) && !emailRegExp.exec(login)) || !lpRegExp.exec(password)) {
-      console.error(key + ': Не прошло регулярку');
       return false;
     }
 

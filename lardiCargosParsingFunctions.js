@@ -2,8 +2,8 @@
 
 /** Returns key by value.
  * @param  {Object} object Object to search
- * @param  {string} name   Value
- * @return {[type]}        [description]
+ * @param  {string} name   Value to search
+ * @return {number || -1}        ID or -1
  */
 function getID(object, name) {
   var result = -1;

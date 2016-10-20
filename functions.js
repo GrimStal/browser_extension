@@ -1,4 +1,5 @@
 'use strict';
+
 function setSweetAlertDefaults() {
   if (swal && typeof swal === 'function') {
     swal.setDefaults({
@@ -862,18 +863,6 @@ function checkEmpty(input) {
   }
 
   return false;
-}
-
-/**
- * Shows or hides icon to clear field depending on if data entered
- * @return {function} show/hide icon
- */
-function toggleClear() {
-  if (checkEmpty(this)) {
-    return $(this).next('.form-control-feedback').hide();
-  }
-
-  return $(this).next('.form-control-feedback').show();
 }
 
 var x2js = new X2JS();
