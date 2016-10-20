@@ -290,8 +290,8 @@ App.scenes.auth = {
     callback = (typeof callback === 'function')
         ? callback
         : this.updateFormStatus.bind(this);
-    var login = $('#cargo_login').val();
-    var password = $('#cargo_password').val();
+    var login = $('#cargo_login').val().trim();
+    var password = $('#cargo_password').val().trim();
 
     if (!this.validateData('cargo')) {
       return this.updateFormStatus('cargo', false);
@@ -304,8 +304,8 @@ App.scenes.auth = {
     callback = (typeof callback === 'function')
         ? callback
         : this.updateFormStatus.bind(this);
-    var login = $('#lardi_login').val();
-    var password = $('#lardi_password').val();
+    var login = $('#lardi_login').val().trim();
+    var password = $('#lardi_password').val().trim();
 
     if (!this.validateData('lardi')) {
       return this.updateFormStatus('lardi', false);

@@ -46,7 +46,7 @@ var App = (function () {
 
   app.updateUserData = function (key, variable, data) {
     return SM.put(key + variable, data);
-  }
+  };
 
   app.removeUserData = function (key) {
     SM.delete(key + 'Login');
@@ -199,6 +199,7 @@ var App = (function () {
       function (cargoRes, lardiRes) {
         checkResult.resolve();
       },
+
       function (cargoErr, lardiErr) {
         console.log(cargoErr);
         _this.tryToRelogin(checkResult, [cargoErr, lardiErr]);
@@ -269,15 +270,17 @@ var App = (function () {
         function () {
           var data = _this.appData.lardi;
           if (data && data.token && !data.contact) {
-            _this.scenes.auth.checkLardiContact(data.login, data.cid, data.token, function(name, id){
+            _this.scenes.auth.checkLardiContact(data.login, data.cid, data.token, function (name, id) {
               _this.updateUserData('lardi', 'Name', name);
               _this.updateUserData('lardi', 'ID', id);
               _this.updateAppData();
               return _this.changeScene('cargos');
             });
           }
+
           return _this.changeScene('cargos');
         },
+
         function (err) {
           _this.updateAppData();
           _this.changeScene('auth');

@@ -598,7 +598,9 @@ App.scenes.cargos = {
       var getOriginCountryCode = this.getCountryCode(originAddress[0]);
       var getDestinationCountryCode = this.getCountryCode(destinationAddress[0]);
 
-      $.when(getMoments, getLoadTypes, getBodyTypes, getCountries, getOriginCountryCode, getDestinationCountryCode).then(function (moments, loads, bodies, countries, origin, destination) {
+      $.when(getMoments, getLoadTypes, getBodyTypes, getCountries,
+        getOriginCountryCode, getDestinationCountryCode).then(
+          function (moments, loads, bodies, countries, origin, destination) {
         var paymentMoments = XMLtoJson(moments).response.item;
         var loadTypes = XMLtoJson(loads).response.item;
         var notSupportedLoadTypes = getAdditionalLoadTypes(loadTypes, $loadTypes);
@@ -619,7 +621,7 @@ App.scenes.cargos = {
           lnote.push('Загрузка: ' + notSupportedLoadTypes);
         }
 
-        lardi = setBodyType(lardi, parseInt($cargoType.val()), trailers, bodyTypes);
+        lardi = setLardiBodyType(lardi, parseInt($cargoType.val()), trailers, bodyTypes);
 
         lardi.country_from_id = getLardiCountryID(originCC, countries);
         lardi.country_to_id = getLardiCountryID(destinationCC, countries);
