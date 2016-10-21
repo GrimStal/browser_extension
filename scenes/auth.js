@@ -273,12 +273,13 @@ App.scenes.auth = {
   },
 
   validateData: function (key) {
-    var lpRegExp = /^[0-9a-z\_\-\!\?\*\\\/\.\,\@]{6,15}$/i;
+    var pass = /^[0-9a-z\_\-\!\?\*\\\/\.\,\@]{6,15}$/i;
+    var lpRegExp = /^\s*[0-9a-z\_\-\!\?\*\\\/\.\,\@]{6,15}\s*$/i;
     var emailRegExp = /^\s*(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))\s*$/;
     var login = $('#' + key + '_login').val();
     var password = $('#' + key + '_password').val();
 
-    if ((!lpRegExp.exec(login) && !emailRegExp.exec(login)) || !lpRegExp.exec(password)) {
+    if ((!lpRegExp.exec(login) && !emailRegExp.exec(login)) || !pass.exec(password)) {
       return false;
     }
 
