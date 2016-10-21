@@ -658,7 +658,7 @@ function getLardiCountryID(code, countries) {
 
   if (code && countries && Array.isArray(countries) && countries.length !== 0) {
     $(countries).each(function (index, el) {
-      if (el.sign === code) {
+      if (el.sign === code || el.sign2 === code) {
         id = Number(el.id);
         return false;
       }
