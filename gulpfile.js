@@ -21,6 +21,7 @@ gulp.task('production:watch', function () {
     'images/**/*.*',
     'scenes/**/*.js',
     'templates/**/*.js',
+    'js/**/*.js',
     './lodash*.*',
     './*.*',
     '!./gulpfile.*',
@@ -37,7 +38,7 @@ gulp.task('production:watch', function () {
 gulp.task('production', function () {
 
   gulp.src([
-    'css/**/*.css'
+    'css/**/*.css',
   ], {
     base: '.',
   })
@@ -49,24 +50,24 @@ gulp.task('production', function () {
     '!./gulpfile.js',
     '!./lodash*.*',
     './templates/**/*.js',
+    './js/**/*.js',
     '!./server/**/*.*',
     './*.js',
     './scenes/**/*.js',
   ])
   .pipe(concat('javascript.js'))
-  // .pipe(uglify())
   .pipe(gulp.dest('dist/'));
 
   gulp.src([
     './bower_components/**/*.*',
     './popup.html',
-    './lodash.templates.min.js',
+    './lodash.templates.js',
     './background.js',
     './css/**/*.*',
     './*.json',
     '!./package.json',
     '!./bower.json',
-    '!./css/**/*.css'
+    '!./css/**/*.css',
   ], {
     base: '.',
   })

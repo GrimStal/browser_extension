@@ -246,6 +246,7 @@ function CargoObject() {
   // this.boxes = [];
   // this.boxtype = 0;
   // this.accountId = 0;
+  this.source = 12;
 }
 
 function LardiTransCargoObject() {

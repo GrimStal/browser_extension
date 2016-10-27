@@ -1,4 +1,5 @@
 'use strict';
+
 App.scenes.cargos = {
   show: function () {
     function currentMonth() {
@@ -112,7 +113,8 @@ App.scenes.cargos = {
       $('.revert-cities').bind('click', _this.revertCities.bind(_this));
       $('.trailer-type-select').change(insertCheckbox);
       $('#cargo-types').change(setCargoDependencies);
-      $('.trailer-type-checkbox[value=1], .trailer-type-checkbox[value=3]').change(checkTemperature);
+      $('.trailer-type-checkbox[value=1],' +
+        '.trailer-type-checkbox[value=3]').change(checkTemperature);
       $('#sendOrder').bind('click', _this.sendCargosData.bind(_this));
       $('#clean').bind('click', _this.clearForm.bind(_this));
 

@@ -50,7 +50,7 @@ App.scenes.cargosList = {
     console.log(object);
     var _this = this;
     var note = [];
-    var loads = this.setLoads(object.zagruz_set);
+    var loads = this.setLoadTypes(object.zagruz_set);
     var cargo = new CargoObject();
     var getCargoTypes = App.scenes.cargos.getCargoTypes();
 
@@ -236,7 +236,7 @@ App.scenes.cargosList = {
    * @param {string} string String of russian load types from lardi cargo object.
    * @return {Array[object, string]}
    */
-  setLoads: function (string) {
+  setLoadTypes: function (string) {
 
     function setToObject(rus, attr) {
       var index = array.indexOf(rus);

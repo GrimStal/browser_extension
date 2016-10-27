@@ -20,9 +20,7 @@
     ],
     "disallowMixedSpacesAndTabs": true,
     "disallowTrailingWhitespace": true,
-    "requireTrailingComma": {
-        "ignoreSingleLine": true
-    },
+    "requireTrailingComma": false,
     "requireSpaceAfterComma": true,
     "disallowYodaConditions": true,
     "disallowKeywords": ["with"],
@@ -51,7 +49,7 @@
     "requireDollarBeforejQueryAssignment": true,
     "requireLineFeedAtFileEnd": true,
     "requireCapitalizedConstructors": true,
-    "requireDotNotation": true,
+    "requireDotNotation": false,
     "requireSpacesInForStatement": true,
     "requireSpacesInsideObjectBrackets": "all",
     "requireSpaceBetweenArguments": true,
@@ -71,10 +69,10 @@
         "catch",
         "typeof"
     ],
-    "requirePaddingNewLinesBeforeLineComments": {
-        "allExcept": "firstAfterCurly"
+    "requirePaddingNewLinesBeforeLineComments": false,
+    "requirePaddingNewLinesAfterBlocks": {
+      "allExcept": ["inCallExpressions"]
     },
-    "requirePaddingNewLinesAfterBlocks": true,
     "requireSemicolons": true,
     "requireShorthandArrowFunctions": true,
     "requireSpacesInsideImportedObjectBraces": true,
@@ -87,7 +85,13 @@
     },
     "validateIndentation": 2,
     "maximumLineLength": {
-        "value": 100,
+        "value": 150,
         "allExcept": ["urlComments"]
+    },
+    "maximumNumberOfLines": {
+      "value": 1000,
+      "allExcept": [
+        "comments"
+      ]
     }
 }
