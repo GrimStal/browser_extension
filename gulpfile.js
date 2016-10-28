@@ -50,9 +50,9 @@ gulp.task('production', function () {
     '!./gulpfile.js',
     '!./lodash*.*',
     './templates/**/*.js',
+    './*.js',
     './js/**/*.js',
     '!./server/**/*.*',
-    './*.js',
     './scenes/**/*.js',
   ])
   .pipe(concat('javascript.js'))

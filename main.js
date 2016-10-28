@@ -23,6 +23,8 @@ var App = (function () {
 
   app.scenes = [];
 
+  app.exchanges = {};
+
   app.saveToken = function (key, data) {
     return SM.put(key + 'Token', data);
   };
@@ -69,7 +71,7 @@ var App = (function () {
   };
 
   app.changeScene = function (scene) {
-    if (scene !== 'auth' && !this.checkToken()) {
+    if (scene !== 'auth' && !this.checkToken('cargo')) {
       return false;
     }
 
@@ -129,7 +131,7 @@ var App = (function () {
     });
   };
 
-  app.checkAuth = function () {
+  app.doAuth = function () {
     function cargoCB(response) {
       var err = response.error;
       if (err && err.responseJSON) {
@@ -208,12 +210,12 @@ var App = (function () {
     return checkResult.promise();
   };
 
-  app.checkToken = function () {
-    if (!this.appData.cargo.token) {
-      return false;
+  app.checkToken = function (key) {
+    if (this.appData[key] && this.appData[key].token) {
+      return true;
     }
 
-    return true;
+    return false;
   };
 
   /** Function wrapper to send and get data from server. Used to not
@@ -250,6 +252,7 @@ var App = (function () {
 
   app.init = function () {
     var _this = this;
+    var $cargoDef = $.Deferred();
 
     setSweetAlertDefaults();
 
@@ -265,29 +268,56 @@ var App = (function () {
 
     $('.header-icons .message-icon').bind('click', App.changeScene.bind(App, 'cargos'));
 
-    if (this.checkToken()) {
-      this.checkAuth().then(
+    if (this.checkToken('cargo')) {
+      this.doAuth().then(
         function () {
-          var data = _this.appData.lardi;
-          if (data && data.token && !data.contact) {
-            _this.scenes.auth.checkLardiContact(data.login, data.cid, data.token, function (name, id) {
-              _this.updateUserData('lardi', 'Name', name);
-              _this.updateUserData('lardi', 'ID', id);
-              _this.updateAppData();
-              return _this.changeScene('cargos');
-            });
+          var lardi = _this.appData.lardi;
+          var $contactSet = $.Deferred();
+          var $lardiCountries = $.Deferred();
+
+          if (_this.checkToken('lardi')) {
+            if (!lardi.contact) {
+              _this.scenes.auth.checkLardiContact(lardi.login, lardi.cid, lardi.token, function (name, id) {
+                _this.updateUserData('lardi', 'Name', name);
+                _this.updateUserData('lardi', 'ID', id);
+                _this.updateAppData();
+                $contactSet.resolve();
+              });
+            } else {
+              $contactSet.resolve();
+            }
+
+            $lardiCountries = App.exchanges.saveLardiCountries();
+          } else {
+            $contactSet.resolve('User did not authorize on lardi');
+            $lardiCountries.resolve('User did not authorize on lardi');
           }
 
-          return _this.changeScene('cargos');
+          $.when($contactSet, $lardiCountries).then(
+            function () {
+              $cargoDef.resolve();
+            },
+            function (err) {
+              $cargoDef.reject(err);
+            }
+          );
         },
-
         function (err) {
           _this.updateAppData();
-          _this.changeScene('auth');
+          $cargoDef.reject(err);
         });
     } else {
-      this.changeScene('auth');
+      $cargoDef.reject('Not authorized');
     }
+
+    $cargoDef.then(function (cargo) {
+      _this.changeScene('cargos');
+    },
+    function (error) {
+      console.log(error);
+      _this.changeScene('auth');
+    }
+  );
   };
 
   app.updateAppData = function () {
@@ -311,6 +341,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 var regions = {};
+var lardiCountries;
 
 $.get('regions.json').then(function (regionsFile) {
   regions = JSON.parse(regionsFile);

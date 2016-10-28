@@ -134,3 +134,16 @@ function setCargoBodyType(id, group) {
 
   return trailers;
 }
+
+function getCountryName(id) {
+  var def = $.Deferred();
+  $.when(App.exchanges.getLardiCountries()).then(function (countries) {
+    var countries = XMLtoJson(countries).response.item;
+  }, function (err) {
+    console.log('GetCountryName error:');
+    console.log(err);
+    def.reject(err);
+  });
+
+  return def.promise();
+}

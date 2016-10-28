@@ -42,7 +42,7 @@ App.scenes.auth = {
   checkAccess: function () {
     var $orderButton = $('#addOrder');
 
-    if (App.checkToken()) {
+    if (App.checkToken('cargo')) {
       $orderButton.prop('disabled', false);
       $orderButton.addClass('btn-accept');
       $orderButton.removeClass('btn-default');
@@ -241,11 +241,13 @@ App.scenes.auth = {
 
       if (!response.error && response.success) {
         if (key === 'lardi') {
-          res = XMLtoJson(response.success).response;
+          res = XMLtoJson(response.success);
 
-          if (res.error) {
-            return processing.reject(res.error);
+          if (!res) {
+            return processing.reject(res);
           }
+
+          res = res.response;
           result = true;
           token = res.sig;
           cid = res.uid;
@@ -273,15 +275,15 @@ App.scenes.auth = {
   },
 
   validateData: function (key) {
-    var pass = /^[0-9a-z\_\-\!\?\*\\\/\.\,\@]{6,15}$/i;
-    var lpRegExp = /^\s*[0-9a-z\_\-\!\?\*\\\/\.\,\@]{6,15}\s*$/i;
-    var emailRegExp = /^\s*(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))\s*$/;
-    var login = $('#' + key + '_login').val();
-    var password = $('#' + key + '_password').val();
-
-    if ((!lpRegExp.exec(login) && !emailRegExp.exec(login)) || !pass.exec(password)) {
-      return false;
-    }
+    // var pass = /^[0-9a-z\_\-\!\?\*\\\/\.\,\@]{6,15}$/i;
+    // var lpRegExp = /^\s*[0-9a-z\_\-\!\?\*\\\/\.\,\@\s]{6,15}\s*$/i;
+    // var emailRegExp = /^\s*(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))\s*$/;
+    // var login = $('#' + key + '_login').val();
+    // var password = $('#' + key + '_password').val();
+    //
+    // if ((!lpRegExp.exec(login) && !emailRegExp.exec(login)) || !pass.exec(password)) {
+    //   return false;
+    // }
 
     return true;
   },
@@ -301,9 +303,14 @@ App.scenes.auth = {
   },
 
   lardiSubmit: function (callback) {
+    function defaultCallback(key, result) {
+      App.scenes.auth.updateFormStatus(key, result);
+      App.exchanges.saveLardiCountries();
+    }
+
     callback = (typeof callback === 'function')
         ? callback
-        : this.updateFormStatus.bind(this);
+        : defaultCallback;
     var login = $('#lardi_login').val().trim();
     var password = $('#lardi_password').val().trim();
 

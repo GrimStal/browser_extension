@@ -28,7 +28,7 @@ App.scenes.cargos = {
      * @param  {function} response Must get as argument an array or array of objects with label and value params.
      */
     function parseForAutocomplete(request, response) {
-      _this.getLocations(request.term).then(function (res) {
+      App.exchanges.getLocations(request.term).then(function (res) {
         var results = $.map(res.locations, function (v, i) {
           switch (v.type) {
             case 0:
@@ -54,9 +54,9 @@ App.scenes.cargos = {
     var calendar = this.getCalendarDates(4, 'ru');
     var today = new Date().setHours(0, 0, 0, 0) / 1000;
     var cargosData = Templates.cargosOffer;
-    var getCargoTypes = this.getCargoTypes();
-    var getTrailerTypes = this.getTrailerTypes();
-    var getCurrencies = this.getCurrencies();
+    var getCargoTypes = App.exchanges.getCargoTypes();
+    var getTrailerTypes = App.exchanges.getTrailerTypes();
+    var getCurrencies = App.exchanges.getCurrencies();
 
     this.cargo = new CargoObject();
 
@@ -120,7 +120,6 @@ App.scenes.cargos = {
 
       _this.setDates();
     }, function (errors) {
-
       console.log(errors);
     });
   },
@@ -217,7 +216,7 @@ App.scenes.cargos = {
    */
   removeSelection: function (hide) {
     $('.selected').removeClass('selected');
-    App.scenes.cargos.setDates();
+    this.setDates();
     if (hide) {
       $('#removeSelection').hide();
     }
@@ -229,10 +228,10 @@ App.scenes.cargos = {
     $(this).hide();
     switch ($(input).attr('id')) {
       case 'origin':
-        App.scenes.cargos.cargo.from.pop();
+        this.cargo.from.pop();
         break;
       case 'destination':
-        App.scenes.cargos.cargo.to.pop();
+        this.cargo.to.pop();
         break;
       default:
         console.log('Unknown id');
@@ -329,116 +328,6 @@ App.scenes.cargos = {
     this.cargo.to = cloneObj(revObj);
   },
 
-  getDataFromServer: function (req) {
-    var result = $.Deferred();
-
-    App.sendRequest(req, function (response) {
-      if (response.error) {
-        return result.reject(response.error);
-      }
-
-      return result.resolve(response.success);
-    });
-
-    return result.promise();
-  },
-
-  getCargoTypes: function () {
-    var req = new Request('cargo', 'GET', 'cargoTypes');
-    return this.getDataFromServer(req);
-  },
-
-  getTrailerTypes: function () {
-    var req = new Request('cargo', 'GET', 'trailerTypes');
-    return this.getDataFromServer(req);
-  },
-
-  getCurrencies: function () {
-    var req = new Request('cargo', 'GET', 'currencies');
-    return this.getDataFromServer(req);
-  },
-
-  getLocations: function (name) {
-    var req = new Request('cargo', 'GET', 'locations');
-    req.headers = {
-      'Access-Token': App.appData.cargo.token,
-    };
-    req.data = {
-      name: name,
-    };
-    return this.getDataFromServer(req);
-  },
-
-  getLardiPaymentMoments: function () {
-    var def = $.Deferred();
-    var req = new Request('lardi', 'POST');
-
-    if (!App.appData.lardi.token) {
-      def.reject('Lardi not authorized');
-      return def.promise();
-    } else {
-      req.data = {
-        method: 'get.payment.moment.ref',
-        sig: App.appData.lardi.token,
-      };
-      return this.getDataFromServer(req);
-    }
-  },
-
-  getLardiLoadTypes: function () {
-    var def = $.Deferred();
-    var req = new Request('lardi', 'POST');
-
-    if (!App.appData.lardi.token) {
-      def.reject('Lardi not authorized');
-      return def.promise();
-    } else {
-      req.data = {
-        method: 'base.zagruz',
-        sig: App.appData.lardi.token,
-      };
-      return this.getDataFromServer(req);
-    }
-  },
-
-  getLardiBodyTypes: function () {
-    var def = $.Deferred();
-    var req = new Request('lardi', 'POST');
-
-    if (!App.appData.lardi.token) {
-      def.reject('Lardi not authorized');
-      return def.promise();
-    } else {
-      req.data = {
-        method: 'body.type.group',
-        sig: App.appData.lardi.token,
-      };
-      return this.getDataFromServer(req);
-    }
-  },
-
-  getLardiCountries: function () {
-    var def = $.Deferred();
-    var req = new Request('lardi', 'POST');
-
-    if (!App.appData.lardi.token) {
-      def.reject('Lardi not authorized');
-      return def.promise();
-    } else {
-      req.data = {
-        method: 'base.country',
-        sig: App.appData.lardi.token,
-      };
-      return this.getDataFromServer(req);
-    }
-  },
-
-  getCountryCode: function (name) {
-    var req = new Request('countries', 'GET');
-    req.url = encodeURIComponent(name);
-    return this.getDataFromServer(req);
-  },
-
   sendCargosData: function () {
     var _this = this;
     var cargo = this.cargo;
@@ -509,7 +398,7 @@ App.scenes.cargos = {
     }
 
     cargo.fromDate = this.dates[0];
-    cargo.tillDate = new Date(dates[dates.length - 1] * 1000).setHours(23, 59) / 1000;
+    cargo.tillDate = new Date(dates[dates.length - 1] * 1000).setUTCHours(23, 59) / 1000;
     //потому что карго нужно время конца погрузки 23:59, иначе ставит предыдущую дату
     lardi.date_from = new Date(dates[0] * 1000).toLocaleString('ru', dateOptions);
     lardi.date_to = new Date(dates[dates.length - 1] * 1000).toLocaleString('ru', dateOptions);
@@ -587,26 +476,25 @@ App.scenes.cargos = {
       'Access-Token': App.appData.cargo.token,
     };
 
-    cargoDef = this.getDataFromServer(creq);
+    cargoDef = App.exchanges.getDataFromServer(creq);
 
     App.loading('Отправка данных');
 
     if (App.appData.lardi.token) {
-      var getMoments = this.getLardiPaymentMoments();
-      var getLoadTypes = this.getLardiLoadTypes();
-      var getBodyTypes = this.getLardiBodyTypes();
-      var getCountries = this.getLardiCountries();
-      var getOriginCountryCode = this.getCountryCode(originAddress[0]);
-      var getDestinationCountryCode = this.getCountryCode(destinationAddress[0]);
+      var getMoments = App.exchanges.getLardiPaymentMoments();
+      var getLoadTypes = App.exchanges.getLardiLoadTypes();
+      var getBodyTypes = App.exchanges.getLardiBodyTypes();
+      var getOriginCountryCode = App.exchanges.getCountryCode(originAddress[0]);
+      var getDestinationCountryCode = App.exchanges.getCountryCode(destinationAddress[0]);
 
-      $.when(getMoments, getLoadTypes, getBodyTypes, getCountries,
+      $.when(getMoments, getLoadTypes, getBodyTypes,
         getOriginCountryCode, getDestinationCountryCode).then(
-          function (moments, loads, bodies, countries, origin, destination) {
+          function (moments, loads, bodies, origin, destination) {
         var paymentMoments = XMLtoJson(moments).response.item;
         var loadTypes = XMLtoJson(loads).response.item;
         var notSupportedLoadTypes = getAdditionalLoadTypes(loadTypes, $loadTypes);
         var bodyTypes = XMLtoJson(bodies).response.item;
-        var countries = XMLtoJson(countries).response.item;
+        var countries = lardiCountries;
         var originCC = origin[0]['alpha2Code'];
         var destinationCC = destination[0]['alpha2Code'];
 
@@ -654,7 +542,7 @@ App.scenes.cargos = {
         });
 
       }, function (error) {
-
+        lardiDef.reject(error);
         console.log(error);
         swal('Ошибка!', 'Не удалось получить данные от Lardi-Trans: ' + error.responseText);
       });

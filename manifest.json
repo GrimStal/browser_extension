@@ -25,7 +25,6 @@
       "bower_components/abdmob/x2js/xml2json.min.js",
       "background.js",
       "bower_components/jquery/dist/jquery.min.js"
-
     ]
   },
 
