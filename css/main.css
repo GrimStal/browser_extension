@@ -2,6 +2,7 @@
 body {
   width: 600px;
   min-height: 280px;
+  height: 600px;
   background-color: #fff;
   overflow-x: hidden; }
 
@@ -338,7 +339,7 @@ label input[type=checkbox] {
   display: none; }
 
 .calendar-holder {
-  padding: 0 5px; }
+  padding: 0 15px 0 0; }
   .calendar-holder .dates,
   .calendar-holder .month {
     font-size: 10px; }

@@ -62,6 +62,7 @@ gulp.task('production', function () {
     './bower_components/**/*.*',
     './popup.html',
     './lodash.templates.js',
+    './sweetalert.min.js',
     './background.js',
     './css/**/*.*',
     './*.json',

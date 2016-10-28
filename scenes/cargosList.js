@@ -52,14 +52,43 @@ App.scenes.cargosList = {
     var note = [];
     var loads = this.setLoadTypes(object.zagruz_set);
     var cargo = new CargoObject();
-    var getCargoTypes = App.scenes.cargos.getCargoTypes();
+    var getCargoTypes = App.exchanges.getCargoTypes();
+    var placeFrom = [];
+    var areaFrom;
+    var countryFrom;
+    var placeTo = [];
+    var areaTo;
+    var countryTo;
 
     if (!object) {
       return false;
     }
 
-    cargo.from.push(); //TODO get place object
-    cargo.to.push();  //TODO get place object
+    areaFrom = getLardiAreaName(object.country_from_id, object.area_from_id);
+    countryFrom = getLardiCountryName(object.country_from_id);
+    areaTo = getLardiAreaName(object.country_to_id, object.area_to_id);
+    countryTo = getLardiCountryName(object.country_to_id);
+
+    placeFrom.push(object.city_from);
+    if (areaFrom) {
+      placeFrom.push(areaFrom);
+    }
+
+    if (countryFrom) {
+      placeFrom.push(countryFrom);
+    }
+
+    placeTo.push(object.city_to);
+    if (areaTo) {
+      placeTo.push(areaTo);
+    }
+
+    if (countryTo) {
+      placeTo.push(countryTo);
+    }
+
+    cargo.from.push(placeFrom.join(', '));
+    cargo.to.push(placeTo.join(', '));
 
     $.when(getCargoTypes).then(
         function (cargoTypes) {
@@ -140,19 +169,19 @@ App.scenes.cargosList = {
           if (object.payment_forma_id && object.payment_forma_id !== '0') {
             switch (object.payment_forma_id) {
               case '4':
-                notes.push('безнал.');
+                note.push('безнал.');
                 break;
               case '6':
-                notes.push('комб.');
+                note.push('комб.');
                 break;
               case '8':
-                notes.push('эл. платеж.');
+                note.push('эл. платеж.');
                 break;
               case '10':
-                notes.push('карта.');
+                note.push('карта.');
                 break;
               case '2':
-                notes.push('нал.');
+                note.push('нал.');
                 break;
             }
           }
@@ -161,21 +190,21 @@ App.scenes.cargosList = {
           if (object.payment_moment_id && object.payment_moment_id !== '0') {
             switch (object.payment_moment_id) {
               case '4':
-                notes.push('Оплата на выгрузке');
+                note.push('Оплата на выгрузке');
                 break;
               case '6':
-                notes.push('Оплата по оригиналам');
+                note.push('Оплата по оригиналам');
                 break;
               case '8':
                 if (object.payment_delay && object.payment_delay !== '0') {
-                  notes.push('Отсрочка платежа ' + object.payment_delay + ' дней');
+                  note.push('Отсрочка платежа ' + object.payment_delay + ' дней');
                 } else {
-                  notes.push('Отсрочка платежа');
+                  note.push('Отсрочка платежа');
                 }
 
                 break;
               case '2':
-                notes.push('Оплата на загрузке');
+                note.push('Оплата на загрузке');
                 break;
             }
           }
@@ -183,22 +212,22 @@ App.scenes.cargosList = {
           //prepay
           object.payment_prepay = parseInt(object.payment_prepay);
           if (object.payment_prepay && (object.payment_prepay > 0 && object.payment_prepay <= 100)) {
-            notes.push('Предоплата ' + object.payment_prepay + '%');
+            note.push('Предоплата ' + object.payment_prepay + '%');
           }
 
           //payment_unit
           switch (object.payment_unit) {
             case '2':
-              notes.push('сумма за км');
+              note.push('сумма за км');
               break;
             case '4':
-              notes.push('сумма за т');
+              note.push('сумма за т');
               break;
           }
 
           //payment_vat
           if (object.payment_vat && object.payment_vat == 'true') {
-            notes.push('НДС');
+            note.push('НДС');
           }
 
           //stavka
@@ -209,7 +238,7 @@ App.scenes.cargosList = {
 
           //t1
           if (object.t1 && object.t1 == 'true') {
-            notes.push('T1');
+            note.push('T1');
           }
 
           //tir
@@ -217,13 +246,41 @@ App.scenes.cargosList = {
             cargo.tir = true;
           }
 
-          //TODO parsing other data
-          //Notes
-          note.push(object.note);
-          cargo.notes = note.join(', ');
-          console.log(cargo);
-        },
+          //declaration
+          if (object.add_info.toLowerCase().indexOf('по декларации') > -1 ||
+            object.note.toLowerCase().indexOf('по декларации') > -1) {
+            cargo.declaration = 1;
+          }
 
+          //full load
+          if (object.add_info.toLowerCase().indexOf('полная') > -1 ||
+            object.note.toLowerCase().indexOf('полная') > -1) {
+            cargo.full = 1;
+          }
+
+          //partly load
+          if (object.add_info.toLowerCase().indexOf('частичная') > -1 ||
+            object.note.toLowerCase().indexOf('частичная') > -1) {
+            cargo.partly = 1;
+          }
+
+          //fift load
+          if (object.add_info.toLowerCase().indexOf('лифт') > -1 ||
+            object.note.toLowerCase().indexOf('лифт') > -1) {
+            cargo.lift = 1;
+          }
+
+          //manipulator load
+          if (object.add_info.toLowerCase().indexOf('манипулятор') > -1 ||
+            object.note.toLowerCase().indexOf('манипулятор') > -1) {
+            cargo.manipulator = 1;
+          }
+
+          //Notes
+          note.push(object.note, object.add_info);
+          cargo.notes = note.join(', ');
+          callback(cargo);
+        },
         function (error) {
           console.log(error);
         }
@@ -250,7 +307,7 @@ App.scenes.cargosList = {
     var array = string.split(', ');
     var string = '';
 
-    if (!string) {
+    if (!array) {
       return [obj, string];
     }
 

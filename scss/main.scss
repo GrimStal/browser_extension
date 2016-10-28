@@ -11,6 +11,7 @@ $lightOrange: #ffdb90;
 body {
     width: 600px;
     min-height: 280px;
+    height: 600px;
     background-color: $white;
     overflow-x: hidden;
 }
@@ -473,7 +474,7 @@ label {
 }
 
 .calendar-holder {
-    padding: 0 5px;
+    padding: 0 15px 0 0;
 
     .dates,
     .month {

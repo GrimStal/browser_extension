@@ -231,7 +231,7 @@ var App = (function () {
   };
 
   app.openTab = function (url) {
-    if (navigator.userAgent.search(/Chrome/) > -1) {
+    if (navigator.userAgent.search(/Gecko/) > -1) {
       chrome.tabs.create({ url: url });
     }
   };
@@ -255,6 +255,10 @@ var App = (function () {
     var $cargoDef = $.Deferred();
 
     setSweetAlertDefaults();
+
+    if (navigator.userAgent.search(/Firefox/) == -1) {
+      $(document.body).height('auto');
+    }
 
     this.loading('Проверка авторизации');
     this.updateAppData();

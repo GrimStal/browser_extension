@@ -135,15 +135,30 @@ function setCargoBodyType(id, group) {
   return trailers;
 }
 
-function getCountryName(id) {
-  var def = $.Deferred();
-  $.when(App.exchanges.getLardiCountries()).then(function (countries) {
-    var countries = XMLtoJson(countries).response.item;
-  }, function (err) {
-    console.log('GetCountryName error:');
-    console.log(err);
-    def.reject(err);
+function getLardiCountryName(countryID) {
+  var name = '';
+  lardiCountries.forEach(function (el) {
+    if (countryID === el.id) {
+      name = el.name;
+    }
   });
 
-  return def.promise();
+  return name;
+}
+
+function getLardiAreaName(countryID, areaID) {
+  var name = '';
+  lardiCountries.forEach(function (el) {
+    if (countryID === el.id) {
+      if (areaID && el.areas && typeof el.areas === 'object'
+       && el.areas.area && el.areas.area.forEach) {
+        el.eareas.area.forEach(function (area) {
+          if (Number(area.id) === Number(areaID)) {
+            name = area.name;
+          }
+        });
+      }
+    }
+  });
+  return name;
 }
