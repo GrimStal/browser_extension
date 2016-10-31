@@ -21,6 +21,7 @@
     'auth': {},
     'cargoAdded': {},
     'cargos': {},
+    'cargosList': {},
     'contacts': {},
     'intro': {},
     'loading': {},
@@ -364,6 +365,110 @@
     '\n            </button>\n          </div>\n          <div class="col-xs-3 col-sm-3">\n            <button id="sendOrder" type="button" class="btn btn-accept ce__btn ce__order_btn-confirm col-xs-12 col-sm-12">\n              ' +
     __e(orderButtonText) +
     '\n            </button>\n          </div>\n    </div>\n\n  </div>\n</div>\n';
+
+    }
+    return __p
+  };
+
+  templates['cargosList'] =   function(obj) {
+    obj || (obj = {});
+    var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+    function print() { __p += __j.call(arguments, '') }
+    with (obj) {
+    __p += '<div class="ce__cargo-wrapper col-xs-12 col-sm-12 col-md-12 col-lg-12 ' +
+    ((__t = (wrapper_class)) == null ? '' : __t) +
+    '" id="' +
+    ((__t = (wrapper_id)) == null ? '' : __t) +
+    '">\n  <div class="ce__wrapper_export-message export-message center col-xs-12 col-sm-12 col-md-12 col-lg-12">\n      На этой странице вы можете увидеть все активные грузы на\n      <span class="ce__company-name lardi-site" title="https://lardi-trans.com/">Lardi-Trans.com</span>.\n      Для того, чтобы продублировать груз на\n      <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span>\n      воспользуйтесь соответствующей кнопкой справа от груза.\n  </div>\n  <table class=\'table table-striped table-hover table-condenced table-bordered\'>\n    <thead>\n      <tr>\n        <td>Нас. пункт</td>\n        <td>Дата</td>\n        <td>Кузов</td>\n        <td>Груз</td>\n        <td>Ставка</td>\n        <td></td>\n      </tr>\n    </thead>\n    <tbody>\n    ';
+     _.forEach(lardiCargos, function(cargo) {
+    __p += '\n      <tr>\n          <td>\n            <strong>' +
+    __e(cargo.country_from) +
+    '</strong>\n            ' +
+    __e(_.capitalize(cargo.city_from));
+     if (cargo.area_name_from.length > 0) {
+    __p += ', ' +
+    __e(cargo.area_name_from) +
+    ' ';
+     }
+    __p += '\n            -<br>\n            <strong>' +
+    __e(cargo.country_to) +
+    '</strong>\n            ' +
+    __e(_.capitalize(cargo.city_to));
+     if (cargo.area_name_to.length > 0) {
+    __p += ', ' +
+    __e(cargo.area_name_to) +
+    ' ';
+     }
+    __p += '\n          </td>\n          <td>\n            ' +
+    ((__t = (cargo.date_from.slice(-2))) == null ? '' : __t) +
+    '.' +
+    ((__t = (cargo.date_from.slice(-5, -3))) == null ? '' : __t) +
+    '\n            ';
+     if (cargo.date_to.length > 0) {
+    __p += '\n              - ' +
+    ((__t = (cargo.date_to.slice(-2))) == null ? '' : __t) +
+    '.' +
+    ((__t = (cargo.date_to.slice(-5, -3))) == null ? '' : __t) +
+    '\n            ';
+     }
+    __p += '\n          </td>\n          <td>\n            ';
+     if (cargo.body_type_name.length > 0) {
+    __p += '\n              ' +
+    __e(_.capitalize(cargo.body_type_name)) +
+    '\n            ';
+     } else {
+    __p += '\n              ' +
+    __e(_.capitalize(cargo.body_type_group_name)) +
+    '\n            ';
+     }
+    __p += '\n          </td>\n          <td>\n' +
+    __e(cargo.gruz) +
+    ',\n' +
+    __e(cargo.mass);
+     if (cargo.mass2 !== '0.0') {
+    __p += ' - ' +
+    __e(cargo.mass2);
+     }
+    __p += 'т\n';
+     if (cargo.value !== '0.0') {
+    __p += ', ' +
+    __e(cargo.value);
+     }
+    __p += '\n';
+     if (cargo.value2 !== '0.0') {
+    __p += ' - ' +
+    __e(cargo.value2);
+     }
+    __p += '\n';
+     if (cargo.value2 !== '0.0' || cargo.value !== '0.0') {
+    __p += 'м3';
+     }
+    __p += '\n';
+     if (cargo.cmr !== 'false') {
+    __p += ', CMR';
+     }
+    __p += '\n';
+     if (cargo.t1 !== 'false') {
+    __p += ', T1';
+     }
+    __p += '\n';
+     if (cargo.tir !== 'false') {
+    __p += ', TiR';
+     }
+    __p += '\n';
+     if (cargo.adr !== '0') {
+    __p += ', ADR-' +
+    __e(cargo.adr);
+     }
+    __p += '\n          </td>\n          <td>\n              ' +
+    __e(cargo.stavka) +
+    ' ' +
+    __e(cargo.payment_currency_name) +
+    '\n          </td>\n          <td>\n            <input type=\'checkbox\' value=\'' +
+    __e(cargo.id) +
+    '\'/>\n            <button class=\'btn btn-accept\'>C&rarr;</button>\n          </td>\n      </tr>\n    ';
+     }) ;
+    __p += '\n    </tbody>\n\n  </table>\n</div>\n';
 
     }
     return __p

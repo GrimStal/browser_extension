@@ -378,7 +378,7 @@ App.scenes.cargos = {
     }
 
     if (!dates.length) {
-      return swal('Ошибка!', 'Укажите даты отправки.');
+      return swal('Ошибка!', 'Укажите даты загрузки.');
     }
 
     if (!$cargoType.val()) {
@@ -406,11 +406,11 @@ App.scenes.cargos = {
     cargo.type = $cargoType.val();
     lardi.gruz = $cargoType.find(':selected').text();
 
-    cargo.weight = setParam($weight.val(), null);
-    lardi.mass = setParam($weight.val(), undefined);
+    cargo.weight = setFloatParam($weight.val(), null);
+    lardi.mass = setFloatParam($weight.val(), undefined);
 
-    cargo.volume = setParam($volume.val(), null);
-    lardi.value = setParam($volume.val(), undefined);
+    cargo.volume = setFloatParam($volume.val(), null);
+    lardi.value = setFloatParam($volume.val(), undefined);
 
     cargo.pallets = setParam($pallets.val(), null);
 

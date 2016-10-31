@@ -111,6 +111,22 @@ App.exchanges = {
     return this.getDataFromServer(req);
   },
 
+  getLardiAutoTips: function () {
+    var def = $.Deferred();
+    var req = new Request('lardi', 'POST');
+
+    if (!App.appData.lardi.token) {
+      def.reject('Lardi not authorized');
+      return def.promise();
+    } else {
+      req.data = {
+        method: 'base.auto_tip',
+        sig: App.appData.lardi.token,
+      };
+      return this.getDataFromServer(req);
+    }
+  },
+
   saveLardiCountries: function () {
     var def = $.Deferred();
     App.exchanges.getLardiCountries().then(

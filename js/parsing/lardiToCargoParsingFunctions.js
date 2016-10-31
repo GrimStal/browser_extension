@@ -135,28 +135,70 @@ function setCargoBodyType(id, group) {
   return trailers;
 }
 
-function getLardiCountryName(countryID) {
+function getName(array, id) {
   var name = '';
-  lardiCountries.forEach(function (el) {
-    if (countryID === el.id) {
+  array.forEach(function (el) {
+    if (Number(el.id) === Number(id)) {
       name = el.name;
     }
   });
-
   return name;
+}
+
+function getLardiCountryName(countryID) {
+  return getName(lardiCountries, countryID);
+}
+
+function getLardiCountryCode(countryID) {
+  var code = '';
+
+  lardiCountries.forEach(function (el) {
+    if (countryID === el.id) {
+      code = el.sign;
+
+      switch (code) {
+        case 'ZY':
+          code = 'BO';
+          break;
+        case 'AR':
+          if (el.name = 'Армения') {
+            code = 'AM';
+          }
+
+          break;
+        case 'ZZ':
+          if (el.name = 'Аргентина') {
+            code = 'AR';
+          }
+
+          break;
+        default:
+          break;
+      }
+    }
+  });
+
+  return code;
 }
 
 function getLardiAreaName(countryID, areaID) {
   var name = '';
   lardiCountries.forEach(function (el) {
     if (countryID === el.id) {
-      if (areaID && el.areas && typeof el.areas === 'object'
-       && el.areas.area && el.areas.area.forEach) {
-        el.eareas.area.forEach(function (area) {
-          if (Number(area.id) === Number(areaID)) {
-            name = area.name;
+      if (areaID && el.areas && typeof el.areas === 'object') {
+        if (el.areas.area && typeof el.areas.area === 'object') {
+          if (Array.isArray(el.areas.area)) {
+            el.areas.area.forEach(function (area) {
+              if (Number(area.id) === Number(areaID)) {
+                name = area.name;
+              }
+            });
+          } else {
+            if (Number(el.areas.area.id) === Number(areaID)) {
+              name = el.areas.area.name;
+            }
           }
-        });
+        }
       }
     }
   });

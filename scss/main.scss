@@ -9,7 +9,7 @@ $lighterGrey: #eee;
 $lightOrange: #ffdb90;
 
 body {
-    width: 600px;
+    width: 700px;
     min-height: 280px;
     height: 600px;
     background-color: $white;
@@ -47,17 +47,18 @@ label {
 
 .btn {
     &.white {
-      background-color: $white;
-      border: 1px solid grey;
-      color: $greyText!important;
+        background-color: $white;
+        border: 1px solid grey;
+        color: $greyText!important;
     }
 
     &:focus {
         outline: none;
     }
 
-    &.disabled, &[disabled] {
-      cursor: default;
+    &.disabled,
+    &[disabled] {
+        cursor: default;
     }
 }
 
@@ -102,19 +103,19 @@ label {
 }
 
 .auto-width {
-  width: auto;
+    width: auto;
 }
 
 .width-80 {
-  width: 80%;
+    width: 80%;
 }
 
 .inline-block {
-  display: inline-block;
+    display: inline-block;
 }
 
 .right {
-  float: right;
+    float: right;
 }
 
 .ce__form-container_company-image,
@@ -336,8 +337,8 @@ label {
         margin: 0 0 5px;
         padding-right: 0;
 
-         > div,
-        > div > div {
+         > div > div,
+        > div {
             padding-left: 0;
         }
 
@@ -569,6 +570,53 @@ label {
             padding: 1px;
             border-color: transparent;
             cursor: pointer;
+        }
+    }
+}
+
+.cargos-list {
+    .export-message {
+      margin-bottom: 10px;
+    }
+
+    table {
+      margin-top: 10px;
+        thead {
+            td {
+                font-size: 10px;
+            }
+        }
+
+        tbody {
+            tr {
+                font-size: 10px;
+
+                td {
+                    vertical-align: middle;
+
+                    &:last-child {
+                        width: 56px;
+                    }
+
+                    &:nth-child(1) {
+                      text-align: center;
+                    }
+
+                    &:nth-child(5) {
+                      text-align: center;
+                      width: 72px;
+                    }
+                }
+            }
+
+            .btn {
+                height: 20px;
+                width: 22px;
+                font-size: 12px;
+                float: right;
+                padding: 4px 1px;
+                line-height: 8px;
+            }
         }
     }
 }

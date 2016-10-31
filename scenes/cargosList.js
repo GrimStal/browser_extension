@@ -3,6 +3,21 @@
 App.scenes.cargosList = {
 
   show: function () {
+    var template;
+
+    this.getLardiCargos(function (cargos) {
+      cargos.forEach(function (cargo) {
+        cargo.payment_currency_name = 'грн.'; //TODO correct currencies names
+      });
+
+      template = _.templates.cargosList({
+        wrapper_class: 'cargos-list',
+        wrapper_id: 'cargos-list',
+        lardiCargos: cargos
+      });
+
+      $('.ce__wrapper').empty().append(template);
+    });
 
   },
 
@@ -47,35 +62,28 @@ App.scenes.cargosList = {
   },
 
   createCargoDuplicate: function (object, callback) {
-    console.log(object);
     var _this = this;
     var note = [];
     var loads = this.setLoadTypes(object.zagruz_set);
     var cargo = new CargoObject();
     var getCargoTypes = App.exchanges.getCargoTypes();
+    var getAutoTips = App.exchanges.getLardiAutoTips();
     var placeFrom = [];
     var areaFrom;
-    var countryFrom;
     var placeTo = [];
     var areaTo;
-    var countryTo;
+    var creq = new Request('cargo', 'POST', 'cargos');
 
     if (!object) {
       return false;
     }
 
     areaFrom = getLardiAreaName(object.country_from_id, object.area_from_id);
-    countryFrom = getLardiCountryName(object.country_from_id);
     areaTo = getLardiAreaName(object.country_to_id, object.area_to_id);
-    countryTo = getLardiCountryName(object.country_to_id);
 
     placeFrom.push(object.city_from);
     if (areaFrom) {
       placeFrom.push(areaFrom);
-    }
-
-    if (countryFrom) {
-      placeFrom.push(countryFrom);
     }
 
     placeTo.push(object.city_to);
@@ -83,15 +91,17 @@ App.scenes.cargosList = {
       placeTo.push(areaTo);
     }
 
-    if (countryTo) {
-      placeTo.push(countryTo);
-    }
+    delete cargo.from;
+    delete cargo.to;
+    cargo.origins = [];
+    cargo.destinations = [];
+    cargo.origins.push({ country: getLardiCountryCode(object.country_from_id), name: placeFrom.join(', ') });
+    cargo.destinations.push({ country: getLardiCountryCode(object.country_to_id), name: placeTo.join(', ') });
 
-    cargo.from.push(placeFrom.join(', '));
-    cargo.to.push(placeTo.join(', '));
+    $.when(getCargoTypes, getAutoTips).then(
+        function (cargoTypes, autoTips) {
+          var aTips = XMLtoJson(autoTips).response.item;
 
-    $.when(getCargoTypes).then(
-        function (cargoTypes) {
           //Cargo type
           cargo.type = getID(cargoTypes.cargoTypes, object.gruz);
           if (cargo.type === -1) {
@@ -125,6 +135,10 @@ App.scenes.cargosList = {
           //dates
           cargo.fromDate = new Date(object.date_from).setUTCHours(0, 0, 0, 0) / 1000;
           cargo.tillDate = new Date(object.date_to).setUTCHours(23, 59, 0, 0) / 1000;
+
+          if (!cargo.tillDate) {
+            cargo.tillDate = new Date(object.date_from).setUTCHours(23, 59, 0, 0) / 1000;
+          }
 
           //volume
           if (object.value_select === 'FROM' || !object.value.length) {
@@ -212,7 +226,7 @@ App.scenes.cargosList = {
           //prepay
           object.payment_prepay = parseInt(object.payment_prepay);
           if (object.payment_prepay && (object.payment_prepay > 0 && object.payment_prepay <= 100)) {
-            note.push('Предоплата ' + object.payment_prepay + '%');
+            note.push('Предоплата ' + object.payment_prepay + '%;');
           }
 
           //payment_unit
@@ -276,10 +290,40 @@ App.scenes.cargosList = {
             cargo.manipulator = 1;
           }
 
+          //auto_col_tip
+          if (object.auto_col_id && object.auto_col_id.length > 0 && object.auto_col_id !== '0') {
+            object.auto_col = parseInt(object.auto_col);
+            if (object.auto_col > 0) {
+              note.push(object.auto_col + ' ' + getName(aTips, object.auto_col_id));
+            }
+          }
+
           //Notes
-          note.push(object.note, object.add_info);
-          cargo.notes = note.join(', ');
-          callback(cargo);
+          if (object.note.length > 0) {
+            note.push(object.note);
+          }
+
+          if (object.add_info.length > 0) {
+            note.push(object.add_info);
+          }
+
+          cargo.notes = note.join('; ');
+
+          creq.data = cargo;
+          creq.headers = {
+            'Access-Token': App.appData.cargo.token,
+          };
+
+          App.exchanges.getDataFromServer(creq).then(
+            function (response) {
+              console.log(response);
+              callback(cargo);
+            },
+            function (error) {
+              console.log(error);
+              callback(cargo);
+            }
+          );
         },
         function (error) {
           console.log(error);

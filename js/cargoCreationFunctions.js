@@ -339,3 +339,9 @@ function setParam(param, defaultVal) {
       ? parseInt(param)
       : defaultVal;
 }
+
+function setFloatParam(param, defaultVal) {
+  return parseFloat(param)
+      ? parseFloat(param)
+      : defaultVal;
+}
