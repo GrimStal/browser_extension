@@ -154,67 +154,67 @@
     __e(originLabel) +
     '</label>\n            <label>' +
     __e(destinationLabel) +
-    '</label>\n          </div>\n          <div class="city col-xs-6 col-sm-6">\n              <div class="form-group has-feedback">\n                  <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />\n                  <span class="form-control-feedback glyphicon glyphicon-remove origin-remove"></span>\n              </div>\n                  <div class="col-xs-8 col-sm-8">\n                      <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">\n                          <img class="revert-cities-img" src="css/images/reverse.png" />\n                      </div>\n                  </div>\n              <div class="form-group has-feedback">\n                  <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />\n                  <span class="form-control-feedback glyphicon glyphicon-remove destination-remove"></span>\n              </div>\n          </div>\n            <div class="calendar-holder col-xs-4 col-md-4">\n                <div class="calendar">\n                    <div class="month current-month">\n                        ' +
+    '</label>\n          </div>\n          <div class="col-wrap col-xs-10 col-sm-10">\n            <div class="city col-xs-7 col-sm-7">\n                <div class="form-group has-feedback">\n                    <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />\n                    <span class="form-control-feedback glyphicon glyphicon-remove origin-remove"></span>\n                </div>\n                    <div class="col-xs-8 col-sm-8">\n                        <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">\n                            <img class="revert-cities-img" src="css/images/reverse.png" />\n                        </div>\n                    </div>\n                <div class="form-group has-feedback">\n                    <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />\n                    <span class="form-control-feedback glyphicon glyphicon-remove destination-remove"></span>\n                </div>\n            </div>\n            <div class="calendar-holder col-xs-5 col-md-5 wide-right">\n                <div class="calendar">\n                    <div class="month current-month">\n                        ' +
     __e(currentMonth) +
-    '<span id="removeSelection" class="glyphicon glyphicon-remove"></div>\n                <table class="table dates">\n                    <tr>\n                    ';
+    '<span id="removeSelection" class="glyphicon glyphicon-remove"></div>\n                  <table class="table dates">\n                      <tr>\n                      ';
      for(var i=0; i < days.length; i++) {
-    __p += '\n                      <th>' +
+    __p += '\n                        <th>' +
     ((__t = (days[i])) == null ? '' : __t) +
-    '</th>\n                    ';
+    '</th>\n                      ';
      }
-    __p += '\n                    </tr>\n\n                    ';
+    __p += '\n                      </tr>\n\n                      ';
      for (var date=0; date < dates.length; date++){
-    __p += '\n                      ';
+    __p += '\n                        ';
      var dayNum = (date % 7); ;
-    __p += '\n                      ';
+    __p += '\n                        ';
      if (dayNum === 0) {
-    __p += '\n                      <tr>\n                        <td class="date weekday date-' +
+    __p += '\n                        <tr>\n                          <td class="date weekday date-' +
     ((__t = (dates[date].getDate())) == null ? '' : __t) +
     '" timestamp="' +
     ((__t = ((dates[date].setUTCHours(0,0,0,0)/1000))) == null ? '' : __t) +
     '"><div>' +
     __e(dates[date].getDate()) +
-    '</div></td>\n                      ';
+    '</div></td>\n                        ';
      } else if (dayNum === 3) {
-    __p += '\n                        <td class="date weekday thursday date-' +
+    __p += '\n                          <td class="date weekday thursday date-' +
     ((__t = (dates[date].getDate())) == null ? '' : __t) +
     '" timestamp="' +
     ((__t = ((dates[date].setUTCHours(0,0,0,0)/1000))) == null ? '' : __t) +
     '"><div>' +
     __e(dates[date].getDate()) +
-    '</div></td>\n                      ';
+    '</div></td>\n                        ';
      } else if (dayNum === 5) {
-    __p += '\n                        <td class="date weekend date-' +
+    __p += '\n                          <td class="date weekend date-' +
     ((__t = (dates[date].getDate())) == null ? '' : __t) +
     '" timestamp="' +
     ((__t = ((dates[date].setUTCHours(0,0,0,0)/1000))) == null ? '' : __t) +
     '"><div>' +
     __e(dates[date].getDate()) +
-    '</div></td>\n                      ';
+    '</div></td>\n                        ';
      } else if (dayNum === 6) {
-    __p += '\n                        <td class="date weekend date-' +
+    __p += '\n                          <td class="date weekend date-' +
     ((__t = (dates[date].getDate())) == null ? '' : __t) +
     '" timestamp="' +
     ((__t = ((dates[date].setUTCHours(0,0,0,0)/1000))) == null ? '' : __t) +
     '"><div>' +
     __e(dates[date].getDate()) +
-    '</div></td>\n                      </tr>\n                      ';
+    '</div></td>\n                        </tr>\n                        ';
      } else {
-    __p += '\n                        <td class="date weekday date-' +
+    __p += '\n                          <td class="date weekday date-' +
     ((__t = (dates[date].getDate())) == null ? '' : __t) +
     '" timestamp="' +
     ((__t = ((dates[date].setUTCHours(0,0,0,0)/1000))) == null ? '' : __t) +
     '"><div>' +
     __e(dates[date].getDate()) +
-    '</div></td>\n                      ';
+    '</div></td>\n                        ';
      }
-    __p += '\n                    ';
+    __p += '\n                      ';
      }
-    __p += '\n                </table>\n                <div class="month next-month">' +
+    __p += '\n                  </table>\n                <div class="month next-month">' +
     __e(nextMonth) +
-    '</div>\n            </div>\n        </div>\n        </div>\n      </div>\n      <div class="row">\n        <div class="cargo-info-holder container">\n          <div class="row">\n            <form class="form-inline" role="form" id="cargo-types-holder-form" novalidate>\n                  <div class="form-group">\n                      <label for="cargo-type" class="col-xs-2 col-sm-2">' +
+    '</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n      <div class="row">\n        <div class="cargo-info-holder container">\n          <div class="row">\n            <form class="form-inline" role="form" id="cargo-types-holder-form" novalidate>\n              <label for="cargo-type" class="col-xs-2 col-sm-2">' +
     __e(cargoTypeLabel) +
-    ':</label>\n                      <div class="col-xs-6 col-sm-6">\n                        <select class="form-control cargo-types-select input-sm" id="cargo-types" name="cargo-types">\n                          <option value="" selected>' +
+    ':</label>\n                <div class="col-wrap col-xs-10 col-sm-10">\n                      <div class="col-xs-7 col-sm-7 wide-right">\n                        <select class="form-control cargo-types-select input-sm" id="cargo-types" name="cargo-types">\n                          <option value="" selected>' +
     __e(cargoTypeLabel) +
     '</option>\n                            ';
      _.forEach(cargoTypes, function(type) {
@@ -224,35 +224,37 @@
     __e(type.type) +
     '</option>\n                            ';
      }) ;
-    __p += '\n                        </select>\n                      </div>\n                  </div>\n                  <div class="form-group">\n                      <label for="adr" class="col-xs-1 col-sm-1">' +
+    __p += '\n                        </select>\n                      </div>\n\n                      <div class="col-wrap col-xs-5 col-sm-5 wide-left">\n                          <label for="temperature" class="col-xs-3 col-sm-3">' +
+    ((__t = (temperatureLabel)) == null ? '' : __t) +
+    '</label>\n                          <div class="col-xs-4 col-sm-4 wide-right">\n                            <input type="number" min="-50" max="50" step="1" value="" class="form-control temperature-input input-sm" id="temperatureMin" name="temperatureMin" />\n                          </div>\n                          <div class="col-xs-2 col-sm-2 wide-right wide-left center">\n                            -\n                          </div>\n                          <div class="col-xs-3 col-sm-3 wide-left">\n                            <input type="number" min="-50" max="50" step="1" value="" class="form-control temperature-input input-sm" id="temperatureMax" name="temperatureMax" />\n                          </div>\n                      </div>\n                </div>\n            </form>\n          </div>\n\n          <div class="row">\n            <form class="form-inline" role="form" id="cargo-info-holder-form" novalidate>\n              <div class="form-group">\n                  <label for="weight" class="col-xs-2 col-sm-2">' +
+    ((__t = (weightLabel)) == null ? '' : __t) +
+    '</label>\n\n                  <div class="col-wrap col-xs-10 col-sm-10">\n                    <div class="col-xs-7 col-sm-7 wide-right">\n\n                      <div class="col-xs-7 col-sm-7 wide-right">\n                        <div class="col-xs-3 col-sm-3 wide-right">\n                          <input type="text" maxlength="5" class="form-control weight-input input-sm" id="weight" name="weight"/>\n                          <span class="placeholder">T</span>\n                        </div>\n                        <label for="volume" class="col-xs-4 col-sm-4">' +
+    ((__t = (volumeLabel)) == null ? '' : __t) +
+    '</label>\n                        <div class="col-xs-4 col-sm-4 wide-right">\n                          <input type="text" maxlength="5" class="form-control volume-input input-sm" id="volume" name="volume"/>\n                          <span class="placeholder">m³</span>\n                        </div>\n                      </div>\n\n                      <label for="ldm" class="col-xs-2 col-sm-2 wide-left">' +
+    ((__t = (ldmLabel)) == null ? '' : __t) +
+    '</label>\n                      <div class="col-xs-3 col-sm-3 wide-right">\n                        <input type="text" maxlength="5" class="form-control ldm-input input-sm" id="ldm" name="ldm"/>\n                        <span class="placeholder">ldm</span>\n                      </div>\n\n                    </div>\n\n                    <div class="col-wrap col-xs-5 col-sm-5 wide-left">\n                        <div class="form-group">\n                          <label for="palets" class="col-xs-4 col-sm-4">' +
+    ((__t = (paletsLabel)) == null ? '' : __t) +
+    '</label>\n                          <div class="col-xs-3 col-sm-3">\n                            <input type="text" class="form-control palets-input input-sm" id="palets" name="palets" />\n                            </div>\n                        </div>\n\n                        <div class="form-group">\n                            <label for="adr" class="col-xs-2 col-sm-2">' +
     __e(adrLabel) +
-    '</label>\n                      <div class="col-xs-3 col-sm-3">\n                        <select class="form-control adr-select input-sm" id="adr" name="adr">\n                          <option value="" selected></option>\n                            ';
+    '</label>\n                            <div class="col-xs-3 col-sm-3">\n                              <select class="form-control adr-select input-sm" id="adr" name="adr">\n                                <option value="" selected></option>\n                                  ';
      _.forEach(adrs, function(adr) {
-    __p += '\n                              <option value="' +
+    __p += '\n                                    <option value="' +
     __e(adr) +
     '">' +
     __e(adr) +
-    '</option>\n                            ';
+    '</option>\n                                  ';
      }) ;
-    __p += '\n                        </select>\n                      </div>\n                  </div>\n            </form>\n          </div>\n\n          <div class="row">\n            <form class="form-inline" role="form" id="cargo-info-holder-form" novalidate>\n              <div class="form-group">\n                  <label for="weight" class="col-xs-2 col-sm-2">' +
-    ((__t = (weightLabel)) == null ? '' : __t) +
-    '</label>\n                  <div class="col-xs-1 col-sm-1 wide-right">\n                    <input type="text" class="form-control weight-input input-sm" id="weight" name="weight" placeholder="T"/>\n                  </div>\n              </div>\n              <div class="col-wrap col-xs-5 col-sm-5">\n                    <div class="form-group">\n                        <label for="volume" class="col-xs-3 col-sm-3">' +
-    ((__t = (volumeLabel)) == null ? '' : __t) +
-    '</label>\n                        <div class="col-xs-3 col-sm-3 wide-right">\n                          <input type="text" class="form-control volume-input input-sm" id="volume" name="volume" placeholder="m³"/>\n                        </div>\n                    </div>\n                    <div class="form-group">\n                        <label for="palets" class="col-xs-3 col-sm-3">' +
-    ((__t = (paletsLabel)) == null ? '' : __t) +
-    '</label>\n                        <div class="col-xs-3 col-sm-3 wide-right">\n                          <input type="text" class="form-control palets-input input-sm" id="palets" name="palets" />\n                        </div>\n                    </div>\n              </div>\n              <fieldset id="temperature" disabled>\n                <div class="form-group">\n                    <label for="temperature" class="col-xs-3 col-sm-3">' +
-    ((__t = (temperatureLabel)) == null ? '' : __t) +
-    '</label>\n                    <div class="col-wrap col-xs-9 col-sm-9">\n                      <div class="col-xs-5 col-sm-5 wide-right">\n                        <input type="number" min="-50" max="50" step="1" value="4" class="form-control temperature-input input-sm" id="temperatureMin" name="temperatureMin" />\n                      </div>\n                      <div class="col-xs-2 col-sm-2 wide-right wide-left center">\n                        -\n                      </div>\n                      <div class="col-xs-5 col-sm-5 wide-left">\n                        <input type="number" min="-50" max="50" step="1" value="7" class="form-control temperature-input input-sm" id="temperatureMax" name="temperatureMax" />\n                      </div>\n                    </div>\n                </div>\n              </fieldset>\n            </form>\n          </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
+    __p += '\n                              </select>\n                            </div>\n                        </div>\n                    </div>\n                  </div>\n            </form>\n          </div>\n        </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
     __e(trailerTypes.title) +
-    '</label>\n              <div class="checkbox col-sm-10 col-xs-10">\n                  <div class="col-xs-4 col-md-4">\n                    ';
+    '</label>\n              <div class="checkbox col-sm-10 col-xs-10 wide-left">\n                  <div class="col-xs-7 col-sm-7 wide-left">\n                    <div class="col-xs-6 col-md-6 wide-right">\n                      ';
      _.forEach(trailerTypes.fixed[0], function(trailer) {
-    __p += '\n                      <label>\n                          <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
+    __p += '\n                        <label>\n                            <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
     __e(trailer.id) +
-    '" />\n                          <span class="checkbox-text">' +
+    '" />\n                            <span class="checkbox-text">' +
     ((__t = (trailer.type)) == null ? '' : __t) +
-    '</span>\n                      </label>\n                    ';
+    '</span>\n                        </label>\n                      ';
      }); ;
-    __p += '\n                  </div>\n                  <div class="col-xs-8 col-md-8 col-wrap">\n                    <div class="col-xs-6 col-md-6">\n                      ';
+    __p += '\n                    </div>\n\n                    <div class="col-xs-6 col-md-6">\n                      ';
      _.forEach(trailerTypes.fixed[1], function(trailer) {
     __p += '\n                        <label>\n                            <input type="checkbox" class="trailer-type trailer-type-checkbox" value="' +
     __e(trailer.id) +
@@ -260,7 +262,7 @@
     ((__t = (trailer.type)) == null ? '' : __t) +
     '</span>\n                        </label>\n                      ';
      }); ;
-    __p += '\n                    </div>\n                    <div class="col-xs-6 col-md-6">\n                      ';
+    __p += '\n                    </div>\n                  </div>\n\n                  <div class="col-xs-5 col-md-5">\n                      ';
      _.forEach(trailerTypes.fixed[2], function(trailer) {
     __p += '\n                        ';
      if (!(_.isArray(trailer))) {
@@ -284,25 +286,25 @@
      }
     __p += '\n                      ';
      }); ;
-    __p += '\n                    </div>\n                  </div>\n              </div>\n          </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
+    __p += '\n                  </div>\n              </div>\n          </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
     __e(loadTypes.title) +
-    '</label>\n              <div class="checkbox col-sm-10 col-xs-10">\n                  <div class="col-xs-4 col-md-4">\n                    ';
+    '</label>\n              <div class="checkbox col-sm-10 col-xs-10 wide-left">\n                  <div class="col-xs-7 col-sm-7 wide-left">\n\n                    <div class="col-xs-6 col-md-6 wide-right">\n                      ';
      _.forEach(loadTypes.fixed[0], function(type, key) {
-    __p += '\n                      <label>\n                          <input type="checkbox" class="load-type load-type-checkbox" value="' +
-    __e(key) +
-    '" />\n                          <span class="check-text">' +
-    __e(type) +
-    '</span>\n                      </label>\n                    ';
-     }); ;
-    __p += '\n                  </div>\n                  <div class="col-xs-8 col-md-8 col-wrap">\n                    <div class="col-xs-6 col-md-6">\n                      ';
-     _.forEach(loadTypes.fixed[1], function(type, key) {
     __p += '\n                        <label>\n                            <input type="checkbox" class="load-type load-type-checkbox" value="' +
     __e(key) +
     '" />\n                            <span class="check-text">' +
     __e(type) +
     '</span>\n                        </label>\n                      ';
      }); ;
-    __p += '\n                    </div>\n                    <div class="col-xs-6 col-md-6">\n                      ';
+    __p += '\n                    </div>\n\n                      <div class="col-xs-6 col-md-6">\n                        ';
+     _.forEach(loadTypes.fixed[1], function(type, key) {
+    __p += '\n                          <label>\n                              <input type="checkbox" class="load-type load-type-checkbox" value="' +
+    __e(key) +
+    '" />\n                              <span class="check-text">' +
+    __e(type) +
+    '</span>\n                          </label>\n                        ';
+     }); ;
+    __p += '\n                      </div>\n                  </div>\n\n                  <div class="col-xs-5 col-md-5">\n                      ';
      _.forEach(loadTypes.fixed[2], function(type, key) {
     __p += '\n                        <label>\n                            <input type="checkbox" class="load-type load-type-checkbox" value="' +
     __e(key) +
@@ -310,57 +312,53 @@
     __e(type) +
     '</span>\n                        </label>\n                      ';
      }); ;
-    __p += '\n                    </div>\n                  </div>\n              </div>\n          </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
+    __p += '\n                  </div>\n                </div>\n          </div>\n\n          <div class="row">\n              <label class="col-xs-2 col-sm-2">' +
     __e(documents.title) +
-    '</label>\n              <div class="checkbox col-sm-10 col-xs-10">\n                  <div class="col-xs-4 col-md-4">\n                    ';
+    '</label>\n              <div class="checkbox col-sm-10 col-xs-10 wide-left">\n                  <div class="col-xs-7 col-sm-7 wide-left">\n                      <div class="col-xs-6 col-md-6 wide-left">\n                        ';
      _.forEach(documents.docs[0], function(doc, key) {
-    __p += '\n                      <div class="col-xs-6 col-md-6">\n                        <label>\n                            <input type="checkbox" class="document-type document-type-checkbox" value="' +
+    __p += '\n                          <div class="col-xs-6 col-md-6 wide-right">\n                            <label>\n                                <input type="checkbox" class="document-type document-type-checkbox" value="' +
     __e(key) +
-    '" />\n                            <span class="check-text">' +
+    '" />\n                                <span class="check-text">' +
     ((__t = (doc)) == null ? '' : __t) +
-    '</span>\n                        </label>\n                      </div>\n                    ';
+    '</span>\n                            </label>\n                          </div>\n                        ';
      }); ;
-    __p += '\n                  </div>\n                  <div class="col-xs-7 col-md-7">\n                    ';
-     _.forEach(documents.docs[1], function(doc, key) {
-    __p += '\n                      <div class="col-xs-6 col-md-6">\n                        <label>\n                            <input type="checkbox" class="document-type document-type-checkbox" value="' +
-    __e(key) +
-    '" />\n                            <span class="check-text">' +
-    ((__t = (doc)) == null ? '' : __t) +
-    '</span>\n                        </label>\n                      </div>\n                    ';
-     }); ;
-    __p += '\n                  </div>\n              </div>\n          </div>\n\n          <div class="row">\n              <form class="form-inline" role="form" id="payment-form" novalidate>\n                <div class="form-group">\n                    <label for="price" class="col-xs-2 col-sm-2">' +
+    __p += '\n                      </div>\n                      <div class="col-xs-6 col-md-6 wide-left wide-right">\n                        <div class="col-xs-5 col-md-5 wide-right">\n                          <label>\n                              <input type="checkbox" class="document-type document-type-checkbox" value="t1" />\n                              <span class="check-text">' +
+    ((__t = (documents.docs[1].t1)) == null ? '' : __t) +
+    '</span>\n                          </label>\n                        </div>\n                        <div class="col-xs-7 col-md-7 wide-right">\n                          <label>\n                              <input type="checkbox" class="document-type document-type-checkbox" value="declaration" />\n                              <span class="check-text">' +
+    ((__t = (documents.docs[1].declaration)) == null ? '' : __t) +
+    '</span>\n                          </label>\n                        </div>\n                      </div>\n                  </div>\n                  <div class="col-xs-5 col-sm-5 wide-right"></div>\n              </div>\n          </div>\n\n          <div class="row">\n              <form class="form-inline" role="form" id="payment-form" novalidate>\n                 <label for="price" class="col-xs-2 col-sm-2">' +
     __e(paymentLabel) +
-    '</label>\n                    <div class="col-xs-3 col-sm-3">\n                      <input type="text" class="form-control payment-input input-sm" maxlength=6 id="price" name="price" />\n                    </div>\n                </div>\n                <div class="col-xs-3 col-sm-3">\n                  <select class="form-control currency-select input-sm" id="currency" name="currency">\n                      ';
+    '</label>\n                 <div class="col-sm-10 col-xs-10 wide-right">\n                     <div class="col-xs-7 col-sm-7 wide-left wide-right">\n                        <div class="col-xs-3 col-sm-3 wide-left">\n                          <input type="text" class="form-control payment-input input-sm" maxlength=6 id="price" name="price" />\n                        </div>\n\n                        <div class="col-xs-3 col-sm-3 wide-left">\n                          <select class="form-control currency-select input-sm" id="currency" name="currency">\n                              ';
      _.forEach(currencies, function(cur) {
-    __p += '\n                          ';
+    __p += '\n                                  ';
      if (cur.id === "15") {
-    __p += '\n                          <option selected value="' +
+    __p += '\n                                  <option selected value="' +
     __e(cur.id) +
     '">' +
     __e(cur.type) +
-    '</option>\n                          ';
+    '</option>\n                                  ';
      } else {
-    __p += '\n                          <option value="' +
+    __p += '\n                                  <option value="' +
     __e(cur.id) +
     '">' +
     __e(cur.type) +
-    '</option>\n                          ';
+    '</option>\n                                  ';
      }
-    __p += '\n                      ';
+    __p += '\n                              ';
      }) ;
-    __p += '\n                  </select>\n                </div>\n                <div class="col-xs-4 col-sm-4">\n                  <select class="form-control payment-type-select input-sm" id="payment-type" name="payment-type">\n                    <option selected disabled value="">' +
+    __p += '\n                          </select>\n                        </div>\n                        <div class="col-xs-6 col-sm-6 wide-left wide-right">\n                          <select class="form-control payment-type-select input-sm" id="payment-type" name="payment-type">\n                            <option selected disabled value="">' +
     __e(paymentTypePlaceholder) +
-    '</option>\n                      ';
+    '</option>\n                              ';
      _.forEach(paymentTypes, function(type, key) {
-    __p += '\n                          <option value="' +
+    __p += '\n                                  <option value="' +
     __e(key) +
     '">' +
     __e(type) +
-    '</option>\n                      ';
+    '</option>\n                              ';
      }) ;
-    __p += '\n                  </select>\n                </div>\n              </form>\n          </div>\n\n          <div class="row">\n            <form class="form-inline" role="form" id="note-form" novalidate>\n              <div class="form-group">\n                  <label for="note" class="col-xs-2 col-sm-2">' +
+    __p += '\n                          </select>\n                        </div>\n                    </div>\n                    <div class="col-xs-5 col-sm-5 wide-right">\n                  </div>\n                </div>\n              </form>\n          </div>\n\n          <div class="row">\n            <form class="form-inline" role="form" id="note-form" novalidate>\n              <div class="form-group">\n                  <label for="note" class="col-xs-2 col-sm-2">' +
     __e(noteLabel) +
-    '</label>\n                  <div class="col-xs-10 col-sm-10">\n                    <textarea rows="2" class="form-control note-textarea" maxlength=40 id="note" name="note" />\n                  </div>\n              </div>\n            </form>\n          </div>\n      </div>\n      </div>\n    </div>\n            </div>\n        </div>\n    </div>\n    <div class="row">\n          <div class="col-xs-3 col-sm-3 col-xs-offset-3 col-sm-offset-3">\n            <button id="clean" type="button" class="btn btn-defualt ce__btn ce__order_btn-clean col-xs-12 col-sm-12">\n              ' +
+    '</label>\n                  <div class="col-xs-10 col-sm-10">\n                    <textarea rows="2" class="form-control note-textarea" maxlength=40 id="note" name="note" />\n                  </div>\n              </div>\n            </form>\n          </div>\n      </div>\n      </div>\n    </div>\n\n    <div class="row">\n          <div class="col-xs-3 col-sm-3 col-xs-offset-3 col-sm-offset-3">\n            <button id="clean" type="button" class="btn btn-defualt ce__btn ce__order_btn-clean col-xs-12 col-sm-12">\n              ' +
     __e(clearButtonText) +
     '\n            </button>\n          </div>\n          <div class="col-xs-3 col-sm-3">\n            <button id="sendOrder" type="button" class="btn btn-accept ce__btn ce__order_btn-confirm col-xs-12 col-sm-12">\n              ' +
     __e(orderButtonText) +

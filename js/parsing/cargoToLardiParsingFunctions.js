@@ -60,7 +60,7 @@ function getLoadTypesMnemos(array, selectedArray) {
  */
 function getAdditionalLoadTypes(array, selectedArray) {
   var names = [];
-  if ($(selectedArray).length === 0 || array.length === 0) {
+  if (!array || !selectedArray || $(selectedArray).length === 0 || array.length === 0) {
     return '';
   }
 

@@ -27,7 +27,7 @@ label {
             height: 16px;
             position: absolute;
             display: inline-block;
-            left: 0;
+            left: 15px;
             background-color: #fff;
             border-radius: 3px;
             border: 1px solid #ccc;
@@ -317,7 +317,7 @@ label {
 .city-holder {
     label {
         top: 2px;
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 400;
         line-height: 18px;
         padding-right: 0;
@@ -337,9 +337,14 @@ label {
         margin: 0 0 5px;
         padding-right: 0;
 
-         > div > div,
-        > div {
-            padding-left: 0;
+        >div {
+          &:last-child {
+            padding-left: 20px;
+
+            .check-text:before {
+              left: 20px;
+            }
+          }
         }
 
         label {
@@ -407,6 +412,33 @@ label {
     .form-group {
         margin-top: 5px;
     }
+
+    .placeholder {
+      position: absolute;
+      right: 3px;
+      top: 2px;
+      z-index: 2;
+      display: inline;
+      color: $lightGrey;
+    }
+
+    #weight {
+      width: 52px;
+
+      ~ .placeholder {
+          right: -3px;
+          top: 2px;
+      }
+    }
+
+    #volume {
+      width: 55px;
+
+      ~ .placeholder {
+          right: -5px;
+          top: 2px;
+      }
+    }
 }
 
 .wide-right {
@@ -439,6 +471,7 @@ label {
     }
 
     .col-wrap {
+
         .form-group {
             margin-top: 0;
         }
@@ -451,23 +484,6 @@ label {
             padding-right: 0;
         }
     }
-
-    fieldset {
-        > .form-group {
-            margin-top: 0;
-        }
-
-        &:disabled {
-            .form-group {
-                color: $lighterGrey;
-
-                input {
-                    opacity: 0.4;
-                    cursor: pointer;
-                }
-            }
-        }
-    }
 }
 
 #removeSelection {
@@ -475,7 +491,10 @@ label {
 }
 
 .calendar-holder {
-    padding: 0 15px 0 0;
+
+    .calendar {
+      padding-left: 10px;
+    }
 
     .dates,
     .month {

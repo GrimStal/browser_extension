@@ -15,7 +15,7 @@ label input[type=checkbox] {
     height: 16px;
     position: absolute;
     display: inline-block;
-    left: 0;
+    left: 15px;
     background-color: #fff;
     border-radius: 3px;
     border: 1px solid #ccc;
@@ -229,7 +229,7 @@ label input[type=checkbox] {
 .cargo-info-holder label,
 .city-holder label {
   top: 2px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 18px;
   padding-right: 0; }
@@ -248,11 +248,12 @@ label input[type=checkbox] {
 .city-holder .checkbox {
   margin: 0 0 5px;
   padding-right: 0; }
-  .cargo-info-holder .checkbox > div > div,
-  .cargo-info-holder .checkbox > div,
-  .city-holder .checkbox > div > div,
-  .city-holder .checkbox > div {
-    padding-left: 0; }
+  .cargo-info-holder .checkbox > div:last-child,
+  .city-holder .checkbox > div:last-child {
+    padding-left: 20px; }
+    .cargo-info-holder .checkbox > div:last-child .check-text:before,
+    .city-holder .checkbox > div:last-child .check-text:before {
+      left: 20px; }
   .cargo-info-holder .checkbox label,
   .city-holder .checkbox label {
     text-align: left;
@@ -297,6 +298,26 @@ label input[type=checkbox] {
 .cargo-info-holder .form-group {
   margin-top: 5px; }
 
+.cargo-info-holder .placeholder {
+  position: absolute;
+  right: 3px;
+  top: 2px;
+  z-index: 2;
+  display: inline;
+  color: #ccc; }
+
+.cargo-info-holder #weight {
+  width: 52px; }
+  .cargo-info-holder #weight ~ .placeholder {
+    right: -3px;
+    top: 2px; }
+
+.cargo-info-holder #volume {
+  width: 55px; }
+  .cargo-info-holder #volume ~ .placeholder {
+    right: -5px;
+    top: 2px; }
+
 .wide-right {
   padding-right: 0; }
 
@@ -326,74 +347,77 @@ label input[type=checkbox] {
 .cargo-info-holder .col-wrap div:last-child {
   padding-right: 0; }
 
-.cargo-info-holder fieldset > .form-group {
-  margin-top: 0; }
-
-.cargo-info-holder fieldset:disabled .form-group {
-  color: #eee; }
-  .cargo-info-holder fieldset:disabled .form-group input {
-    opacity: 0.4;
-    cursor: pointer; }
-
 #removeSelection {
   display: none; }
 
-.calendar-holder {
-  padding: 0 15px 0 0; }
-  .calendar-holder .dates,
-  .calendar-holder .month {
-    font-size: 10px; }
-  .calendar-holder .month {
-    margin: 1px 0; }
-  .calendar-holder .next-month {
-    background-color: #eee;
-    color: #000; }
-  .calendar-holder .current-month {
-    background-color: #e7f3db;
-    color: #000; }
-  .calendar-holder #removeSelection {
-    background-color: #ccc;
-    color: red;
-    float: right; }
-  .calendar-holder .weekend > div {
-    color: #666; }
-  .calendar-holder .date div {
-    border-radius: 2px;
-    padding: 1px 0;
-    font-size: 11px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none; }
-  .calendar-holder .date.today div {
-    font-weight: 800; }
-  .calendar-holder .date.past div {
-    opacity: 0.9;
-    color: #ccc; }
-  .calendar-holder .date.selected div {
-    background-color: #ffdb90;
-    color: #fff;
-    opacity: 1; }
-  .calendar-holder .month {
-    border-radius: 2px;
-    padding: 0 8px; }
-    .calendar-holder .month.current-month {
-      opacity: 0.8;
-      text-align: left; }
-    .calendar-holder .month.next-month {
-      text-align: right; }
-  .calendar-holder .table {
-    margin-bottom: 0; }
-    .calendar-holder .table td,
-    .calendar-holder .table th {
-      text-align: center; }
-    .calendar-holder .table th {
-      padding: 0;
-      color: rgba(0, 0, 0, 0.3);
-      border: 0; }
-    .calendar-holder .table td {
-      padding: 1px;
-      border-color: transparent;
-      cursor: pointer; }
+.calendar-holder .calendar {
+  padding-left: 10px; }
+
+.calendar-holder .dates,
+.calendar-holder .month {
+  font-size: 10px; }
+
+.calendar-holder .month {
+  margin: 1px 0; }
+
+.calendar-holder .next-month {
+  background-color: #eee;
+  color: #000; }
+
+.calendar-holder .current-month {
+  background-color: #e7f3db;
+  color: #000; }
+
+.calendar-holder #removeSelection {
+  background-color: #ccc;
+  color: red;
+  float: right; }
+
+.calendar-holder .weekend > div {
+  color: #666; }
+
+.calendar-holder .date div {
+  border-radius: 2px;
+  padding: 1px 0;
+  font-size: 11px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none; }
+
+.calendar-holder .date.today div {
+  font-weight: 800; }
+
+.calendar-holder .date.past div {
+  opacity: 0.9;
+  color: #ccc; }
+
+.calendar-holder .date.selected div {
+  background-color: #ffdb90;
+  color: #fff;
+  opacity: 1; }
+
+.calendar-holder .month {
+  border-radius: 2px;
+  padding: 0 8px; }
+  .calendar-holder .month.current-month {
+    opacity: 0.8;
+    text-align: left; }
+  .calendar-holder .month.next-month {
+    text-align: right; }
+
+.calendar-holder .table {
+  margin-bottom: 0; }
+  .calendar-holder .table td,
+  .calendar-holder .table th {
+    text-align: center; }
+  .calendar-holder .table th {
+    padding: 0;
+    color: rgba(0, 0, 0, 0.3);
+    border: 0; }
+  .calendar-holder .table td {
+    padding: 1px;
+    border-color: transparent;
+    cursor: pointer; }
 
 .cargos-list .export-message {
   margin-bottom: 10px; }

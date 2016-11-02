@@ -46,15 +46,15 @@ function insertCheckbox() {
   /** Get elements with label elements and search wich element contains
   * the least of elements to add checkbox there.
   */
-  container.children().find('label').parent().each(function (i, el) {
-    var length = $(el).children().length;
-    if (length < len) {
-      $target = $(el);
-      len = length++;
-    } else {
-      len = length;
-    }
-  });
+  // container.children().find('label').parent().each(function (i, el) {
+  //   var length = $(el).children().length;
+  //   if (length < len) {
+  //     $target = $(el);
+  //     len = length++;
+  //   } else {
+  //     len = length;
+  //   }
+  // });
 
   if ($currentSelect && $currentSelect.val() !== '') {
     element = _.templates.trailerCheckbox({
@@ -62,19 +62,24 @@ function insertCheckbox() {
       type: $currentSelect.text(),
     });
 
-    if ($target.get(0) === $select.parent().get(0)) {
-      $(element).insertBefore($select);
-    } else {
-      $target.append(element);
-    }
+    // if ($target.get(0) === $select.parent().get(0)) {
+    $(element).insertBefore($select);
+    // } else {
+    //   $target.append(element);
+    // }
 
-    if ($currentSelect.val() == '7') {
-      $('.trailer-type-checkbox[value=7]').change(checkTemperature);
-      $('#temperature').prop('disabled', false);
-    }
+    // if ($currentSelect.val() == '7') {
+    //   $('.trailer-type-checkbox[value=7]').change(checkTemperature);
+    //   $('#temperature').prop('disabled', false);
+    // }
 
-    $currentSelect.remove();
+    $currentSelect.css('display', 'none');
+    $select.val('');
   }
+}
+
+function useEnteredData() {
+  App.scenes.cargos.cargoTypeSet = 1;
 }
 
 function setCargoDependencies() {
@@ -95,6 +100,18 @@ function setCargoDependencies() {
     }
   }
 
+  if (App.scenes.cargos.cargoTypeSet) {
+    return false;
+  }
+
+  $('#weight, #volume, #palets, #temperatureMin, #temperatureMax, .trailer-type-select, ' +
+    '.trailer-type-checkbox').unbind('change', useEnteredData);
+
+  $('#weight, #volume, #palets, #temperatureMin, #temperatureMax').val('');
+  $('.trailer-type-checkbox').prop('checked', false);
+  App.scenes.cargos.removeAdditionalCheckboxes();
+  $('.trailer-type-select option').css('display', 'block');
+
   var cargoType = parseInt($(this).val());
 
   switch (cargoType) {
@@ -105,7 +122,8 @@ function setCargoDependencies() {
       setCheckbox(6);
       setCheckbox(15);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', true);
+      // $('#temperature').prop('disabled', true);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 2:
     case 5:
@@ -141,7 +159,8 @@ function setCargoDependencies() {
       setCheckbox(13);
       setCheckbox(8);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', true);
+      // $('#temperature').prop('disabled', true);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 6:
     case 8:
@@ -164,7 +183,8 @@ function setCargoDependencies() {
       setCheckbox(13);
       setCheckbox(8);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', true);
+      // $('#temperature').prop('disabled', true);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 1:
       setInput('#volume', 82);
@@ -175,7 +195,8 @@ function setCargoDependencies() {
       setCheckbox(8);
       $('.load-type[value="full"]').prop('checked', true);
       // $('#adr').val(1);
-      $('#temperature').prop('disabled', true);
+      // $('#temperature').prop('disabled', true);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 27:
     case 59:
@@ -184,7 +205,8 @@ function setCargoDependencies() {
       setInput('#palets', 33);
       setCheckbox(16);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', true);
+      // $('#temperature').prop('disabled', true);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 18:
     case 30:
@@ -196,7 +218,8 @@ function setCargoDependencies() {
       setCheckbox(1);
       setCheckbox(3);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', false);
+      // $('#temperature').prop('disabled', false);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 36:
       setInput('#volume', 82);
@@ -204,7 +227,8 @@ function setCargoDependencies() {
       setInput('#palets', 33);
       setCheckbox(1);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', false);
+      // $('#temperature').prop('disabled', false);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 33:
       setInput('#volume', 82);
@@ -212,7 +236,7 @@ function setCargoDependencies() {
       setInput('#palets', 33);
       setCheckbox(1);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', false);
+      // $('#temperature').prop('disabled', false);
       $('#temperatureMin').val(0);
       $('#temperatureMax').val(2);
       break;
@@ -224,7 +248,7 @@ function setCargoDependencies() {
       setInput('#palets', 33);
       setCheckbox(1);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', false);
+      // $('#temperature').prop('disabled', false);
       $('#temperatureMin').val(-18);
       $('#temperatureMax').val(-18);
       break;
@@ -236,9 +260,9 @@ function setCargoDependencies() {
       setCheckbox(13);
       setCheckbox(8);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', true);
-      // $('#temperatureMin').val(4);
-      // $('#temperatureMax').val(7);
+      // $('#temperature').prop('disabled', true);
+      $('#temperatureMin').val(4);
+      $('#temperatureMax').val(7);
       break;
     case 4:
     case 34:
@@ -247,7 +271,7 @@ function setCargoDependencies() {
       setInput('#palets', 33);
       setCheckbox(1);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', false);
+      // $('#temperature').prop('disabled', false);
       $('#temperatureMin').val(4);
       $('#temperatureMax').val(7);
       break;
@@ -259,9 +283,9 @@ function setCargoDependencies() {
       setCheckbox(13);
       setCheckbox(8);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', true);
-      // $('#temperatureMin').val(2);
-      // $('#temperatureMax').val(8);
+      // $('#temperature').prop('disabled', true);
+      $('#temperatureMin').val(2);
+      $('#temperatureMax').val(8);
       break;
     case 42:
       setInput('#volume', 0);
@@ -272,7 +296,8 @@ function setCargoDependencies() {
       setCheckbox(8);
       $('.load-type[value="full"]').prop('checked', true);
       // $('#adr').val(1);
-      $('#temperature').prop('disabled', true);
+      // $('#temperature').prop('disabled', true);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 29:
       setInput('#volume', 0);
@@ -282,7 +307,8 @@ function setCargoDependencies() {
       setCheckbox(13);
       setCheckbox(8);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', true);
+      // $('#temperature').prop('disabled', true);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 66:
     case 67:
@@ -291,7 +317,8 @@ function setCargoDependencies() {
       setInput('#palets', 0);
       setCheckbox(7);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', false);
+      // $('#temperature').prop('disabled', false);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 14:
       setInput('#volume', 60);
@@ -299,8 +326,9 @@ function setCargoDependencies() {
       setInput('#palets', 0);
       setCheckbox(7);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', false);
+      // $('#temperature').prop('disabled', false);
       // $('#adr').val(1);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     case 53:
       setInput('#volume', 0);
@@ -310,7 +338,8 @@ function setCargoDependencies() {
       setCheckbox(13);
       setCheckbox(8);
       $('.load-type[value="full"]').prop('checked', true);
-      $('#temperature').prop('disabled', true);
+      // $('#temperature').prop('disabled', true);
+      $('#temperatureMin, #temperatureMax').val('');
       break;
     default:
       console.log(cargoType);

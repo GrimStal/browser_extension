@@ -58,6 +58,7 @@ App.scenes.cargos = {
     var getTrailerTypes = App.exchanges.getTrailerTypes();
     var getCurrencies = App.exchanges.getCurrencies();
 
+    this.cargoTypeSet = 0;
     this.cargo = new CargoObject();
 
     $.when(getCargoTypes, getTrailerTypes, getCurrencies).then(function (ctypes, ttypes, currencies) {
@@ -113,10 +114,13 @@ App.scenes.cargos = {
       $('.revert-cities').bind('click', _this.revertCities.bind(_this));
       $('.trailer-type-select').change(insertCheckbox);
       $('#cargo-types').change(setCargoDependencies);
-      $('.trailer-type-checkbox[value=1],' +
-        '.trailer-type-checkbox[value=3]').change(checkTemperature);
+      // $('.trailer-type-checkbox[value=1],' +
+      //   '.trailer-type-checkbox[value=3]').change(checkTemperature);
       $('#sendOrder').bind('click', _this.sendCargosData.bind(_this));
       $('#clean').bind('click', _this.clearForm.bind(_this));
+
+      $('#weight, #volume, #palets, #temperatureMin, #temperatureMax, .trailer-type-select, ' +
+        '.trailer-type-checkbox').bind('change', useEnteredData);
 
       _this.setDates();
     }, function (errors) {
@@ -150,7 +154,7 @@ App.scenes.cargos = {
     var weekends = $elements.filter('.weekend').length;
     var thursday = $elements.filter('.thursday').length;
     var curLength = $elements.length;
-    var message = 'Можно указать только ';
+    var message = 'Максимальный период публикации ';
     var allowed = 3;
 
     /** Cargo.lt calendar logic: the bid can be selected on three
@@ -223,19 +227,28 @@ App.scenes.cargos = {
   },
 
   removeCity: function () {
+    var context = App.scenes.cargos;
     var input = $(this).prev('input');
     $(input).val('');
     $(this).hide();
     switch ($(input).attr('id')) {
       case 'origin':
-        this.cargo.from.pop();
+        context.cargo.from.pop();
         break;
       case 'destination':
-        this.cargo.to.pop();
+        context.cargo.to.pop();
         break;
       default:
         console.log('Unknown id');
     }
+  },
+
+  removeAdditionalCheckboxes: function () {
+    $('.trailer-type-checkbox[type=checkbox]').each(function () {
+      if (['1', '2', '3', '8', '9', '10', '13', '17'].indexOf($(this).val()) < 0) {
+        $(this).parent().remove();
+      }
+    });
   },
 
   selectDate: function (e) {
@@ -337,6 +350,7 @@ App.scenes.cargos = {
     var $weight = $('#weight');
     var $volume = $('#volume');
     var $pallets = $('#palets');
+    var $ldm = $('#ldm');
     var $tempMin = $('#temperatureMin');
     var $tempMax = $('#temperatureMax');
     var trailers = [];
@@ -389,8 +403,8 @@ App.scenes.cargos = {
       return swal('Ошибка!', 'Укажите тип кузова.');
     }
 
-    if (!$weight.val() && !$volume.val() && !$pallets.val()) {
-      return swal('Ошибка!', 'Укажите информацию о грузе.');
+    if (!Number($weight.val()) && !Number($volume.val()) && !Number($pallets.val())) {
+      return swal('Ошибка!', 'Укажите информацию о грузе: вес, объём или кол-во палет.');
     }
 
     if ($price.val().length > 6) {
@@ -413,6 +427,7 @@ App.scenes.cargos = {
     lardi.value = setFloatParam($volume.val(), undefined);
 
     cargo.pallets = setParam($pallets.val(), null);
+    cargo.volumeldm = setFloatParam($ldm, 13.6);
 
     if (!$('#temperature').prop('disabled')) {
       cargo.minTemperature = setParam($tempMin.val(), 0);
@@ -554,10 +569,10 @@ App.scenes.cargos = {
       App.stopLoading();
       return App.showScene('cargoAdded');
     }, function (error) {
-
       App.stopLoading();
-      if (error.error && error.error.message) {
-        return swal('Ошибка!', 'Данные на Cargo.LT не отправлены: ' + error.error.message);
+      console.log(error);
+      if (error.responseJSON && error.responseJSON.error && error.responseJSON.error.message) {
+        return swal('Ошибка!', 'Данные на Cargo.LT не отправлены: ' + error.responseJSON.error.message);
       } else {
         return swal('Ошибка!', 'Данные на Lardi-Trans не отправлены: ' + error);
       }
@@ -568,10 +583,14 @@ App.scenes.cargos = {
   clearForm: function () {
     this.removeCity.call($('.origin-remove, .destination-remove'));
     this.removeSelection(true);
+    this.removeAdditionalCheckboxes();
     $('input[type=text], textarea').val('');
     $('select:not("#currency")').val('');
+    $('#currency').val('15');
     $('input[type=checkbox]').prop('checked', false);
-    $('#temperature').prop('disabled', true);
+    // $('#temperature').prop('disabled', true);
+    $('#temperatureMin, #temperatureMax').val('');
+    $('.trailer-type-select option').css('display', 'block');
   },
 
   /**

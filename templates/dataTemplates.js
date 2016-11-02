@@ -13,7 +13,7 @@ var Templates = (function () {
     fields: [
       {
         id: 'lardi_login',
-        label: 'Логин',
+        label: 'Email',
         type: 'text',
       },
       {
@@ -34,7 +34,7 @@ var Templates = (function () {
     fields: [
       {
         id: 'cargo_login',
-        label: 'Логин',
+        label: 'Email',
         type: 'text',
       },
       {
@@ -124,6 +124,7 @@ var Templates = (function () {
     adrs: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     weightLabel: 'Масса:',
     volumeLabel: 'Объём:',
+    ldmLabel: 'Длина:',
     temperatureLabel: 't., C<sup>o</sup>',
     paletsLabel: 'Палеты:',
     trailerTypes: {
@@ -179,11 +180,11 @@ var Templates = (function () {
           },
           {
             t1: 'T1',
-            declaration: 'По декларации',
+            declaration: 'Декларация',
           },
         ],
       },
-    paymentLabel: 'Стоимость:',
+    paymentLabel: 'Цена:',
     currencies: [
       { id: 1, type: 'грн' },
       { id: 2, type: 'USD' },

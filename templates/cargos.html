@@ -5,61 +5,63 @@
             <label><%-originLabel%></label>
             <label><%-destinationLabel%></label>
           </div>
-          <div class="city col-xs-6 col-sm-6">
-              <div class="form-group has-feedback">
-                  <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />
-                  <span class="form-control-feedback glyphicon glyphicon-remove origin-remove"></span>
-              </div>
-                  <div class="col-xs-8 col-sm-8">
-                      <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">
-                          <img class="revert-cities-img" src="css/images/reverse.png" />
-                      </div>
-                  </div>
-              <div class="form-group has-feedback">
-                  <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />
-                  <span class="form-control-feedback glyphicon glyphicon-remove destination-remove"></span>
-              </div>
-          </div>
-            <div class="calendar-holder col-xs-4 col-md-4">
+          <div class="col-wrap col-xs-10 col-sm-10">
+            <div class="city col-xs-7 col-sm-7">
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control origin-input input-sm" id="origin" name="origin" />
+                    <span class="form-control-feedback glyphicon glyphicon-remove origin-remove"></span>
+                </div>
+                    <div class="col-xs-8 col-sm-8">
+                        <div class="revert-cities col-xs-2 col-sm-2 col-xs-offset-7 col-sm-offset-7">
+                            <img class="revert-cities-img" src="css/images/reverse.png" />
+                        </div>
+                    </div>
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control destination-input input-sm" id="destination" name="destination" />
+                    <span class="form-control-feedback glyphicon glyphicon-remove destination-remove"></span>
+                </div>
+            </div>
+            <div class="calendar-holder col-xs-5 col-md-5 wide-right">
                 <div class="calendar">
                     <div class="month current-month">
                         <%-currentMonth%><span id="removeSelection" class="glyphicon glyphicon-remove"></div>
-                <table class="table dates">
-                    <tr>
-                    <% for(var i=0; i < days.length; i++) { %>
-                      <th><%=days[i]%></th>
-                    <% } %>
-                    </tr>
-
-                    <% for (var date=0; date < dates.length; date++){ %>
-                      <% var dayNum = (date % 7); %>
-                      <% if (dayNum === 0) { %>
+                  <table class="table dates">
                       <tr>
-                        <td class="date weekday date-<%=dates[date].getDate()%>" timestamp="<%=(dates[date].setUTCHours(0,0,0,0)/1000)%>"><div><%-dates[date].getDate()%></div></td>
-                      <% } else if (dayNum === 3) { %>
-                        <td class="date weekday thursday date-<%=dates[date].getDate()%>" timestamp="<%=(dates[date].setUTCHours(0,0,0,0)/1000)%>"><div><%-dates[date].getDate()%></div></td>
-                      <% } else if (dayNum === 5) { %>
-                        <td class="date weekend date-<%=dates[date].getDate()%>" timestamp="<%=(dates[date].setUTCHours(0,0,0,0)/1000)%>"><div><%-dates[date].getDate()%></div></td>
-                      <% } else if (dayNum === 6) { %>
-                        <td class="date weekend date-<%=dates[date].getDate()%>" timestamp="<%=(dates[date].setUTCHours(0,0,0,0)/1000)%>"><div><%-dates[date].getDate()%></div></td>
+                      <% for(var i=0; i < days.length; i++) { %>
+                        <th><%=days[i]%></th>
+                      <% } %>
                       </tr>
-                      <% } else { %>
-                        <td class="date weekday date-<%=dates[date].getDate()%>" timestamp="<%=(dates[date].setUTCHours(0,0,0,0)/1000)%>"><div><%-dates[date].getDate()%></div></td>
-                      <% }%>
-                    <% } %>
-                </table>
+
+                      <% for (var date=0; date < dates.length; date++){ %>
+                        <% var dayNum = (date % 7); %>
+                        <% if (dayNum === 0) { %>
+                        <tr>
+                          <td class="date weekday date-<%=dates[date].getDate()%>" timestamp="<%=(dates[date].setUTCHours(0,0,0,0)/1000)%>"><div><%-dates[date].getDate()%></div></td>
+                        <% } else if (dayNum === 3) { %>
+                          <td class="date weekday thursday date-<%=dates[date].getDate()%>" timestamp="<%=(dates[date].setUTCHours(0,0,0,0)/1000)%>"><div><%-dates[date].getDate()%></div></td>
+                        <% } else if (dayNum === 5) { %>
+                          <td class="date weekend date-<%=dates[date].getDate()%>" timestamp="<%=(dates[date].setUTCHours(0,0,0,0)/1000)%>"><div><%-dates[date].getDate()%></div></td>
+                        <% } else if (dayNum === 6) { %>
+                          <td class="date weekend date-<%=dates[date].getDate()%>" timestamp="<%=(dates[date].setUTCHours(0,0,0,0)/1000)%>"><div><%-dates[date].getDate()%></div></td>
+                        </tr>
+                        <% } else { %>
+                          <td class="date weekday date-<%=dates[date].getDate()%>" timestamp="<%=(dates[date].setUTCHours(0,0,0,0)/1000)%>"><div><%-dates[date].getDate()%></div></td>
+                        <% }%>
+                      <% } %>
+                  </table>
                 <div class="month next-month"><%-nextMonth%></div>
+              </div>
             </div>
-        </div>
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="cargo-info-holder container">
           <div class="row">
             <form class="form-inline" role="form" id="cargo-types-holder-form" novalidate>
-                  <div class="form-group">
-                      <label for="cargo-type" class="col-xs-2 col-sm-2"><%-cargoTypeLabel%>:</label>
-                      <div class="col-xs-6 col-sm-6">
+              <label for="cargo-type" class="col-xs-2 col-sm-2"><%-cargoTypeLabel%>:</label>
+                <div class="col-wrap col-xs-10 col-sm-10">
+                      <div class="col-xs-7 col-sm-7 wide-right">
                         <select class="form-control cargo-types-select input-sm" id="cargo-types" name="cargo-types">
                           <option value="" selected><%-cargoTypeLabel%></option>
                             <% _.forEach(cargoTypes, function(type) { %>
@@ -67,18 +69,20 @@
                             <% }) %>
                         </select>
                       </div>
-                  </div>
-                  <div class="form-group">
-                      <label for="adr" class="col-xs-1 col-sm-1"><%-adrLabel%></label>
-                      <div class="col-xs-3 col-sm-3">
-                        <select class="form-control adr-select input-sm" id="adr" name="adr">
-                          <option value="" selected></option>
-                            <% _.forEach(adrs, function(adr) { %>
-                              <option value="<%-adr%>"><%-adr%></option>
-                            <% }) %>
-                        </select>
+
+                      <div class="col-wrap col-xs-5 col-sm-5 wide-left">
+                          <label for="temperature" class="col-xs-3 col-sm-3"><%=temperatureLabel%></label>
+                          <div class="col-xs-4 col-sm-4 wide-right">
+                            <input type="number" min="-50" max="50" step="1" value="" class="form-control temperature-input input-sm" id="temperatureMin" name="temperatureMin" />
+                          </div>
+                          <div class="col-xs-2 col-sm-2 wide-right wide-left center">
+                            -
+                          </div>
+                          <div class="col-xs-3 col-sm-3 wide-left">
+                            <input type="number" min="-50" max="50" step="1" value="" class="form-control temperature-input input-sm" id="temperatureMax" name="temperatureMax" />
+                          </div>
                       </div>
-                  </div>
+                </div>
             </form>
           </div>
 
@@ -86,55 +90,68 @@
             <form class="form-inline" role="form" id="cargo-info-holder-form" novalidate>
               <div class="form-group">
                   <label for="weight" class="col-xs-2 col-sm-2"><%=weightLabel%></label>
-                  <div class="col-xs-1 col-sm-1 wide-right">
-                    <input type="text" class="form-control weight-input input-sm" id="weight" name="weight" placeholder="T"/>
+
+                  <div class="col-wrap col-xs-10 col-sm-10">
+                    <div class="col-xs-7 col-sm-7 wide-right">
+
+                      <div class="col-xs-7 col-sm-7 wide-right">
+                        <div class="col-xs-3 col-sm-3 wide-right">
+                          <input type="text" maxlength="5" class="form-control weight-input input-sm" id="weight" name="weight"/>
+                          <span class="placeholder">T</span>
+                        </div>
+                        <label for="volume" class="col-xs-4 col-sm-4"><%=volumeLabel%></label>
+                        <div class="col-xs-4 col-sm-4 wide-right">
+                          <input type="text" maxlength="5" class="form-control volume-input input-sm" id="volume" name="volume"/>
+                          <span class="placeholder">m³</span>
+                        </div>
+                      </div>
+
+                      <label for="ldm" class="col-xs-2 col-sm-2 wide-left"><%=ldmLabel%></label>
+                      <div class="col-xs-3 col-sm-3 wide-right">
+                        <input type="text" maxlength="5" class="form-control ldm-input input-sm" id="ldm" name="ldm"/>
+                        <span class="placeholder">ldm</span>
+                      </div>
+
+                    </div>
+
+                    <div class="col-wrap col-xs-5 col-sm-5 wide-left">
+                        <div class="form-group">
+                          <label for="palets" class="col-xs-4 col-sm-4"><%=paletsLabel%></label>
+                          <div class="col-xs-3 col-sm-3">
+                            <input type="text" class="form-control palets-input input-sm" id="palets" name="palets" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adr" class="col-xs-2 col-sm-2"><%-adrLabel%></label>
+                            <div class="col-xs-3 col-sm-3">
+                              <select class="form-control adr-select input-sm" id="adr" name="adr">
+                                <option value="" selected></option>
+                                  <% _.forEach(adrs, function(adr) { %>
+                                    <option value="<%-adr%>"><%-adr%></option>
+                                  <% }) %>
+                              </select>
+                            </div>
+                        </div>
+                    </div>
                   </div>
-              </div>
-              <div class="col-wrap col-xs-5 col-sm-5">
-                    <div class="form-group">
-                        <label for="volume" class="col-xs-3 col-sm-3"><%=volumeLabel%></label>
-                        <div class="col-xs-3 col-sm-3 wide-right">
-                          <input type="text" class="form-control volume-input input-sm" id="volume" name="volume" placeholder="m³"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="palets" class="col-xs-3 col-sm-3"><%=paletsLabel%></label>
-                        <div class="col-xs-3 col-sm-3 wide-right">
-                          <input type="text" class="form-control palets-input input-sm" id="palets" name="palets" />
-                        </div>
-                    </div>
-              </div>
-              <fieldset id="temperature" disabled>
-                <div class="form-group">
-                    <label for="temperature" class="col-xs-3 col-sm-3"><%=temperatureLabel%></label>
-                    <div class="col-wrap col-xs-9 col-sm-9">
-                      <div class="col-xs-5 col-sm-5 wide-right">
-                        <input type="number" min="-50" max="50" step="1" value="4" class="form-control temperature-input input-sm" id="temperatureMin" name="temperatureMin" />
-                      </div>
-                      <div class="col-xs-2 col-sm-2 wide-right wide-left center">
-                        -
-                      </div>
-                      <div class="col-xs-5 col-sm-5 wide-left">
-                        <input type="number" min="-50" max="50" step="1" value="7" class="form-control temperature-input input-sm" id="temperatureMax" name="temperatureMax" />
-                      </div>
-                    </div>
-                </div>
-              </fieldset>
             </form>
           </div>
+        </div>
 
           <div class="row">
               <label class="col-xs-2 col-sm-2"><%-trailerTypes.title%></label>
-              <div class="checkbox col-sm-10 col-xs-10">
-                  <div class="col-xs-4 col-md-4">
-                    <% _.forEach(trailerTypes.fixed[0], function(trailer) { %>
-                      <label>
-                          <input type="checkbox" class="trailer-type trailer-type-checkbox" value="<%-trailer.id%>" />
-                          <span class="checkbox-text"><%=trailer.type%></span>
-                      </label>
-                    <% }); %>
-                  </div>
-                  <div class="col-xs-8 col-md-8 col-wrap">
+              <div class="checkbox col-sm-10 col-xs-10 wide-left">
+                  <div class="col-xs-7 col-sm-7 wide-left">
+                    <div class="col-xs-6 col-md-6 wide-right">
+                      <% _.forEach(trailerTypes.fixed[0], function(trailer) { %>
+                        <label>
+                            <input type="checkbox" class="trailer-type trailer-type-checkbox" value="<%-trailer.id%>" />
+                            <span class="checkbox-text"><%=trailer.type%></span>
+                        </label>
+                      <% }); %>
+                    </div>
+
                     <div class="col-xs-6 col-md-6">
                       <% _.forEach(trailerTypes.fixed[1], function(trailer) { %>
                         <label>
@@ -143,7 +160,9 @@
                         </label>
                       <% }); %>
                     </div>
-                    <div class="col-xs-6 col-md-6">
+                  </div>
+
+                  <div class="col-xs-5 col-md-5">
                       <% _.forEach(trailerTypes.fixed[2], function(trailer) { %>
                         <% if (!(_.isArray(trailer))) { %>
                           <label>
@@ -159,95 +178,109 @@
                           </select>
                         <% } %>
                       <% }); %>
-                    </div>
                   </div>
               </div>
           </div>
 
           <div class="row">
               <label class="col-xs-2 col-sm-2"><%-loadTypes.title%></label>
-              <div class="checkbox col-sm-10 col-xs-10">
-                  <div class="col-xs-4 col-md-4">
-                    <% _.forEach(loadTypes.fixed[0], function(type, key) { %>
-                      <label>
-                          <input type="checkbox" class="load-type load-type-checkbox" value="<%-key%>" />
-                          <span class="check-text"><%-type%></span>
-                      </label>
-                    <% }); %>
-                  </div>
-                  <div class="col-xs-8 col-md-8 col-wrap">
-                    <div class="col-xs-6 col-md-6">
-                      <% _.forEach(loadTypes.fixed[1], function(type, key) { %>
+              <div class="checkbox col-sm-10 col-xs-10 wide-left">
+                  <div class="col-xs-7 col-sm-7 wide-left">
+
+                    <div class="col-xs-6 col-md-6 wide-right">
+                      <% _.forEach(loadTypes.fixed[0], function(type, key) { %>
                         <label>
                             <input type="checkbox" class="load-type load-type-checkbox" value="<%-key%>" />
                             <span class="check-text"><%-type%></span>
                         </label>
                       <% }); %>
                     </div>
-                    <div class="col-xs-6 col-md-6">
+
+                      <div class="col-xs-6 col-md-6">
+                        <% _.forEach(loadTypes.fixed[1], function(type, key) { %>
+                          <label>
+                              <input type="checkbox" class="load-type load-type-checkbox" value="<%-key%>" />
+                              <span class="check-text"><%-type%></span>
+                          </label>
+                        <% }); %>
+                      </div>
+                  </div>
+
+                  <div class="col-xs-5 col-md-5">
                       <% _.forEach(loadTypes.fixed[2], function(type, key) { %>
                         <label>
                             <input type="checkbox" class="load-type load-type-checkbox" value="<%-key%>" />
                             <span class="check-text"><%-type%></span>
                         </label>
                       <% }); %>
-                    </div>
                   </div>
-              </div>
+                </div>
           </div>
 
           <div class="row">
               <label class="col-xs-2 col-sm-2"><%-documents.title%></label>
-              <div class="checkbox col-sm-10 col-xs-10">
-                  <div class="col-xs-4 col-md-4">
-                    <% _.forEach(documents.docs[0], function(doc, key) { %>
-                      <div class="col-xs-6 col-md-6">
-                        <label>
-                            <input type="checkbox" class="document-type document-type-checkbox" value="<%-key%>" />
-                            <span class="check-text"><%=doc%></span>
-                        </label>
+              <div class="checkbox col-sm-10 col-xs-10 wide-left">
+                  <div class="col-xs-7 col-sm-7 wide-left">
+                      <div class="col-xs-6 col-md-6 wide-left">
+                        <% _.forEach(documents.docs[0], function(doc, key) { %>
+                          <div class="col-xs-6 col-md-6 wide-right">
+                            <label>
+                                <input type="checkbox" class="document-type document-type-checkbox" value="<%-key%>" />
+                                <span class="check-text"><%=doc%></span>
+                            </label>
+                          </div>
+                        <% }); %>
                       </div>
-                    <% }); %>
-                  </div>
-                  <div class="col-xs-7 col-md-7">
-                    <% _.forEach(documents.docs[1], function(doc, key) { %>
-                      <div class="col-xs-6 col-md-6">
-                        <label>
-                            <input type="checkbox" class="document-type document-type-checkbox" value="<%-key%>" />
-                            <span class="check-text"><%=doc%></span>
-                        </label>
+                      <div class="col-xs-6 col-md-6 wide-left wide-right">
+                        <div class="col-xs-5 col-md-5 wide-right">
+                          <label>
+                              <input type="checkbox" class="document-type document-type-checkbox" value="t1" />
+                              <span class="check-text"><%=documents.docs[1].t1%></span>
+                          </label>
+                        </div>
+                        <div class="col-xs-7 col-md-7 wide-right">
+                          <label>
+                              <input type="checkbox" class="document-type document-type-checkbox" value="declaration" />
+                              <span class="check-text"><%=documents.docs[1].declaration%></span>
+                          </label>
+                        </div>
                       </div>
-                    <% }); %>
                   </div>
+                  <div class="col-xs-5 col-sm-5 wide-right"></div>
               </div>
           </div>
 
           <div class="row">
               <form class="form-inline" role="form" id="payment-form" novalidate>
-                <div class="form-group">
-                    <label for="price" class="col-xs-2 col-sm-2"><%-paymentLabel%></label>
-                    <div class="col-xs-3 col-sm-3">
-                      <input type="text" class="form-control payment-input input-sm" maxlength=6 id="price" name="price" />
+                 <label for="price" class="col-xs-2 col-sm-2"><%-paymentLabel%></label>
+                 <div class="col-sm-10 col-xs-10 wide-right">
+                     <div class="col-xs-7 col-sm-7 wide-left wide-right">
+                        <div class="col-xs-3 col-sm-3 wide-left">
+                          <input type="text" class="form-control payment-input input-sm" maxlength=6 id="price" name="price" />
+                        </div>
+
+                        <div class="col-xs-3 col-sm-3 wide-left">
+                          <select class="form-control currency-select input-sm" id="currency" name="currency">
+                              <% _.forEach(currencies, function(cur) { %>
+                                  <% if (cur.id === "15") { %>
+                                  <option selected value="<%-cur.id%>"><%-cur.type%></option>
+                                  <% } else { %>
+                                  <option value="<%-cur.id%>"><%-cur.type%></option>
+                                  <% } %>
+                              <% }) %>
+                          </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 wide-left wide-right">
+                          <select class="form-control payment-type-select input-sm" id="payment-type" name="payment-type">
+                            <option selected disabled value=""><%-paymentTypePlaceholder%></option>
+                              <% _.forEach(paymentTypes, function(type, key) { %>
+                                  <option value="<%-key%>"><%-type%></option>
+                              <% }) %>
+                          </select>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xs-3 col-sm-3">
-                  <select class="form-control currency-select input-sm" id="currency" name="currency">
-                      <% _.forEach(currencies, function(cur) { %>
-                          <% if (cur.id === "15") { %>
-                          <option selected value="<%-cur.id%>"><%-cur.type%></option>
-                          <% } else { %>
-                          <option value="<%-cur.id%>"><%-cur.type%></option>
-                          <% } %>
-                      <% }) %>
-                  </select>
-                </div>
-                <div class="col-xs-4 col-sm-4">
-                  <select class="form-control payment-type-select input-sm" id="payment-type" name="payment-type">
-                    <option selected disabled value=""><%-paymentTypePlaceholder%></option>
-                      <% _.forEach(paymentTypes, function(type, key) { %>
-                          <option value="<%-key%>"><%-type%></option>
-                      <% }) %>
-                  </select>
+                    <div class="col-xs-5 col-sm-5 wide-right">
+                  </div>
                 </div>
               </form>
           </div>
@@ -265,9 +298,7 @@
       </div>
       </div>
     </div>
-            </div>
-        </div>
-    </div>
+
     <div class="row">
           <div class="col-xs-3 col-sm-3 col-xs-offset-3 col-sm-offset-3">
             <button id="clean" type="button" class="btn btn-defualt ce__btn ce__order_btn-clean col-xs-12 col-sm-12">
