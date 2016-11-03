@@ -30,6 +30,22 @@ App.exchanges = {
     return this.getDataFromServer(req);
   },
 
+  getLardiCurrencies: function () {
+    var def = $.Deferred();
+    var req = new Request('lardi', 'POST');
+
+    if (!App.appData.lardi.token) {
+      def.reject('Lardi not authorized');
+      return def.promise();
+    } else {
+      req.data = {
+        method: 'get.payment.valuta.ref',
+        sig: App.appData.lardi.token,
+      };
+      return this.getDataFromServer(req);
+    }
+  },
+
   getLocations: function (name) {
     var req = new Request('cargo', 'GET', 'locations');
     req.headers = {

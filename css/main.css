@@ -20,24 +20,24 @@ label input[type=checkbox] {
     border-radius: 3px;
     border: 1px solid #ccc;
     text-align: center;
-    font-weight: 800; }
-  label input[type=checkbox]:checked ~ span:before {
-    content: '\2713';
+    font-weight: 800;
     font-size: 16px;
     color: #91b247;
-    line-height: 15px;
+    line-height: 15px; }
+  label input[type=checkbox]:checked ~ span:before {
+    content: '\2713';
     border-color: #91b247; }
 
-.btn.white {
-  background-color: #fff;
-  border: 1px solid grey;
-  color: #666 !important; }
-
-.btn:focus {
-  outline: none; }
-
-.btn.disabled, .btn[disabled] {
-  cursor: default; }
+.btn {
+  top: 4px; }
+  .btn.white {
+    background-color: #fff;
+    border: 1px solid grey;
+    color: #666 !important; }
+  .btn:focus {
+    outline: none; }
+  .btn.disabled, .btn[disabled] {
+    cursor: default; }
 
 .btn-accept {
   color: #fff;
@@ -186,11 +186,24 @@ label input[type=checkbox] {
     font-weight: 400;
     font-size: 12px; }
 
-.header-holder {
-  padding: 6px 0; }
-
 .header-message {
-  padding: 2px; }
+  padding: 8px 0; }
+  .header-message:hover {
+    background: #647b31;
+    cursor: pointer; }
+  .header-message.current-scene {
+    background: #55692a; }
+    .header-message.current-scene:hover {
+      cursor: default; }
+    .header-message.current-scene:before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      border-top-color: #55692a;
+      top: 100%;
+      left: 45%; }
 
 .header-icons {
   text-align: right;
@@ -205,7 +218,7 @@ label input[type=checkbox] {
       height: 25px;
       text-align: center; }
       .header-icons .nav-icons .icon img {
-        vertical-align: baseline; }
+        vertical-align: sub; }
       .header-icons .nav-icons .icon:active {
         background-color: rgba(0, 0, 0, 0.3); }
 
@@ -229,7 +242,7 @@ label input[type=checkbox] {
 .cargo-info-holder label,
 .city-holder label {
   top: 2px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 18px;
   padding-right: 0; }
@@ -246,7 +259,7 @@ label input[type=checkbox] {
 
 .cargo-info-holder .checkbox,
 .city-holder .checkbox {
-  margin: 0 0 5px;
+  margin: 3px 0 0;
   padding-right: 0; }
   .cargo-info-holder .checkbox > div:last-child,
   .city-holder .checkbox > div:last-child {
@@ -317,6 +330,12 @@ label input[type=checkbox] {
   .cargo-info-holder #volume ~ .placeholder {
     right: -5px;
     top: 2px; }
+
+.cargo-info-holder #note {
+  resize: vertical; }
+
+.cargo-info-holder .payment-type-block {
+  left: -3px; }
 
 .wide-right {
   padding-right: 0; }
@@ -425,22 +444,35 @@ label input[type=checkbox] {
 .cargos-list table {
   margin-top: 10px; }
   .cargos-list table thead td {
-    font-size: 10px; }
+    font-size: 12px;
+    padding: 0 8px;
+    font-weight: 600;
+    line-height: 14px; }
   .cargos-list table tbody tr {
     font-size: 10px; }
-    .cargos-list table tbody tr td {
-      vertical-align: middle; }
-      .cargos-list table tbody tr td:last-child {
-        width: 56px; }
-      .cargos-list table tbody tr td:nth-child(1) {
-        text-align: center; }
-      .cargos-list table tbody tr td:nth-child(5) {
-        text-align: center;
-        width: 72px; }
-  .cargos-list table tbody .btn {
-    height: 20px;
-    width: 22px;
-    font-size: 12px;
-    float: right;
-    padding: 4px 1px;
-    line-height: 8px; }
+    .cargos-list table tbody tr.new-cargo {
+      background-color: #e7f3db; }
+      .cargos-list table tbody tr.new-cargo:hover {
+        background-color: #daedc8; }
+    .cargos-list table tbody tr td:first-child {
+      width: 30px;
+      text-align: center; }
+    .cargos-list table tbody tr td:last-child {
+      width: 72px;
+      text-align: center; }
+    .cargos-list table tbody tr td:nth-child(2) {
+      text-align: center;
+      width: 200px; }
+    .cargos-list table tbody tr td:nth-child(3) {
+      text-align: center;
+      width: 80px; }
+  .cargos-list table thead tr td, .cargos-list table tbody tr td {
+    vertical-align: middle; }
+    .cargos-list table thead tr td label, .cargos-list table tbody tr td label {
+      height: 19px; }
+      .cargos-list table thead tr td label input[type=checkbox], .cargos-list table tbody tr td label input[type=checkbox] {
+        margin: 0; }
+        .cargos-list table thead tr td label input[type=checkbox] ~ span:before, .cargos-list table tbody tr td label input[type=checkbox] ~ span:before {
+          position: relative;
+          left: 0;
+          top: 4px; }

@@ -197,6 +197,7 @@ var Templates = (function () {
       2: 'после доставки',
       3: 'предоплата',
     },
+    byRequestLabel: 'по запросу',
     noteLabel: 'Комментарий',
     clearButtonText: 'Очистить',
     orderButtonText: 'Добавить',

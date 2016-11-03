@@ -70,11 +70,41 @@ var App = (function () {
     };
   };
 
+  app.getSavedCargos = function (key) {
+    return SM.get(key + 'CargoIDs').split(',');
+  };
+
+  app.saveCargos = function (key, array) {
+    return SM.put(key + 'CargoIDs', array);
+  };
+
+  app.removeSavedCargos = function (key) {
+    SM.delete(key + 'CargoIDs');
+  };
+
+  app.checkRouteButtons = function () {
+    $('.current-scene').removeClass('current-scene');
+
+    if (this.checkToken('cargo')) {
+      $('#intro').addClass('hidden');
+      $('#goCargos').removeClass('hidden');
+
+      if (this.checkToken('lardi')) {
+        $('#goCargosList').removeClass('hidden');
+      }
+    } else {
+      $('#intro').removeClass('hidden');
+      $('#goCargos').addClass('hidden');
+      $('#goCargosList').addClass('hidden');
+    }
+  };
+
   app.changeScene = function (scene) {
     if (scene !== 'auth' && !this.checkToken('cargo')) {
       return false;
     }
 
+    this.checkRouteButtons();
     return this.showScene(scene);
   };
 
@@ -268,6 +298,14 @@ var App = (function () {
       }
 
       return _this.changeScene('settings');
+    });
+
+    $('#goCargos').bind('click', function () {
+      _this.changeScene('cargos');
+    });
+
+    $('#goCargosList').bind('click', function () {
+      _this.changeScene('cargosList');
     });
 
     $('.header-icons .message-icon').bind('click', App.changeScene.bind(App, 'cargos'));

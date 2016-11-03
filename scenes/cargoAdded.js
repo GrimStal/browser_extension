@@ -6,7 +6,6 @@ App.scenes.cargoAdded = {
       });
       var addOrder = _.templates.addOrder({ buttonText: 'Добавить новый груз' });
       $('.ce__wrapper').empty().append(successWrap + addOrder);
-      $('#header-message').text('Добавление груза на Cargo.LT и Lardi-Trans');
       $('#addOrder').addClass('btn-accept');
       $('#addOrder').bind('click', function () {
         App.showScene('cargos');

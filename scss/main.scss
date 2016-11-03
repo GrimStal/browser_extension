@@ -1,5 +1,7 @@
 $lime: #91b247;
 $lightLime: #e7f3db;
+$lightLime2: #daedc8;
+$green: #647b31;
 $darkGreen: #55692a;
 $white: #fff;
 $greyText: #666;
@@ -33,19 +35,20 @@ label {
             border: 1px solid #ccc;
             text-align: center;
             font-weight: 800;
+            font-size: 16px;
+            color: $lime;
+            line-height: 15px;
         }
 
         &:checked ~ span:before {
             content: '\2713';
-            font-size: 16px;
-            color: $lime;
-            line-height: 15px;
             border-color: $lime;
         }
     }
 }
 
 .btn {
+  top: 4px;
     &.white {
         background-color: $white;
         border: 1px solid grey;
@@ -254,12 +257,32 @@ label {
     }
 }
 
-.header-holder {
-    padding: 6px 0;
-}
-
 .header-message {
-    padding: 2px;
+    padding: 8px 0;
+
+    &:hover {
+      background: $green;
+      cursor: pointer;
+    }
+
+    &.current-scene {
+      background: $darkGreen;
+
+      &:hover {
+        cursor: default;
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        border: 5px solid transparent;
+        border-top-color: $darkGreen;
+        top: 100%;
+        left: 45%;
+      }
+    }
 }
 
 .header-icons {
@@ -278,7 +301,7 @@ label {
             text-align: center;
 
             img {
-                vertical-align: baseline;
+                vertical-align: sub;
             }
 
             &:active {
@@ -317,7 +340,7 @@ label {
 .city-holder {
     label {
         top: 2px;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 400;
         line-height: 18px;
         padding-right: 0;
@@ -334,7 +357,7 @@ label {
     }
 
     .checkbox {
-        margin: 0 0 5px;
+        margin: 3px 0 0;
         padding-right: 0;
 
         >div {
@@ -438,6 +461,14 @@ label {
           right: -5px;
           top: 2px;
       }
+    }
+
+    #note {
+      resize: vertical;
+    }
+
+    .payment-type-block {
+      left: -3px;
     }
 }
 
@@ -602,7 +633,10 @@ label {
       margin-top: 10px;
         thead {
             td {
-                font-size: 10px;
+                font-size: 12px;
+                padding: 0 8px;
+                font-weight: 600;
+                line-height: 14px;
             }
         }
 
@@ -610,32 +644,59 @@ label {
             tr {
                 font-size: 10px;
 
+                &.new-cargo {
+                    background-color: $lightLime;
+
+                    &:hover {
+                      background-color: $lightLime2;
+                    }
+                }
+
                 td {
-                    vertical-align: middle;
+
+                    &:first-child {
+                        width: 30px;
+                        text-align: center;
+                    }
 
                     &:last-child {
-                        width: 56px;
+                        width: 72px;
+                        text-align: center;
                     }
 
-                    &:nth-child(1) {
+                    &:nth-child(2) {
                       text-align: center;
+                      width: 200px;
                     }
 
-                    &:nth-child(5) {
+                    &:nth-child(3) {
                       text-align: center;
-                      width: 72px;
+                      width: 80px;
                     }
                 }
             }
-
-            .btn {
-                height: 20px;
-                width: 22px;
-                font-size: 12px;
-                float: right;
-                padding: 4px 1px;
-                line-height: 8px;
-            }
         }
+
+        thead, tbody {
+          tr {
+            td {
+              vertical-align: middle;
+
+              label {
+                  height: 19px;
+
+                  input[type=checkbox] {
+                    margin: 0;
+
+                      & ~ span:before {
+                        position: relative;
+                        left: 0;
+                        top: 4px;
+                      }
+                  }
+              }
+            }
+          }
+        }
+      }
     }
-}

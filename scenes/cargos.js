@@ -75,7 +75,6 @@ App.scenes.cargos = {
       cargosData.trailerTypes.fixed[2].splice(-1, 1, trailerTypes);
       cargosData.currencies = currencies;
       $('.ce__wrapper').empty().append(_.templates.cargos(cargosData));
-      $('#header-message').text('Добавление груза на Cargo.LT и Lardi-Trans');
 
       /** Initialization of calendar: Set current date, add onClick function
       *   for available dates to set cargos, mark past dates,
@@ -121,6 +120,17 @@ App.scenes.cargos = {
 
       $('#weight, #volume, #palets, #temperatureMin, #temperatureMax, .trailer-type-select, ' +
         '.trailer-type-checkbox').bind('change', useEnteredData);
+
+      $('#by-request').change(function () {
+        $('#payment-fieldset').attr('disabled', this.checked);
+        if (this.checked) {
+          $('#price, #currency, #payment-type').val('');
+        } else {
+          $('#currency').val('15');
+        }
+      });
+
+      $('#goCargos').addClass('current-scene');
 
       _this.setDates();
     }, function (errors) {
@@ -436,10 +446,7 @@ App.scenes.cargos = {
     }
 
     cargo.trailers = trailers;
-    cargo.currency = $currency.val();
 
-    cargo.price = setParam($price.val(), 0);
-    lardi.stavka = setParam($price.val(), 0);
     $loadTypes.each(function (i, el) {
       cargo[$(el).val()] = 1;
     });
@@ -469,8 +476,15 @@ App.scenes.cargos = {
       }
     });
 
-    if ($paymentType.val()) {
-      cnote.push('Оплата: ' + $paymentType.find(':selected').text());
+    if ($('#by-request').prop('checked')) {
+      cargo.currency = $currency.val();
+
+      cargo.price = setParam($price.val(), 0);
+      lardi.stavka = setParam($price.val(), 0);
+
+      if ($paymentType.val()) {
+        cnote.push('Оплата: ' + $paymentType.find(':selected').text());
+      }
     }
 
     if ($adr.val()) {
@@ -513,12 +527,14 @@ App.scenes.cargos = {
         var originCC = origin[0]['alpha2Code'];
         var destinationCC = destination[0]['alpha2Code'];
 
-        lardi.payment_moment_id = getPaymentMomentID(paymentMoments, parseInt($paymentType.val()));
-        if (!lardi.payment_moment_id && ($paymentType.val() === '3' || $paymentType.val() === '2')) {
-          lnote.push($paymentType.find(':selected').text());
-        }
+        if ($('#by-request').prop('checked')) {
+          lardi.payment_moment_id = getPaymentMomentID(paymentMoments, parseInt($paymentType.val()));
+          if (!lardi.payment_moment_id && ($paymentType.val() === '3' || $paymentType.val() === '2')) {
+            lnote.push($paymentType.find(':selected').text());
+          }
 
-        lardi.payment_currency_id = getCurrencyID(parseInt($currency.val()));
+          lardi.payment_currency_id = getCurrencyID(parseInt($currency.val()));
+        }
 
         lardi.zagruz_set = getLoadTypesMnemos(loadTypes, $loadTypes);
         if (notSupportedLoadTypes) {

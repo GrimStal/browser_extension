@@ -20,10 +20,7 @@ App.scenes.auth = {
     $('.cargo-site').bind('click', App.openTab.bind(null, 'https://www.cargo.lt'));
     $('.lardi-site').bind('click', App.openTab.bind(null, 'https://lardi-trans.com'));
 
-    this.initForm([
-        'cargo', 'lardi',
-    ], this.checkAccess);
-    $('#header-message').text('Добавление груза на Cargo.LT и Lardi-Trans');
+    this.initForm(['cargo', 'lardi'], this.checkAccess);
   },
 
   hide: function () {
@@ -234,6 +231,7 @@ App.scenes.auth = {
         console.error(error);
       }).always(function () {
         App.updateAppData(key, userData);
+        App.checkRouteButtons();
         if (callback && typeof callback === 'function') {
           callback(key, result);
         }

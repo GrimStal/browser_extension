@@ -3,29 +3,86 @@
 App.scenes.cargosList = {
 
   show: function () {
+    var _this = this;
     var template;
+    var getLardiCargos = this.getLardiCargos();
+    var getLardiCurrencies = App.exchanges.getLardiCurrencies();
 
-    this.getLardiCargos(function (cargos) {
-      cargos.forEach(function (cargo) {
-        cargo.payment_currency_name = 'грн.'; //TODO correct currencies names
-      });
+    this.currentArray = [];
+    this.lardiCargos = [];
+    this.newArray = [];
+    this.oldArray = App.getSavedCargos('lardi') || [];
 
-      template = _.templates.cargosList({
-        wrapper_class: 'cargos-list',
-        wrapper_id: 'cargos-list',
-        lardiCargos: cargos
-      });
+    $.when(getLardiCargos, getLardiCurrencies).then(
+      function (lardiCargos, lardiCurrencies) {
+        var currencies = XMLtoJson(lardiCurrencies).response;
 
-      $('.ce__wrapper').empty().append(template);
-    });
+        if (!currencies || !currencies.item) {
+          console.log('Lardi doesn\'t response for currencies request');
+        } else {
+          currencies = currencies.item;
+        }
+
+        _this.lardiCargos = lardiCargos;
+        _this.lardiCargos.forEach(function (cargo) {
+            _this.currentArray.push(cargo.id);
+            currencies.forEach(function (el) {
+              if (Number(el.id) == Number(cargo.payment_currency_id)) {
+                cargo.payment_currency_name = el.name;
+              }
+            });
+          });
+
+        if (_this.oldArray && Array.isArray(_this.oldArray)) {
+          _this.currentArray.forEach(function (el) {
+            if (_this.oldArray.indexOf(el) < 0) {
+              _this.newArray.push(el);
+            }
+          });
+        }
+
+        _this.lardiCargos.forEach(function (cargo) {
+            if (_this.newArray.indexOf(cargo.id) > -1) {
+              cargo.isNew = 1;
+            } else {
+              cargo.isNew = 0;
+            }
+          });
+
+        App.saveCargos('lardi', _this.currentArray);
+
+        _this.lardiCargos.sort(sortByNewAndID);
+
+        template = _.templates.cargosList({
+            wrapper_class: 'cargos-list',
+            wrapper_id: 'cargos-list',
+            orderButtonText: 'Экспортировать',
+            lardiCargos: _this.lardiCargos
+          });
+
+        $('.ce__wrapper').empty().append(template);
+        $('.check-all').bind('change', function () {
+          $('input[type=checkbox]').prop('checked', this.checked);
+        });
+        $('#goCargosList').addClass('current-scene');
+      },
+      function (error) {
+        console.log(error);
+        App.changeScene('settings');
+      }
+    );
 
   },
 
   hide: function () {
-
+    $('.ce__wrapper').empty();
+    $('.check-all').unbind('change', function () {
+      $('input[type=checkbox]').attr('checked', this.checked);
+    });
   },
 
   getLardiCargos: function (callback) {
+    var result = $.Deferred();
     var resp;
     var cargos = [];
     var req = new Request('lardi', 'GET');
@@ -39,26 +96,24 @@ App.scenes.cargosList = {
         resp = XMLtoJson(response.success);
 
         if (resp.error) {
-          return console.log(resp.error);
+          return result.reject(resp.error);
         }
 
         resp = resp.response;
 
-        if (typeof resp.gruz.item === 'object') {
+        if (resp.gruz.item && typeof resp.gruz.item === 'object') {
           if (Array.isArray(resp.gruz.item)) {
             cargos = resp.gruz.item;
           } else {
             cargos.push(resp.gruz.item);
           }
-        } else {
-          console.log(resp.gruz.item);
         }
 
-        if (callback && typeof callback === 'function') {
-          callback(cargos);
-        }
+        result.resolve(cargos);
       }
     });
+
+    return result.promise();
   },
 
   createCargoDuplicate: function (object, callback) {
@@ -72,7 +127,6 @@ App.scenes.cargosList = {
     var areaFrom;
     var placeTo = [];
     var areaTo;
-    var creq = new Request('cargo', 'POST', 'cargos');
 
     if (!object) {
       return false;
@@ -309,26 +363,39 @@ App.scenes.cargosList = {
 
           cargo.notes = note.join('; ');
 
-          creq.data = cargo;
-          creq.headers = {
-            'Access-Token': App.appData.cargo.token,
-          };
+          callback(null, cargo);
 
-          App.exchanges.getDataFromServer(creq).then(
-            function (response) {
-              console.log(response);
-              callback(cargo);
-            },
-            function (error) {
-              console.log(error);
-              callback(cargo);
-            }
-          );
         },
         function (error) {
           console.log(error);
+          callback(error);
         }
       );
+  },
+
+  sendDuplicatesToCargo: function (error, duplicate) {
+    var def = $.Deferred();
+    var creq = new Request('cargo', 'POST', 'cargos');
+
+    if (!error && duplicate) {
+      creq.data = duplicate;
+      creq.headers = {
+        'Access-Token': App.appData.cargo.token,
+      };
+      App.exchanges.getDataFromServer(creq).then(
+        function (response) {
+          def.resolve(response);
+        },
+        function (error) {
+          console.log(error);
+          def.reject(error);
+        }
+      );
+    } else {
+      def.reject(error);
+    }
+
+    return def.promise();
   },
 
   /**

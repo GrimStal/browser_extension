@@ -328,7 +328,7 @@
     ((__t = (documents.docs[1].declaration)) == null ? '' : __t) +
     '</span>\n                          </label>\n                        </div>\n                      </div>\n                  </div>\n                  <div class="col-xs-5 col-sm-5 wide-right"></div>\n              </div>\n          </div>\n\n          <div class="row">\n              <form class="form-inline" role="form" id="payment-form" novalidate>\n                 <label for="price" class="col-xs-2 col-sm-2">' +
     __e(paymentLabel) +
-    '</label>\n                 <div class="col-sm-10 col-xs-10 wide-right">\n                     <div class="col-xs-7 col-sm-7 wide-left wide-right">\n                        <div class="col-xs-3 col-sm-3 wide-left">\n                          <input type="text" class="form-control payment-input input-sm" maxlength=6 id="price" name="price" />\n                        </div>\n\n                        <div class="col-xs-3 col-sm-3 wide-left">\n                          <select class="form-control currency-select input-sm" id="currency" name="currency">\n                              ';
+    '</label>\n                 <div class="col-sm-10 col-xs-10 wide-right">\n                   <fieldset id="payment-fieldset" class="col-xs-7 col-sm-7 wide-left wide-right">\n                        <div class="col-xs-3 col-sm-3 wide-left">\n                          <input type="text" class="form-control payment-input input-sm" maxlength=6 id="price" name="price" />\n                        </div>\n\n                        <div class="col-xs-3 col-sm-3 wide-left">\n                          <select class="form-control currency-select input-sm" id="currency" name="currency">\n                              ';
      _.forEach(currencies, function(cur) {
     __p += '\n                                  ';
      if (cur.id === "15") {
@@ -346,7 +346,7 @@
      }
     __p += '\n                              ';
      }) ;
-    __p += '\n                          </select>\n                        </div>\n                        <div class="col-xs-6 col-sm-6 wide-left wide-right">\n                          <select class="form-control payment-type-select input-sm" id="payment-type" name="payment-type">\n                            <option selected disabled value="">' +
+    __p += '\n                          </select>\n                        </div>\n                        <div class="payment-type-block col-xs-6 col-sm-6 wide-left wide-right">\n                          <select class="form-control payment-type-select input-sm" id="payment-type" name="payment-type">\n                            <option selected disabled value="">' +
     __e(paymentTypePlaceholder) +
     '</option>\n                              ';
      _.forEach(paymentTypes, function(type, key) {
@@ -356,7 +356,9 @@
     __e(type) +
     '</option>\n                              ';
      }) ;
-    __p += '\n                          </select>\n                        </div>\n                    </div>\n                    <div class="col-xs-5 col-sm-5 wide-right">\n                  </div>\n                </div>\n              </form>\n          </div>\n\n          <div class="row">\n            <form class="form-inline" role="form" id="note-form" novalidate>\n              <div class="form-group">\n                  <label for="note" class="col-xs-2 col-sm-2">' +
+    __p += '\n                          </select>\n                        </div>\n                  </fieldset>\n                    <div class="col-xs-5 col-sm-5 wide-right wide-left">\n                      <div class="checkbox col-xs-6 col-sm-6">\n                        <label>\n                            <input type="checkbox" class="by-request by-request-checkbox" id="by-request" />\n                            <span class="check-text">' +
+    __e(byRequestLabel) +
+    '</span>\n                        </label>\n                      </div>\n                    </div>\n                </div>\n              </form>\n          </div>\n\n          <div class="row">\n            <form class="form-inline" role="form" id="note-form" novalidate>\n              <div class="form-group">\n                  <label for="note" class="col-xs-2 col-sm-2">' +
     __e(noteLabel) +
     '</label>\n                  <div class="col-xs-10 col-sm-10">\n                    <textarea rows="2" class="form-control note-textarea" maxlength=40 id="note" name="note" />\n                  </div>\n              </div>\n            </form>\n          </div>\n      </div>\n      </div>\n    </div>\n\n    <div class="row">\n          <div class="col-xs-3 col-sm-3 col-xs-offset-3 col-sm-offset-3">\n            <button id="clean" type="button" class="btn btn-defualt ce__btn ce__order_btn-clean col-xs-12 col-sm-12">\n              ' +
     __e(clearButtonText) +
@@ -377,9 +379,17 @@
     ((__t = (wrapper_class)) == null ? '' : __t) +
     '" id="' +
     ((__t = (wrapper_id)) == null ? '' : __t) +
-    '">\n  <div class="ce__wrapper_export-message export-message center col-xs-12 col-sm-12 col-md-12 col-lg-12">\n      На этой странице вы можете увидеть все активные грузы на\n      <span class="ce__company-name lardi-site" title="https://lardi-trans.com/">Lardi-Trans.com</span>.\n      Для того, чтобы продублировать груз на\n      <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span>\n      воспользуйтесь соответствующей кнопкой справа от груза.\n  </div>\n  <table class=\'table table-striped table-hover table-condenced table-bordered\'>\n    <thead>\n      <tr>\n        <td>Нас. пункт</td>\n        <td>Дата</td>\n        <td>Кузов</td>\n        <td>Груз</td>\n        <td>Ставка</td>\n        <td></td>\n      </tr>\n    </thead>\n    <tbody>\n    ';
+    '">\n  <div class="col-xs-3 col-sm-3 wide-left">\n    <button id="export" type="button" class="btn btn-accept ce__btn ce__order_btn-confirm col-xs-12 col-sm-12">\n      ' +
+    __e(orderButtonText) +
+    '\n    </button>\n  </div>\n  <div class="ce__wrapper_export-message export-message col-xs-9 col-sm-9 wide-left wide-right">\n      Для того, чтобы продублировать груз на\n      <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span>\n      выберите предложение и нажмите кнопку "Экспортировать".\n  </div>\n  <table class=\'table table-striped table-hover table-condenced table-bordered\'>\n    <thead>\n      <tr>\n        <td>\n          <label>\n            <input type=\'checkbox\' class=\'check-all\' value=\'\'/>\n            <span class="checkbox-text"></span>\n          </label>\n        </td>\n        <td>Нас. пункт</td>\n        <td>Дата</td>\n        <td>Груз</td>\n        <td>Ставка</td>\n      </tr>\n    </thead>\n    <tbody>\n    ';
      _.forEach(lardiCargos, function(cargo) {
-    __p += '\n      <tr>\n          <td>\n            <strong>' +
+    __p += '\n      <tr ';
+     if (cargo.isNew) {
+    __p += ' class="new-cargo"';
+     }
+    __p += '>\n          <td>\n            <label>\n              <input type=\'checkbox\' value=\'' +
+    __e(cargo.id) +
+    '\'/>\n              <span class="checkbox-text"></span>\n            </label>\n          </td>\n          <td>\n            <strong>' +
     __e(cargo.country_from) +
     '</strong>\n            ' +
     __e(_.capitalize(cargo.city_from));
@@ -409,16 +419,6 @@
     ((__t = (cargo.date_to.slice(-5, -3))) == null ? '' : __t) +
     '\n            ';
      }
-    __p += '\n          </td>\n          <td>\n            ';
-     if (cargo.body_type_name.length > 0) {
-    __p += '\n              ' +
-    __e(_.capitalize(cargo.body_type_name)) +
-    '\n            ';
-     } else {
-    __p += '\n              ' +
-    __e(_.capitalize(cargo.body_type_group_name)) +
-    '\n            ';
-     }
     __p += '\n          </td>\n          <td>\n' +
     __e(cargo.gruz) +
     ',\n' +
@@ -427,44 +427,53 @@
     __p += ' - ' +
     __e(cargo.mass2);
      }
-    __p += 'т\n';
+    __p += 'т,\n';
      if (cargo.value !== '0.0') {
-    __p += ', ' +
+    __p += ' ' +
     __e(cargo.value);
      }
-    __p += '\n';
+
      if (cargo.value2 !== '0.0') {
     __p += ' - ' +
     __e(cargo.value2);
      }
-    __p += '\n';
+
      if (cargo.value2 !== '0.0' || cargo.value !== '0.0') {
-    __p += 'м3';
+    __p += 'м3,';
      }
     __p += '\n';
      if (cargo.cmr !== 'false') {
-    __p += ', CMR';
+    __p += ' CMR,';
      }
     __p += '\n';
      if (cargo.t1 !== 'false') {
-    __p += ', T1';
+    __p += ' T1,';
      }
     __p += '\n';
      if (cargo.tir !== 'false') {
-    __p += ', TiR';
+    __p += ' TiR,';
      }
     __p += '\n';
      if (cargo.adr !== '0') {
-    __p += ', ADR-' +
-    __e(cargo.adr);
+    __p += ' ADR-' +
+    __e(cargo.adr) +
+    ',';
+     }
+    __p += '\n';
+     if (cargo.body_type_name.length > 0) {
+    __p += '\n  ' +
+    __e(cargo.body_type_name) +
+    '\n';
+     } else {
+    __p += '\n  ' +
+    __e(cargo.body_type_group_name) +
+    '\n';
      }
     __p += '\n          </td>\n          <td>\n              ' +
     __e(cargo.stavka) +
     ' ' +
     __e(cargo.payment_currency_name) +
-    '\n          </td>\n          <td>\n            <input type=\'checkbox\' value=\'' +
-    __e(cargo.id) +
-    '\'/>\n            <button class=\'btn btn-accept\'>C&rarr;</button>\n          </td>\n      </tr>\n    ';
+    '\n          </td>\n      </tr>\n    ';
      }) ;
     __p += '\n    </tbody>\n\n  </table>\n</div>\n';
 

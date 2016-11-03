@@ -254,7 +254,7 @@
               <form class="form-inline" role="form" id="payment-form" novalidate>
                  <label for="price" class="col-xs-2 col-sm-2"><%-paymentLabel%></label>
                  <div class="col-sm-10 col-xs-10 wide-right">
-                     <div class="col-xs-7 col-sm-7 wide-left wide-right">
+                   <fieldset id="payment-fieldset" class="col-xs-7 col-sm-7 wide-left wide-right">
                         <div class="col-xs-3 col-sm-3 wide-left">
                           <input type="text" class="form-control payment-input input-sm" maxlength=6 id="price" name="price" />
                         </div>
@@ -270,7 +270,7 @@
                               <% }) %>
                           </select>
                         </div>
-                        <div class="col-xs-6 col-sm-6 wide-left wide-right">
+                        <div class="payment-type-block col-xs-6 col-sm-6 wide-left wide-right">
                           <select class="form-control payment-type-select input-sm" id="payment-type" name="payment-type">
                             <option selected disabled value=""><%-paymentTypePlaceholder%></option>
                               <% _.forEach(paymentTypes, function(type, key) { %>
@@ -278,9 +278,15 @@
                               <% }) %>
                           </select>
                         </div>
+                  </fieldset>
+                    <div class="col-xs-5 col-sm-5 wide-right wide-left">
+                      <div class="checkbox col-xs-6 col-sm-6">
+                        <label>
+                            <input type="checkbox" class="by-request by-request-checkbox" id="by-request" />
+                            <span class="check-text"><%-byRequestLabel%></span>
+                        </label>
+                      </div>
                     </div>
-                    <div class="col-xs-5 col-sm-5 wide-right">
-                  </div>
                 </div>
               </form>
           </div>

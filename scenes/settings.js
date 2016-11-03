@@ -50,7 +50,6 @@ App.scenes.settings = {
         authContext.initForm('lardi');
       }
 
-      $('#header-message').text('Настройки');
       $('#addOrder').bind('click', function () {
           App.showScene('cargos');
         });
@@ -100,6 +99,7 @@ App.scenes.settings = {
     App.removeToken('lardi');
     // App.removeUserData('lardi');
     App.updateAppData();
+    $('#goCargosList').addClass('hidden');
     this.showLogin('lardi');
   },
 
@@ -125,6 +125,7 @@ App.scenes.settings = {
       $('#' + key + 'Unbind').bind('click', context[key + 'Unbind'].bind(context));
       if (key === 'lardi') {
         $('#lardi_change_contact').bind('click', context.getLardiContacts.bind(context));
+        $('#goCargosList').removeClass('hidden');
       }
 
     } else {
