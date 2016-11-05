@@ -70,16 +70,42 @@ var App = (function () {
     };
   };
 
-  app.getSavedCargos = function (key) {
-    return SM.get(key + 'CargoIDs').split(',');
+  app.getWatchedCargos = function (key) {
+    var resp = [];
+    var ids = SM.get(key + 'CargoIDs');
+
+    if (typeof ids === 'string') {
+      resp = ids.split(',');
+    }
+
+    return resp;
   };
 
-  app.saveCargos = function (key, array) {
+  app.saveWatchedCargos = function (key, array) {
     return SM.put(key + 'CargoIDs', array);
   };
 
-  app.removeSavedCargos = function (key) {
+  app.removeWatchedCargos = function (key) {
     SM.delete(key + 'CargoIDs');
+  };
+
+  app.getExportedCargos = function (key) {
+    var resp = [];
+    var ids = SM.get(key + 'exportedCargoIDs');
+
+    if (typeof ids === 'string') {
+      resp = ids.split(',');
+    }
+
+    return resp;
+  };
+
+  app.saveExportedCargos = function (key, array) {
+    return SM.put(key + 'exportedCargoIDs', array);
+  };
+
+  app.removeExportedCargos = function (key) {
+    SM.delete(key + 'exportedCargoIDs');
   };
 
   app.checkRouteButtons = function () {

@@ -42,6 +42,14 @@ function sortCities(a, b) {
   return 0;
 }
 
+function sortContacts(a, b) {
+  if (a.id > b.id)
+      return 1;
+  if (b.id > a.id)
+      return -1;
+  return 0;
+}
+
 function sortByNewAndID(a, b) {
   return (a.isNew < b.isNew) - (b.isNew < a.isNew) || (a.id < b.id) - (b.id < a.id);
 }
@@ -58,4 +66,14 @@ function onlyDigits(e) {
   if (e.keyCode !== 8 && e.keyCode !== 46) {
     return (digits.indexOf(String.fromCharCode(e.which)) !== -1);
   }
+}
+
+function selectedContact(id, value) {
+  return function (value) {
+    return ('contact' in value && value.contact === id);
+  };
+}
+
+function isIDInArray(n, val, index, array) {
+  return n.id == val.id;
 }

@@ -206,7 +206,7 @@ App.scenes.auth = {
       var token;
       var res;
       var cid;
-      var contact;
+      var contact = false;
       var processing = $.Deferred();
       var userData = {
         id: '',
@@ -214,7 +214,7 @@ App.scenes.auth = {
         login: '',
         password: '',
         cid: '',
-        contact: false,
+        contact: '',
       };
 
       processing.then(function (name, id) {
@@ -249,7 +249,7 @@ App.scenes.auth = {
           result = true;
           token = res.sig;
           cid = res.uid;
-          if (!res.is_contact) {
+          if (!res.is_contact || res.is_contact === 'false') {
             _this.checkLardiContact(login, cid, token, function (name, id) {
               processing.resolve(name, id);
             });

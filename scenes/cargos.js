@@ -476,11 +476,13 @@ App.scenes.cargos = {
       }
     });
 
-    if ($('#by-request').prop('checked')) {
-      cargo.currency = $currency.val();
+    if (!$('#by-request').prop('checked')) {
+      if ($price.val().length > 0) {
+        cargo.price = setParam($price.val(), null);
+        lardi.stavka = setParam($price.val(), null);
 
-      cargo.price = setParam($price.val(), 0);
-      lardi.stavka = setParam($price.val(), 0);
+        cargo.currency = $currency.val();
+      }
 
       if ($paymentType.val()) {
         cnote.push('Оплата: ' + $paymentType.find(':selected').text());
@@ -565,8 +567,15 @@ App.scenes.cargos = {
           }
 
           resp = XMLtoJson(response.success);
-          if (resp.response.error) {
-            return lardiDef.reject(resp.response.error);
+          if ('response' in resp) {
+            resp = resp.response;
+            if ('error' in resp && resp.response.error) {
+              return lardiDef.reject(resp.response.error);
+            }
+
+            if ('id' in resp && resp.id) {
+              return lardiDef.resolve(resp.id);
+            }
           }
 
           return lardiDef.resolve();
@@ -583,6 +592,10 @@ App.scenes.cargos = {
 
     $.when(cargoDef, lardiDef).then(function (cargoResp, lardiResp) {
       App.stopLoading();
+      if (App.checkToken('lardi')) {
+        App.saveExportedCargos('lardi', App.getExportedCargos('lardi').concat(lardiResp));
+      }
+
       return App.showScene('cargoAdded');
     }, function (error) {
       App.stopLoading();

@@ -22,6 +22,8 @@
     'cargoAdded': {},
     'cargos': {},
     'cargosList': {},
+    'cargosListContacts': {},
+    'cargosListTable': {},
     'contacts': {},
     'intro': {},
     'loading': {},
@@ -372,8 +374,7 @@
 
   templates['cargosList'] =   function(obj) {
     obj || (obj = {});
-    var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-    function print() { __p += __j.call(arguments, '') }
+    var __t, __p = '', __e = _.escape;
     with (obj) {
     __p += '<div class="ce__cargo-wrapper col-xs-12 col-sm-12 col-md-12 col-lg-12 ' +
     ((__t = (wrapper_class)) == null ? '' : __t) +
@@ -381,45 +382,93 @@
     ((__t = (wrapper_id)) == null ? '' : __t) +
     '">\n  <div class="col-xs-3 col-sm-3 wide-left">\n    <button id="export" type="button" class="btn btn-accept ce__btn ce__order_btn-confirm col-xs-12 col-sm-12">\n      ' +
     __e(orderButtonText) +
-    '\n    </button>\n  </div>\n  <div class="ce__wrapper_export-message export-message col-xs-9 col-sm-9 wide-left wide-right">\n      Для того, чтобы продублировать груз на\n      <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span>\n      выберите предложение и нажмите кнопку "Экспортировать".\n  </div>\n  <table class=\'table table-striped table-hover table-condenced table-bordered\'>\n    <thead>\n      <tr>\n        <td>\n          <label>\n            <input type=\'checkbox\' class=\'check-all\' value=\'\'/>\n            <span class="checkbox-text"></span>\n          </label>\n        </td>\n        <td>Нас. пункт</td>\n        <td>Дата</td>\n        <td>Груз</td>\n        <td>Ставка</td>\n      </tr>\n    </thead>\n    <tbody>\n    ';
-     _.forEach(lardiCargos, function(cargo) {
-    __p += '\n      <tr ';
-     if (cargo.isNew) {
-    __p += ' class="new-cargo"';
+    '\n    </button>\n  </div>\n  <div class="ce__wrapper_export-message export-message col-xs-9 col-sm-9 wide-left wide-right">\n    <div class="col-xs-12 col-sm-12 wide-left wide-right">\n      Для того, чтобы продублировать груз на\n      <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span>\n      выберите предложение и\n    </div>\n    <div class="col-xs-12 col-sm-12 wide-left wide-right">\n        <div class="col-xs-7 col-sm-7 wide-left wide-right">\n            нажмите кнопку "Экспортировать".\n        </div>\n        <div class="col-xs-5 col-sm-5 contacts-block wide-right">\n\n        </div>\n    </div>\n  </div>\n  <table class=\'table table-striped table-hover table-condenced table-bordered\'>\n    <thead>\n      <tr>\n        <td>\n          <label>\n            <input type=\'checkbox\' class=\'check-all\' value=\'\'/>\n            <span class="checkbox-text"></span>\n          </label>\n        </td>\n        <td>Нас. пункт</td>\n        <td>Дата</td>\n        <td>Груз</td>\n        <td>Ставка</td>\n      </tr>\n    </thead>\n    <tbody>\n\n    </tbody>\n\n  </table>\n</div>\n';
+
+    }
+    return __p
+  };
+
+  templates['cargosListContacts'] =   function(obj) {
+    obj || (obj = {});
+    var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+    function print() { __p += __j.call(arguments, '') }
+    with (obj) {
+    __p += '<select class="form-control contacts-select input-sm" id="contacts" name="contacts">\n    ';
+     _.forEach(contacts, function(contact) {
+    __p += '\n      <option value="' +
+    __e(contact.id) +
+    '"\n        ';
+     if ('selected' in contact && contact.selected) {
+    __p += '\n          selected\n        ';
      }
-    __p += '>\n          <td>\n            <label>\n              <input type=\'checkbox\' value=\'' +
+    __p += '\n        >\n        ' +
+    __e(contact.name) +
+    '\n        ';
+     if ('count' in contact) {
+    __p += '\n          (' +
+    __e(contact.count) +
+    ')\n        ';
+     }
+    __p += '\n      </option>\n    ';
+     }) ;
+    __p += '\n</select>\n';
+
+    }
+    return __p
+  };
+
+  templates['cargosListTable'] =   function(obj) {
+    obj || (obj = {});
+    var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+    function print() { __p += __j.call(arguments, '') }
+    with (obj) {
+
+     _.forEach(lardiCargos, function(cargo) {
+    __p += '\n  <tr class="';
+     if (cargo.isExported) {
+    __p += 'exported';
+     } else {
+
+     if (cargo.isNew) {
+    __p += 'new-cargo';
+     } }
+    __p += '">\n      <td>\n        <label>\n          <input type=\'checkbox\' class="lardi-cargo-checkbox" value=\'' +
     __e(cargo.id) +
-    '\'/>\n              <span class="checkbox-text"></span>\n            </label>\n          </td>\n          <td>\n            <strong>' +
+    '\'\n          ';
+     if (cargo.isExported) {
+    __p += '\n            disabled\n          ';
+     }
+    __p += '\n          />\n          <span class="checkbox-text"></span>\n        </label>\n      </td>\n      <td>\n        <strong>' +
     __e(cargo.country_from) +
-    '</strong>\n            ' +
+    '</strong>\n        ' +
     __e(_.capitalize(cargo.city_from));
      if (cargo.area_name_from.length > 0) {
     __p += ', ' +
     __e(cargo.area_name_from) +
     ' ';
      }
-    __p += '\n            -<br>\n            <strong>' +
+    __p += '\n        -<br>\n        <strong>' +
     __e(cargo.country_to) +
-    '</strong>\n            ' +
+    '</strong>\n        ' +
     __e(_.capitalize(cargo.city_to));
      if (cargo.area_name_to.length > 0) {
     __p += ', ' +
     __e(cargo.area_name_to) +
     ' ';
      }
-    __p += '\n          </td>\n          <td>\n            ' +
+    __p += '\n      </td>\n      <td>\n        ' +
     ((__t = (cargo.date_from.slice(-2))) == null ? '' : __t) +
     '.' +
     ((__t = (cargo.date_from.slice(-5, -3))) == null ? '' : __t) +
-    '\n            ';
+    '\n        ';
      if (cargo.date_to.length > 0) {
-    __p += '\n              - ' +
+    __p += '\n          - ' +
     ((__t = (cargo.date_to.slice(-2))) == null ? '' : __t) +
     '.' +
     ((__t = (cargo.date_to.slice(-5, -3))) == null ? '' : __t) +
-    '\n            ';
+    '\n        ';
      }
-    __p += '\n          </td>\n          <td>\n' +
+    __p += '\n      </td>\n      <td>\n' +
     __e(cargo.gruz) +
     ',\n' +
     __e(cargo.mass);
@@ -461,21 +510,21 @@
      }
     __p += '\n';
      if (cargo.body_type_name.length > 0) {
-    __p += '\n  ' +
+    __p += '\n' +
     __e(cargo.body_type_name) +
     '\n';
      } else {
-    __p += '\n  ' +
+    __p += '\n' +
     __e(cargo.body_type_group_name) +
     '\n';
      }
-    __p += '\n          </td>\n          <td>\n              ' +
+    __p += '\n      </td>\n      <td>\n          ' +
     __e(cargo.stavka) +
     ' ' +
     __e(cargo.payment_currency_name) +
-    '\n          </td>\n      </tr>\n    ';
+    '\n      </td>\n  </tr>\n';
      }) ;
-    __p += '\n    </tbody>\n\n  </table>\n</div>\n';
+    __p += '\n';
 
     }
     return __p

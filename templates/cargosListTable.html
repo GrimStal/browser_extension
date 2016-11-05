@@ -1,0 +1,44 @@
+<% _.forEach(lardiCargos, function(cargo) { %>
+  <tr class="<% if (cargo.isExported) {%>exported<% } else { %><% if (cargo.isNew) {%>new-cargo<% } }%>">
+      <td>
+        <label>
+          <input type='checkbox' class="lardi-cargo-checkbox" value='<%-cargo.id%>'
+          <% if (cargo.isExported) {%>
+            disabled
+          <% } %>
+          />
+          <span class="checkbox-text"></span>
+        </label>
+      </td>
+      <td>
+        <strong><%-cargo.country_from%></strong>
+        <%-_.capitalize(cargo.city_from)%><% if (cargo.area_name_from.length > 0) { %>, <%-cargo.area_name_from%> <% } %>
+        -<br>
+        <strong><%-cargo.country_to%></strong>
+        <%-_.capitalize(cargo.city_to)%><% if (cargo.area_name_to.length > 0) { %>, <%-cargo.area_name_to%> <% } %>
+      </td>
+      <td>
+        <%=cargo.date_from.slice(-2)%>.<%=cargo.date_from.slice(-5, -3)%>
+        <% if (cargo.date_to.length > 0) { %>
+          - <%=cargo.date_to.slice(-2)%>.<%=cargo.date_to.slice(-5, -3)%>
+        <% } %>
+      </td>
+      <td>
+<%-cargo.gruz%>,
+<%-cargo.mass%><% if (cargo.mass2 !== '0.0') { %> - <%-cargo.mass2%><% } %>т,
+<% if (cargo.value !== '0.0') { %> <%-cargo.value%><% } %><% if (cargo.value2 !== '0.0') { %> - <%-cargo.value2%><% } %><% if (cargo.value2 !== '0.0' || cargo.value !== '0.0') { %>м3,<% } %>
+<% if (cargo.cmr !== 'false') { %> CMR,<% } %>
+<% if (cargo.t1 !== 'false') { %> T1,<% } %>
+<% if (cargo.tir !== 'false') { %> TiR,<% } %>
+<% if (cargo.adr !== '0') { %> ADR-<%-cargo.adr%>,<% } %>
+<% if (cargo.body_type_name.length > 0) { %>
+<%-cargo.body_type_name%>
+<% } else { %>
+<%-cargo.body_type_group_name%>
+<% }%>
+      </td>
+      <td>
+          <%-cargo.stavka%> <%-cargo.payment_currency_name%>
+      </td>
+  </tr>
+<% }) %>

@@ -27,17 +27,20 @@ label input[type=checkbox] {
   label input[type=checkbox]:checked ~ span:before {
     content: '\2713';
     border-color: #91b247; }
+  label input[type=checkbox]:checked:disabled ~ span:before {
+    color: #ccc;
+    border-color: #ccc; }
 
-.btn {
-  top: 4px; }
-  .btn.white {
-    background-color: #fff;
-    border: 1px solid grey;
-    color: #666 !important; }
-  .btn:focus {
-    outline: none; }
-  .btn.disabled, .btn[disabled] {
-    cursor: default; }
+.btn.white {
+  background-color: #fff;
+  border: 1px solid grey;
+  color: #666 !important; }
+
+.btn:focus {
+  outline: none; }
+
+.btn.disabled, .btn[disabled] {
+  cursor: default; }
 
 .btn-accept {
   color: #fff;
@@ -191,6 +194,11 @@ label input[type=checkbox] {
   .header-message:hover {
     background: #647b31;
     cursor: pointer; }
+  .header-message.intro {
+    padding-left: 8px; }
+    .header-message.intro:hover {
+      cursor: default;
+      background: transparent; }
   .header-message.current-scene {
     background: #55692a; }
     .header-message.current-scene:hover {
@@ -211,7 +219,9 @@ label input[type=checkbox] {
   padding-right: 0; }
   .header-icons .nav-icons {
     display: inline-block;
-    margin-left: 10px; }
+    margin-left: 10px;
+    line-height: 22px;
+    padding: 2px 0; }
     .header-icons .nav-icons .icon {
       display: block;
       width: 20px;
@@ -438,8 +448,15 @@ label input[type=checkbox] {
     border-color: transparent;
     cursor: pointer; }
 
+.cargos-list .btn {
+  top: 4px; }
+
 .cargos-list .export-message {
   margin-bottom: 10px; }
+  .cargos-list .export-message select.input-sm {
+    height: 24px;
+    line-height: 24px;
+    padding: 3px 6px; }
 
 .cargos-list table {
   margin-top: 10px; }
@@ -454,6 +471,14 @@ label input[type=checkbox] {
       background-color: #e7f3db; }
       .cargos-list table tbody tr.new-cargo:hover {
         background-color: #daedc8; }
+    .cargos-list table tbody tr.exported {
+      color: #ccc; }
+    .cargos-list table tbody tr.error {
+      background-color: #ffcdcd; }
+      .cargos-list table tbody tr.error:hover {
+        background-color: #ffe8ec; }
+    .cargos-list table tbody tr.successed {
+      background-color: #b2ca7b; }
     .cargos-list table tbody tr td:first-child {
       width: 30px;
       text-align: center; }

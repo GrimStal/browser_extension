@@ -1,6 +1,7 @@
 $lime: #91b247;
-$lightLime: #e7f3db;
-$lightLime2: #daedc8;
+$lightLime: #b2ca7b;
+$lighterLime: #e7f3db;
+$lighterLime2: #daedc8;
 $green: #647b31;
 $darkGreen: #55692a;
 $white: #fff;
@@ -9,6 +10,8 @@ $black: #000;
 $lightGrey: #ccc;
 $lighterGrey: #eee;
 $lightOrange: #ffdb90;
+$lightRed: #ffcdcd;
+$lightRed2: #ffe8ec;
 
 body {
     width: 700px;
@@ -40,15 +43,23 @@ label {
             line-height: 15px;
         }
 
-        &:checked ~ span:before {
+        &:checked {
+          & ~ span:before {
             content: '\2713';
             border-color: $lime;
+          }
+
+          &:disabled {
+            & ~ span:before {
+              color: $lightGrey;
+              border-color: $lightGrey;
+            }
+          }
         }
     }
 }
 
 .btn {
-  top: 4px;
     &.white {
         background-color: $white;
         border: 1px solid grey;
@@ -255,6 +266,7 @@ label {
         font-weight: 400;
         font-size: 12px;
     }
+
 }
 
 .header-message {
@@ -263,6 +275,15 @@ label {
     &:hover {
       background: $green;
       cursor: pointer;
+    }
+
+    &.intro {
+      padding-left: 8px;
+
+      &:hover {
+        cursor: default;
+        background: transparent;
+      }
     }
 
     &.current-scene {
@@ -293,6 +314,8 @@ label {
     .nav-icons {
         display: inline-block;
         margin-left: 10px;
+        line-height: 22px;
+        padding: 2px 0;
 
         .icon {
             display: block;
@@ -335,6 +358,8 @@ label {
         margin-right: 5px;
     }
 }
+
+
 
 .cargo-info-holder,
 .city-holder {
@@ -542,7 +567,7 @@ label {
     }
 
     .current-month {
-        background-color: $lightLime;
+        background-color: $lighterLime;
         color: $black;
     }
 
@@ -625,8 +650,20 @@ label {
 }
 
 .cargos-list {
+    .btn {
+      top: 4px;
+    }
+
     .export-message {
       margin-bottom: 10px;
+
+      select {
+        &.input-sm {
+          height: 24px;
+          line-height: 24px;
+          padding: 3px 6px;
+        }
+      }
     }
 
     table {
@@ -645,11 +682,27 @@ label {
                 font-size: 10px;
 
                 &.new-cargo {
-                    background-color: $lightLime;
+                    background-color: $lighterLime;
 
                     &:hover {
-                      background-color: $lightLime2;
+                      background-color: $lighterLime2;
                     }
+                }
+
+                &.exported {
+                  color: $lightGrey;
+                }
+
+                &.error {
+                  background-color: $lightRed;
+
+                  &:hover {
+                    background-color: $lightRed2;
+                  }
+                }
+
+                &.successed {
+                  background-color: $lightLime;
                 }
 
                 td {

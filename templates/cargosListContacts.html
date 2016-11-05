@@ -1,0 +1,14 @@
+<select class="form-control contacts-select input-sm" id="contacts" name="contacts">
+    <% _.forEach(contacts, function(contact) { %>
+      <option value="<%-contact.id%>"
+        <% if ('selected' in contact && contact.selected) { %>
+          selected
+        <% } %>
+        >
+        <%-contact.name%>
+        <% if ('count' in contact) { %>
+          (<%-contact.count%>)
+        <% } %>
+      </option>
+    <% }) %>
+</select>

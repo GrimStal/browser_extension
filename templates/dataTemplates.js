@@ -232,8 +232,8 @@ function CargoObject() {
   this.weight = 0;
   this.minTemperature = null;
   this.maxTemperature = null;
-  this.price = 0;
-  this.currency = 0;
+  this.price = null;
+  this.currency = null;
   this.top = 0;
   this.side = 0;
   this.back = 0;
@@ -269,7 +269,7 @@ function LardiTransCargoObject() {
   this.cmr = false;
   this.gruz = '';
   this.tir = false;
-  this.stavka = 0;
+  this.stavka = null;
 
   this.body_type_id = undefined;
   this.body_type_group_id = undefined;
