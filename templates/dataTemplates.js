@@ -13,7 +13,7 @@ var Templates = (function () {
     fields: [
       {
         id: 'lardi_login',
-        label: 'Email',
+        label: 'Email или логин',
         type: 'text',
       },
       {
@@ -34,7 +34,7 @@ var Templates = (function () {
     fields: [
       {
         id: 'cargo_login',
-        label: 'Email',
+        label: 'Email или логин',
         type: 'text',
       },
       {
@@ -197,7 +197,7 @@ var Templates = (function () {
       2: 'после доставки',
       3: 'предоплата',
     },
-    byRequestLabel: 'по запросу',
+    byRequestLabel: 'запрос ставки',
     noteLabel: 'Комментарий',
     clearButtonText: 'Очистить',
     orderButtonText: 'Добавить',

@@ -120,7 +120,7 @@
     '" name="' +
     ((__t = (field.id)) == null ? '' : __t) +
     '" placeholder="Введите ' +
-    ((__t = (field.label)) == null ? '' : __t) +
+    ((__t = (field.label.toLowerCase())) == null ? '' : __t) +
     '" />\n                    </div>\n                  ';
      }); ;
     __p += '\n                </fieldset>\n                <div class="ce__auth_btn">\n                    <button id="' +
@@ -358,7 +358,7 @@
     __e(type) +
     '</option>\n                              ';
      }) ;
-    __p += '\n                          </select>\n                        </div>\n                  </fieldset>\n                    <div class="col-xs-5 col-sm-5 wide-right wide-left">\n                      <div class="checkbox col-xs-6 col-sm-6">\n                        <label>\n                            <input type="checkbox" class="by-request by-request-checkbox" id="by-request" />\n                            <span class="check-text">' +
+    __p += '\n                          </select>\n                        </div>\n                  </fieldset>\n                    <div class="col-xs-5 col-sm-5 wide-right wide-left">\n                      <div class="checkbox col-xs-12 col-sm-12">\n                        <label>\n                            <input type="checkbox" class="by-request by-request-checkbox" id="by-request" />\n                            <span class="check-text">' +
     __e(byRequestLabel) +
     '</span>\n                        </label>\n                      </div>\n                    </div>\n                </div>\n              </form>\n          </div>\n\n          <div class="row">\n            <form class="form-inline" role="form" id="note-form" novalidate>\n              <div class="form-group">\n                  <label for="note" class="col-xs-2 col-sm-2">' +
     __e(noteLabel) +
@@ -382,7 +382,7 @@
     ((__t = (wrapper_id)) == null ? '' : __t) +
     '">\n  <div class="col-xs-3 col-sm-3 wide-left">\n    <button id="export" type="button" class="btn btn-accept ce__btn ce__order_btn-confirm col-xs-12 col-sm-12">\n      ' +
     __e(orderButtonText) +
-    '\n    </button>\n  </div>\n  <div class="ce__wrapper_export-message export-message col-xs-9 col-sm-9 wide-left wide-right">\n    <div class="col-xs-12 col-sm-12 wide-left wide-right">\n      Для того, чтобы продублировать груз на\n      <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span>\n      выберите предложение и\n    </div>\n    <div class="col-xs-12 col-sm-12 wide-left wide-right">\n        <div class="col-xs-7 col-sm-7 wide-left wide-right">\n            нажмите кнопку "Экспортировать".\n        </div>\n        <div class="col-xs-5 col-sm-5 contacts-block wide-right">\n\n        </div>\n    </div>\n  </div>\n  <table class=\'table table-striped table-hover table-condenced table-bordered\'>\n    <thead>\n      <tr>\n        <td>\n          <label>\n            <input type=\'checkbox\' class=\'check-all\' value=\'\'/>\n            <span class="checkbox-text"></span>\n          </label>\n        </td>\n        <td>Нас. пункт</td>\n        <td>Дата</td>\n        <td>Груз</td>\n        <td>Ставка</td>\n      </tr>\n    </thead>\n    <tbody>\n\n    </tbody>\n\n  </table>\n</div>\n';
+    '\n    </button>\n  </div>\n  <div class="ce__wrapper_export-message export-message col-xs-9 col-sm-9 wide-left wide-right">\n    <div class="col-xs-12 col-sm-12 wide-left wide-right">\n      Для того, чтобы продублировать груз на\n      <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span>\n      выберите предложение\n    </div>\n    <div class="col-xs-12 col-sm-12 wide-left wide-right">\n        <div class="col-xs-7 col-sm-7 wide-left wide-right">\n             и нажмите кнопку "Экспортировать".\n        </div>\n        <div class="col-xs-5 col-sm-5 contacts-block wide-right">\n\n        </div>\n    </div>\n  </div>\n  <table class=\'table table-striped table-hover table-condenced table-bordered\'>\n    <thead>\n      <tr>\n        <td>\n          <label>\n            <input type=\'checkbox\' class=\'check-all\' value=\'\'/>\n            <span class="checkbox-text"></span>\n          </label>\n        </td>\n        <td>Нас. пункт</td>\n        <td>Дата</td>\n        <td>Груз</td>\n        <td>Ставка</td>\n      </tr>\n    </thead>\n    <tbody>\n\n    </tbody>\n\n  </table>\n</div>\n';
 
     }
     return __p
