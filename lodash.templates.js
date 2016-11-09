@@ -76,7 +76,7 @@
      }); ;
     __p += '\n                </div>\n                <div class="ce__unbind_btn">\n                    <button id="' +
     ((__t = (submit_id)) == null ? '' : __t) +
-    '" type="button" class="btn ce__btn btn-defualt ce__unbind_btn-confirm binded col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">\n                      Отвязать\n                    </button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n';
+    '" type="button" class="btn ce__btn btn-default ce__unbind_btn-confirm binded col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">\n                      Отвязать\n                    </button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n';
 
     }
     return __p
@@ -86,7 +86,7 @@
     obj || (obj = {});
     var __t, __p = '', __e = _.escape;
     with (obj) {
-    __p += '<div class="ce__order_btn">\n  <button id="addOrder" type="button" class="btn btn-defualt ce__btn ce__order_btn-confirm col-xs-4 col-sm-4 col-sm-offset-4 col-xs-offset-4">\n    ' +
+    __p += '<div class="ce__order_btn">\n  <button id="addOrder" type="button" class="btn btn-default ce__btn ce__order_btn-confirm col-xs-4 col-sm-4 col-sm-offset-4 col-xs-offset-4">\n    ' +
     __e(buttonText) +
     '\n  </button>\n</div>\n';
 
@@ -125,7 +125,7 @@
      }); ;
     __p += '\n                </fieldset>\n                <div class="ce__auth_btn">\n                    <button id="' +
     ((__t = (submit_id)) == null ? '' : __t) +
-    '" type="button" class="btn ce__btn btn-defualt ce__auth_btn-confirm col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">\n                      Привязать аккаунт\n                    </button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n';
+    '" type="button" class="btn ce__btn btn-default ce__auth_btn-confirm col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">\n                      Привязать аккаунт\n                    </button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n';
 
     }
     return __p
@@ -362,7 +362,7 @@
     __e(byRequestLabel) +
     '</span>\n                        </label>\n                      </div>\n                    </div>\n                </div>\n              </form>\n          </div>\n\n          <div class="row">\n            <form class="form-inline" role="form" id="note-form" novalidate>\n              <div class="form-group">\n                  <label for="note" class="col-xs-2 col-sm-2">' +
     __e(noteLabel) +
-    '</label>\n                  <div class="col-xs-10 col-sm-10">\n                    <textarea rows="2" class="form-control note-textarea" maxlength=40 id="note" name="note" />\n                  </div>\n              </div>\n            </form>\n          </div>\n      </div>\n      </div>\n    </div>\n\n    <div class="row">\n          <div class="col-xs-3 col-sm-3 col-xs-offset-3 col-sm-offset-3">\n            <button id="clean" type="button" class="btn btn-defualt ce__btn ce__order_btn-clean col-xs-12 col-sm-12">\n              ' +
+    '</label>\n                  <div class="col-xs-10 col-sm-10">\n                    <textarea rows="2" class="form-control note-textarea" maxlength=40 id="note" name="note" />\n                  </div>\n              </div>\n            </form>\n          </div>\n      </div>\n      </div>\n    </div>\n\n    <div class="row">\n          <div class="col-xs-3 col-sm-3 col-xs-offset-3 col-sm-offset-3">\n            <button id="clean" type="button" class="btn btn-default ce__btn ce__order_btn-clean col-xs-12 col-sm-12">\n              ' +
     __e(clearButtonText) +
     '\n            </button>\n          </div>\n          <div class="col-xs-3 col-sm-3">\n            <button id="sendOrder" type="button" class="btn btn-accept ce__btn ce__order_btn-confirm col-xs-12 col-sm-12">\n              ' +
     __e(orderButtonText) +
@@ -586,7 +586,7 @@
     with (obj) {
     __p += '<div class="row">\n    <div class="ce__wrapper_nav_bar nav_bar col-xs-12 col-sm-12 col-md-12 col-lg-12">\n      ';
      _(list).forEach(function(item) {
-    __p += '\n        <button type="button" class="btn btn-defualt ce__btn ce__btn_green ' +
+    __p += '\n        <button type="button" class="btn btn-default ce__btn ce__btn_green ' +
     __e(item.class) +
     '-button col-xs-2 col-sm-2">item.text</button>\n      ';
      }); ;

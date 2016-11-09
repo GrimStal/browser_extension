@@ -36,6 +36,10 @@ label input[type=checkbox] {
   border: 1px solid grey;
   color: #666 !important; }
 
+.btn.btn-default:focus {
+  background-color: #fff;
+  border-color: #666; }
+
 .btn:focus {
   outline: none; }
 
