@@ -102,7 +102,7 @@ App.scenes.cargosList = {
         }
 
         $('.check-all').bind('change', function () {
-          $('input[type=checkbox]').prop('checked', this.checked);
+          $('input[type=checkbox]:not(:disabled)').prop('checked', this.checked);
         });
         $('#goCargosList').addClass('current-scene');
         $('#export').bind('click', _this.exportDuplicates.bind(_this));
@@ -223,6 +223,7 @@ App.scenes.cargosList = {
     var areaFrom;
     var placeTo = [];
     var areaTo;
+    var day;
 
     if (!object) {
       ready.reject('Object not set');
@@ -286,9 +287,20 @@ App.scenes.cargosList = {
           //dates
           cargo.fromDate = new Date(object.date_from).setUTCHours(0, 0, 0, 0) / 1000;
           cargo.tillDate = new Date(object.date_to).setUTCHours(23, 59, 0, 0) / 1000;
+          day = new Date(cargo.fromDate * 1000).getUTCDay();
 
           if (!cargo.tillDate) {
             cargo.tillDate = new Date(object.date_from).setUTCHours(23, 59, 0, 0) / 1000;
+          }
+
+          if (day < 5 && day > 0) {
+            if (cargo.tillDate - cargo.fromDate > 259140) {
+              cargo.tillDate = cargo.fromDate + 259140;
+            }
+          } else if (day > 4 || day === 0) {
+            if (cargo.tillDate - cargo.fromDate > 431940) {
+              cargo.tillDate = cargo.fromDate + 431940;
+            }
           }
 
           //volume
@@ -308,26 +320,6 @@ App.scenes.cargosList = {
           //medbook
           if (object.medBook && object.medBook === 'true') {
             note.push('Мед. книжка');
-          }
-
-          //currencies
-          switch (object.payment_currency_id) {
-            case '4':
-              cargo.currency = 7;
-              break;
-            case '6':
-              cargo.currency = 2;
-              break;
-            case '8':
-              cargo.currency = 6;
-              break;
-            case '10':
-              cargo.currency = 18;
-              break;
-            case '2':
-            default:
-              cargo.currency = 15;
-              break;
           }
 
           //payment form
@@ -399,6 +391,26 @@ App.scenes.cargosList = {
           object.stavka = Number(object.stavka);
           if (object.stavka) {
             cargo.price = object.stavka;
+
+            //currencies
+            switch (object.payment_currency_id) {
+              case '4':
+                cargo.currency = 7;
+                break;
+              case '6':
+                cargo.currency = 2;
+                break;
+              case '8':
+                cargo.currency = 6;
+                break;
+              case '10':
+                cargo.currency = 18;
+                break;
+              case '2':
+              default:
+                cargo.currency = 15;
+                break;
+            }
           }
 
           //t1

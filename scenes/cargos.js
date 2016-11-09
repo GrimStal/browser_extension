@@ -487,6 +487,8 @@ App.scenes.cargos = {
       if ($paymentType.val()) {
         cnote.push('Оплата: ' + $paymentType.find(':selected').text());
       }
+    } else {
+      cargo.pricerequest = 2;
     }
 
     if ($adr.val()) {
@@ -529,7 +531,7 @@ App.scenes.cargos = {
         var originCC = origin[0]['alpha2Code'];
         var destinationCC = destination[0]['alpha2Code'];
 
-        if ($('#by-request').prop('checked')) {
+        if (!$('#by-request').prop('checked')) {
           lardi.payment_moment_id = getPaymentMomentID(paymentMoments, parseInt($paymentType.val()));
           if (!lardi.payment_moment_id && ($paymentType.val() === '3' || $paymentType.val() === '2')) {
             lnote.push($paymentType.find(':selected').text());
