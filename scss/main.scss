@@ -66,6 +66,13 @@ label {
         color: $greyText!important;
     }
 
+    &.btn-default {
+      &:focus {
+        background-color: $white;
+        border-color: $greyText;
+      }
+    }
+
     &:focus {
         outline: none;
     }
