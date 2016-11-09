@@ -208,7 +208,7 @@ function getLardiAreaName(countryID, areaID) {
 function updateContactsCounter(array, id) {
   return array.forEach(function (el) {
     if (el.id === id) {
-      el.counter++;
+      el.count++;
     }
   });
 }

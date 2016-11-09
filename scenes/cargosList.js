@@ -138,7 +138,16 @@ App.scenes.cargosList = {
       });
 
     $('#cargos-list table > tbody').empty().append(template);
+    App.scenes.cargosList.setCheckAllAvailability();
     App.stopLoading();
+  },
+
+  setCheckAllAvailability: function () {
+    if ($('.lardi-cargo-checkbox:disabled').length >= $('.lardi-cargo-checkbox').length) {
+      $('.check-all').prop('disabled', true);
+    } else {
+      $('.check-all').prop('disabled', false);
+    }
   },
 
   createSelect: function () {
@@ -577,6 +586,9 @@ App.scenes.cargosList = {
 
             _this.exportedArray = _this.exportedArray.concat(success);
             App.saveExportedCargos('lardi', _this.exportedArray);
+
+            $('.check-all').prop('checked', false);
+            App.scenes.cargosList.setCheckAllAvailability();
 
             App.stopLoading();
             if (error.length > 0) {

@@ -454,13 +454,20 @@ label input[type=checkbox] {
 
 .cargos-list .btn {
   top: 4px; }
+  .cargos-list .btn#export {
+    width: 120px; }
 
 .cargos-list .export-message {
   margin-bottom: 10px; }
-  .cargos-list .export-message select.input-sm {
+
+.cargos-list .manager-block {
+  top: -2px; }
+  .cargos-list .manager-block .manager-title {
+    font-size: 12px; }
+  .cargos-list .manager-block select.input-sm {
     height: 24px;
     line-height: 24px;
-    padding: 3px 6px; }
+    padding: 3px; }
 
 .cargos-list table {
   margin-top: 10px; }
@@ -495,13 +502,17 @@ label input[type=checkbox] {
     .cargos-list table tbody tr td:nth-child(3) {
       text-align: center;
       width: 80px; }
-  .cargos-list table thead tr td, .cargos-list table tbody tr td {
+  .cargos-list table tbody tr td,
+  .cargos-list table thead tr td {
     vertical-align: middle; }
-    .cargos-list table thead tr td label, .cargos-list table tbody tr td label {
+    .cargos-list table tbody tr td label,
+    .cargos-list table thead tr td label {
       height: 19px; }
-      .cargos-list table thead tr td label input[type=checkbox], .cargos-list table tbody tr td label input[type=checkbox] {
+      .cargos-list table tbody tr td label input[type=checkbox],
+      .cargos-list table thead tr td label input[type=checkbox] {
         margin: 0; }
-        .cargos-list table thead tr td label input[type=checkbox] ~ span:before, .cargos-list table tbody tr td label input[type=checkbox] ~ span:before {
+        .cargos-list table tbody tr td label input[type=checkbox] ~ span:before,
+        .cargos-list table thead tr td label input[type=checkbox] ~ span:before {
           position: relative;
           left: 0;
           top: 4px; }

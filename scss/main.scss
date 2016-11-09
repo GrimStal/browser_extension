@@ -44,17 +44,17 @@ label {
         }
 
         &:checked {
-          & ~ span:before {
-            content: '\2713';
-            border-color: $lime;
-          }
-
-          &:disabled {
             & ~ span:before {
-              color: $lightGrey;
-              border-color: $lightGrey;
+                content: '\2713';
+                border-color: $lime;
             }
-          }
+
+            &:disabled {
+                & ~ span:before {
+                    color: $lightGrey;
+                    border-color: $lightGrey;
+                }
+            }
         }
     }
 }
@@ -67,10 +67,10 @@ label {
     }
 
     &.btn-default {
-      &:focus {
-        background-color: $white;
-        border-color: $greyText;
-      }
+        &:focus {
+            background-color: $white;
+            border-color: $greyText;
+        }
     }
 
     &:focus {
@@ -273,43 +273,42 @@ label {
         font-weight: 400;
         font-size: 12px;
     }
-
 }
 
 .header-message {
     padding: 8px 0;
 
     &:hover {
-      background: $green;
-      cursor: pointer;
+        background: $green;
+        cursor: pointer;
     }
 
     &.intro {
-      padding-left: 8px;
+        padding-left: 8px;
 
-      &:hover {
-        cursor: default;
-        background: transparent;
-      }
+        &:hover {
+            cursor: default;
+            background: transparent;
+        }
     }
 
     &.current-scene {
-      background: $darkGreen;
+        background: $darkGreen;
 
-      &:hover {
-        cursor: default;
-      }
+        &:hover {
+            cursor: default;
+        }
 
-      &:before {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 0;
-        border: 5px solid transparent;
-        border-top-color: $darkGreen;
-        top: 100%;
-        left: 45%;
-      }
+        &:before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 5px solid transparent;
+            border-top-color: $darkGreen;
+            top: 100%;
+            left: 45%;
+        }
     }
 }
 
@@ -366,8 +365,6 @@ label {
     }
 }
 
-
-
 .cargo-info-holder,
 .city-holder {
     label {
@@ -392,14 +389,14 @@ label {
         margin: 3px 0 0;
         padding-right: 0;
 
-        >div {
-          &:last-child {
-            padding-left: 20px;
+        > div {
+            &:last-child {
+                padding-left: 20px;
 
-            .check-text:before {
-              left: 20px;
+                .check-text:before {
+                    left: 20px;
+                }
             }
-          }
         }
 
         label {
@@ -469,38 +466,38 @@ label {
     }
 
     .placeholder {
-      position: absolute;
-      right: 3px;
-      top: 2px;
-      z-index: 2;
-      display: inline;
-      color: $lightGrey;
+        position: absolute;
+        right: 3px;
+        top: 2px;
+        z-index: 2;
+        display: inline;
+        color: $lightGrey;
     }
 
     #weight {
-      width: 52px;
+        width: 52px;
 
-      ~ .placeholder {
-          right: -3px;
-          top: 2px;
-      }
+        ~ .placeholder {
+            right: -3px;
+            top: 2px;
+        }
     }
 
     #volume {
-      width: 55px;
+        width: 55px;
 
-      ~ .placeholder {
-          right: -5px;
-          top: 2px;
-      }
+        ~ .placeholder {
+            right: -5px;
+            top: 2px;
+        }
     }
 
     #note {
-      resize: vertical;
+        resize: vertical;
     }
 
     .payment-type-block {
-      left: -3px;
+        left: -3px;
     }
 }
 
@@ -534,7 +531,6 @@ label {
     }
 
     .col-wrap {
-
         .form-group {
             margin-top: 0;
         }
@@ -554,9 +550,8 @@ label {
 }
 
 .calendar-holder {
-
     .calendar {
-      padding-left: 10px;
+        padding-left: 10px;
     }
 
     .dates,
@@ -658,23 +653,36 @@ label {
 
 .cargos-list {
     .btn {
-      top: 4px;
+        top: 4px;
+
+        &#export {
+          width: 120px;
+        }
     }
 
     .export-message {
-      margin-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    .manager-block {
+      top: -2px;
+
+      .manager-title {
+        font-size: 12px;
+      }
 
       select {
-        &.input-sm {
-          height: 24px;
-          line-height: 24px;
-          padding: 3px 6px;
-        }
+          &.input-sm {
+              height: 24px;
+              line-height: 24px;
+              padding: 3px;
+          }
       }
     }
 
     table {
-      margin-top: 10px;
+        margin-top: 10px;
+
         thead {
             td {
                 font-size: 12px;
@@ -692,28 +700,27 @@ label {
                     background-color: $lighterLime;
 
                     &:hover {
-                      background-color: $lighterLime2;
+                        background-color: $lighterLime2;
                     }
                 }
 
                 &.exported {
-                  color: $lightGrey;
+                    color: $lightGrey;
                 }
 
                 &.error {
-                  background-color: $lightRed;
+                    background-color: $lightRed;
 
-                  &:hover {
-                    background-color: $lightRed2;
-                  }
+                    &:hover {
+                        background-color: $lightRed2;
+                    }
                 }
 
                 &.successed {
-                  background-color: $lightLime;
+                    background-color: $lightLime;
                 }
 
                 td {
-
                     &:first-child {
                         width: 30px;
                         text-align: center;
@@ -725,38 +732,39 @@ label {
                     }
 
                     &:nth-child(2) {
-                      text-align: center;
-                      width: 200px;
+                        text-align: center;
+                        width: 200px;
                     }
 
                     &:nth-child(3) {
-                      text-align: center;
-                      width: 80px;
+                        text-align: center;
+                        width: 80px;
                     }
                 }
             }
         }
 
-        thead, tbody {
-          tr {
-            td {
-              vertical-align: middle;
+        tbody,
+        thead {
+            tr {
+                td {
+                    vertical-align: middle;
 
-              label {
-                  height: 19px;
+                    label {
+                        height: 19px;
 
-                  input[type=checkbox] {
-                    margin: 0;
+                        input[type=checkbox] {
+                            margin: 0;
 
-                      & ~ span:before {
-                        position: relative;
-                        left: 0;
-                        top: 4px;
-                      }
-                  }
-              }
+                            & ~ span:before {
+                                position: relative;
+                                left: 0;
+                                top: 4px;
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
     }
+}
