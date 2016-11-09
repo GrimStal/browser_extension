@@ -526,6 +526,11 @@ App.scenes.cargosList = {
     var selected = [];
     var duplicates = [];
     var $checked = $('.lardi-cargo-checkbox:checked');
+
+    if (!$checked.length) {
+      return swal('Ошибка', 'Не выбран ни один груз');
+    }
+
     $checked.each(function (i, el) {
       selected.push($(el).val());
     });
@@ -604,8 +609,12 @@ App.scenes.cargosList = {
           },
           function (error) {
             App.stopLoading();
-            console.log(error);
-            swal('Ошибка', 'Не удалось отправиль данные на Cargo.lt');
+            if (error.error === 'No object') {
+              swal('Ошибка', 'Не выбран ни один груз');
+            } else {
+              console.log(error);
+              swal('Ошибка', 'Не удалось отправить данные на Cargo.LT');
+            }
           }
         );
       },
