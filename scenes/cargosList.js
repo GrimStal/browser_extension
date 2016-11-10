@@ -99,6 +99,8 @@ App.scenes.cargosList = {
           $('#contacts').bind('change', function () {
             _this.createTable($(this).val());
           });
+        } else {
+          $('.manager-block').addClass('hidden');
         }
 
         $('.check-all').bind('change', function () {
@@ -157,7 +159,8 @@ App.scenes.cargosList = {
       selections = [{
         id: '',
         name: 'Все',
-        selected: App.appData.lardi.id === '0' ? true : false
+        selected: App.appData.lardi.id === '0' ? true : false,
+        count: 0
       }];
 
       this.lardiCargos.forEach(function (el) {
@@ -175,6 +178,8 @@ App.scenes.cargosList = {
           } else {
             updateContactsCounter(selections, contact.id);
           }
+
+          updateContactsCounter(selections, '');
         }
       });
 
@@ -510,8 +515,20 @@ App.scenes.cargosList = {
           def.resolve({ error: null, response: response, id: id });
         },
         function (error) {
+          var err;
+
           console.log(error);
-          def.resolve({ error: error.responseJSON.error, response: null, id: id });
+          if ('responseJSON' in error) {
+            if ('error' in error.responseJSON) {
+              err = error.responseJSON.error;
+            }
+          }
+
+          if (err.length === 0) {
+            err = 'Unknown error';
+          }
+
+          def.resolve({ error: err, response: null, id: id });
         }
       );
     } else {
