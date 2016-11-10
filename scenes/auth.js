@@ -241,7 +241,8 @@ App.scenes.auth = {
         if (key === 'lardi') {
           res = XMLtoJson(response.success);
 
-          if (!res) {
+          console.log(res);
+          if (!res || !'response' in res || 'error' in res.response) {
             return processing.reject(res);
           }
 
