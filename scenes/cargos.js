@@ -488,7 +488,7 @@ App.scenes.cargos = {
         cnote.push('Оплата: ' + $paymentType.find(':selected').text());
       }
     } else {
-      cargo.pricerequest = 2;
+      cargo.pricerequest = 1;
     }
 
     if ($adr.val()) {
@@ -618,6 +618,7 @@ App.scenes.cargos = {
     $('input[type=text], textarea').val('');
     $('select:not("#currency")').val('');
     $('#currency').val('15');
+    $('#payment-fieldset').prop('disabled', false);
     $('input[type=checkbox]').prop('checked', false);
     // $('#temperature').prop('disabled', true);
     $('#temperatureMin, #temperatureMax').val('');
