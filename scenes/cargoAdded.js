@@ -10,6 +10,7 @@ App.scenes.cargoAdded = {
       $('#addOrder').bind('click', function () {
         App.showScene('cargos');
       });
+      App.stopLoading();
     },
 
     hide: function () {

@@ -131,6 +131,7 @@ var App = (function () {
     }
 
     this.checkRouteButtons();
+    this.loading('Загрузка страницы');
     return this.showScene(scene);
   };
 
@@ -342,6 +343,7 @@ var App = (function () {
           var lardi = _this.appData.lardi;
           var $contactSet = $.Deferred();
           var $lardiCountries = $.Deferred();
+          var $cargoTypes = App.exchanges.saveCargoTypes();
 
           if (_this.checkToken('lardi')) {
             if (!lardi.contact) {
@@ -361,7 +363,7 @@ var App = (function () {
             $lardiCountries.resolve('User did not authorize on lardi');
           }
 
-          $.when($contactSet, $lardiCountries).then(
+          $.when($cargoTypes, $contactSet, $lardiCountries).then(
             function () {
               $cargoDef.resolve();
             },
@@ -410,6 +412,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var regions = {};
 var lardiCountries;
+var cargoTypes = [];
 
 $.get('regions.json').then(function (regionsFile) {
   regions = JSON.parse(regionsFile);

@@ -5,12 +5,12 @@
  * @param  {string} name   Value to search
  * @return {number || -1}        ID or -1
  */
-function getID(object, name) {
+function getID(array, name) {
   var result = -1;
   name = name.trim().toLowerCase();
-  _.forEach(object, function (objName, key) {
-    if (name === objName.trim().toLowerCase()) {
-      result = Number(key);
+  array.forEach(function (el) {
+    if (name === el.type.trim().toLowerCase()) {
+      result = Number(el.id);
     }
   });
 

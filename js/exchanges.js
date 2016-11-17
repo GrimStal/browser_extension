@@ -155,5 +155,19 @@ App.exchanges = {
       }
     );
     return def.promise();
+  },
+
+  saveCargoTypes: function () {
+    var def = $.Deferred();
+    App.exchanges.getCargoTypes().then(
+      function (types) {
+        cargoTypes = createSortedObjectsArray(types.cargoTypes);
+        def.resolve();
+      },
+      function (err) {
+        def.reject(err);
+      }
+    );
+    return def.promise();
   }
 };

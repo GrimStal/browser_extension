@@ -14,6 +14,15 @@ App.scenes.cargosList = {
       return App.changeScene('cargos');
     }
 
+    if (!this.queue) {
+      this.queue = $.jqmq({
+        delay: -1,
+        batch: 5,
+        callback: _this.sendBatchOfDuplicates,
+        complete: _this.cargosExported
+      });
+    }
+
     this.currentArray = [];
     this.lardiCargos = [];
     this.newArray = [];
@@ -106,8 +115,12 @@ App.scenes.cargosList = {
         $('.check-all').bind('change', function () {
           $('input[type=checkbox]:not(:disabled)').prop('checked', this.checked);
         });
+        $('.lardi-cargo-checkbox').bind('change', function () {
+          $('.check-all').prop('checked', false);
+        });
         $('#goCargosList').addClass('current-scene');
         $('#export').bind('click', _this.exportDuplicates.bind(_this));
+        App.stopLoading();
       },
       function (error) {
         console.log(error);
@@ -225,14 +238,13 @@ App.scenes.cargosList = {
     return result.promise();
   },
 
-  createCargoDuplicate: function (object, callback) {
+  createCargoDuplicate: function (object, /*ctypes,*/ atips) {
     var _this = this;
-    var ready = $.Deferred();
     var note = [];
     var loads = this.setLoadTypes(object.zagruz_set);
     var cargo = new CargoObject();
-    var getCargoTypes = App.exchanges.getCargoTypes();
-    var getAutoTips = App.exchanges.getLardiAutoTips();
+    // var cargoTypes = ctypes.cargoTypes;
+    var autoTips = XMLtoJson(atips).response.item;
     var placeFrom = [];
     var areaFrom;
     var placeTo = [];
@@ -264,238 +276,224 @@ App.scenes.cargosList = {
     cargo.origins.push({ country: getLardiCountryCode(object.country_from_id), name: placeFrom.join(', ') });
     cargo.destinations.push({ country: getLardiCountryCode(object.country_to_id), name: placeTo.join(', ') });
 
-    $.when(getCargoTypes, getAutoTips).then(
-        function (cargoTypes, autoTips) {
-          var aTips = XMLtoJson(autoTips).response.item;
+    //Cargo type
+    cargo.type = getID(cargoTypes, object.gruz);
+    if (cargo.type === -1) {
+      note.push('Груз: ' + object.gruz);
+      cargo.type = 55;
+    }
 
-          //Cargo type
-          cargo.type = getID(cargoTypes.cargoTypes, object.gruz);
-          if (cargo.type === -1) {
-            note.push('Груз: ' + object.gruz);
-            cargo.type = 55;
-          }
+    //ADR
+    if (parseInt(object.adr)) {
+      cargo.adr = 1;
+      note.push('ADR: ' + object.adr);
+    }
 
-          //ADR
-          if (parseInt(object.adr)) {
-            cargo.adr = 1;
-            note.push('ADR: ' + object.adr);
-          }
+    //Load types
+    $.extend(cargo, loads[0]);
+    if (loads[1] && loads[1].length) {
+      note.push('Загрузка: ' + loads[1]);
+    }
 
-          //Load types
-          $.extend(cargo, loads[0]);
+    //CMR
+    if (object.cmr && object.cmr === 'true') {
+      note.push('CMR');
+    }
 
-          if (loads[1] && loads[1].length) {
-            note.push('Загрузка: ' + loads[1]);
-          }
+    //custom control
+    if (object.custom_control && object.custom_control === 'true') {
+      note.push('Таможенный контроль');
+    }
 
-          //CMR
-          if (object.cmr && object.cmr === 'true') {
-            note.push('CMR');
-          }
+    //dates
+    cargo.fromDate = new Date(object.date_from).setUTCHours(0, 0, 0, 0) / 1000;
+    cargo.tillDate = new Date(object.date_to).setUTCHours(23, 59, 0, 0) / 1000;
+    day = new Date(cargo.fromDate * 1000).getUTCDay();
 
-          //custom control
-          if (object.custom_control && object.custom_control === 'true') {
-            note.push('Таможенный контроль');
-          }
+    if (!cargo.tillDate) {
+      cargo.tillDate = new Date(object.date_from).setUTCHours(23, 59, 0, 0) / 1000;
+    }
 
-          //dates
-          cargo.fromDate = new Date(object.date_from).setUTCHours(0, 0, 0, 0) / 1000;
-          cargo.tillDate = new Date(object.date_to).setUTCHours(23, 59, 0, 0) / 1000;
-          day = new Date(cargo.fromDate * 1000).getUTCDay();
+    if (day < 5 && day > 0) {
+      if (cargo.tillDate - cargo.fromDate > 259140) {
+        cargo.tillDate = cargo.fromDate + 259140;
+      }
+    } else if (day > 4 || day === 0) {
+      if (cargo.tillDate - cargo.fromDate > 431940) {
+        cargo.tillDate = cargo.fromDate + 431940;
+      }
+    }
 
-          if (!cargo.tillDate) {
-            cargo.tillDate = new Date(object.date_from).setUTCHours(23, 59, 0, 0) / 1000;
-          }
+    //volume
+    if (object.value_select === 'FROM' || !object.value.length) {
+      cargo.volume = parseFloat(object.value);
+    } else {
+      cargo.volume = parseFloat(object.value2);
+    }
 
-          if (day < 5 && day > 0) {
-            if (cargo.tillDate - cargo.fromDate > 259140) {
-              cargo.tillDate = cargo.fromDate + 259140;
-            }
-          } else if (day > 4 || day === 0) {
-            if (cargo.tillDate - cargo.fromDate > 431940) {
-              cargo.tillDate = cargo.fromDate + 431940;
-            }
-          }
+    //weight
+    if (object.mass_select === 'FROM' || !object.mass_select.length) {
+      cargo.weight = parseFloat(object.mass);
+    } else {
+      cargo.weight = parseFloat(object.mass2);
+    }
 
-          //volume
-          if (object.value_select === 'FROM' || !object.value.length) {
-            cargo.volume = parseFloat(object.value);
+    //medbook
+    if (object.medBook && object.medBook === 'true') {
+      note.push('Мед. книжка');
+    }
+
+    //payment form
+    if (object.payment_forma_id && object.payment_forma_id !== '0') {
+      switch (object.payment_forma_id) {
+        case '4':
+          note.push('безнал.');
+          break;
+        case '6':
+          note.push('комб.');
+          break;
+        case '8':
+          note.push('эл. платеж.');
+          break;
+        case '10':
+          note.push('карта.');
+          break;
+        case '2':
+          note.push('нал.');
+          break;
+      }
+    }
+
+    //payment moment
+    if (object.payment_moment_id && object.payment_moment_id !== '0') {
+      switch (object.payment_moment_id) {
+        case '4':
+          note.push('Оплата на выгрузке');
+          break;
+        case '6':
+          note.push('Оплата по оригиналам');
+          break;
+        case '8':
+          if (object.payment_delay && object.payment_delay !== '0') {
+            note.push('Отсрочка платежа ' + object.payment_delay + ' дней');
           } else {
-            cargo.volume = parseFloat(object.value2);
+            note.push('Отсрочка платежа');
           }
 
-          //weight
-          if (object.mass_select === 'FROM' || !object.mass_select.length) {
-            cargo.weight = parseFloat(object.mass);
-          } else {
-            cargo.weight = parseFloat(object.mass2);
-          }
+          break;
+        case '2':
+          note.push('Оплата на загрузке');
+          break;
+      }
+    }
 
-          //medbook
-          if (object.medBook && object.medBook === 'true') {
-            note.push('Мед. книжка');
-          }
+    //prepay
+    object.payment_prepay = parseInt(object.payment_prepay);
+    if (object.payment_prepay && (object.payment_prepay > 0 && object.payment_prepay <= 100)) {
+      note.push('Предоплата ' + object.payment_prepay + '%;');
+    }
 
-          //payment form
-          if (object.payment_forma_id && object.payment_forma_id !== '0') {
-            switch (object.payment_forma_id) {
-              case '4':
-                note.push('безнал.');
-                break;
-              case '6':
-                note.push('комб.');
-                break;
-              case '8':
-                note.push('эл. платеж.');
-                break;
-              case '10':
-                note.push('карта.');
-                break;
-              case '2':
-                note.push('нал.');
-                break;
-            }
-          }
+    //payment_unit
+    switch (object.payment_unit) {
+      case '2':
+        note.push('сумма за км');
+        break;
+      case '4':
+        note.push('сумма за т');
+        break;
+    }
 
-          //payment moment
-          if (object.payment_moment_id && object.payment_moment_id !== '0') {
-            switch (object.payment_moment_id) {
-              case '4':
-                note.push('Оплата на выгрузке');
-                break;
-              case '6':
-                note.push('Оплата по оригиналам');
-                break;
-              case '8':
-                if (object.payment_delay && object.payment_delay !== '0') {
-                  note.push('Отсрочка платежа ' + object.payment_delay + ' дней');
-                } else {
-                  note.push('Отсрочка платежа');
-                }
+    //payment_vat
+    if (object.payment_vat && object.payment_vat == 'true') {
+      note.push('НДС');
+    }
 
-                break;
-              case '2':
-                note.push('Оплата на загрузке');
-                break;
-            }
-          }
+    //stavka
+    object.stavka = Number(object.stavka);
+    if (object.stavka) {
+      cargo.price = object.stavka;
 
-          //prepay
-          object.payment_prepay = parseInt(object.payment_prepay);
-          if (object.payment_prepay && (object.payment_prepay > 0 && object.payment_prepay <= 100)) {
-            note.push('Предоплата ' + object.payment_prepay + '%;');
-          }
+      //currencies
+      switch (object.payment_currency_id) {
+        case '4':
+          cargo.currency = 7;
+          break;
+        case '6':
+          cargo.currency = 2;
+          break;
+        case '8':
+          cargo.currency = 6;
+          break;
+        case '10':
+          cargo.currency = 18;
+          break;
+        case '2':
+        default:
+          cargo.currency = 15;
+          break;
+      }
+    }
 
-          //payment_unit
-          switch (object.payment_unit) {
-            case '2':
-              note.push('сумма за км');
-              break;
-            case '4':
-              note.push('сумма за т');
-              break;
-          }
+    //t1
+    if (object.t1 && object.t1 == 'true') {
+      note.push('T1');
+    }
 
-          //payment_vat
-          if (object.payment_vat && object.payment_vat == 'true') {
-            note.push('НДС');
-          }
+    //tir
+    if (object.tir && object.tir == 'true') {
+      cargo.tir = true;
+    }
 
-          //stavka
-          object.stavka = Number(object.stavka);
-          if (object.stavka) {
-            cargo.price = object.stavka;
+    //declaration
+    if (object.add_info.toLowerCase().indexOf('по декларации') > -1 ||
+      object.note.toLowerCase().indexOf('по декларации') > -1) {
+      cargo.declaration = 1;
+    }
 
-            //currencies
-            switch (object.payment_currency_id) {
-              case '4':
-                cargo.currency = 7;
-                break;
-              case '6':
-                cargo.currency = 2;
-                break;
-              case '8':
-                cargo.currency = 6;
-                break;
-              case '10':
-                cargo.currency = 18;
-                break;
-              case '2':
-              default:
-                cargo.currency = 15;
-                break;
-            }
-          }
+    //full load
+    if (object.add_info.toLowerCase().indexOf('полная') > -1 ||
+      object.note.toLowerCase().indexOf('полная') > -1) {
+      cargo.full = 1;
+    }
 
-          //t1
-          if (object.t1 && object.t1 == 'true') {
-            note.push('T1');
-          }
+    //partly load
+    if (object.add_info.toLowerCase().indexOf('частичная') > -1 ||
+      object.note.toLowerCase().indexOf('частичная') > -1) {
+      cargo.partly = 1;
+    }
 
-          //tir
-          if (object.tir && object.tir == 'true') {
-            cargo.tir = true;
-          }
+    //fift load
+    if (object.add_info.toLowerCase().indexOf('лифт') > -1 ||
+      object.note.toLowerCase().indexOf('лифт') > -1) {
+      cargo.lift = 1;
+    }
 
-          //declaration
-          if (object.add_info.toLowerCase().indexOf('по декларации') > -1 ||
-            object.note.toLowerCase().indexOf('по декларации') > -1) {
-            cargo.declaration = 1;
-          }
+    //manipulator load
+    if (object.add_info.toLowerCase().indexOf('манипулятор') > -1 ||
+      object.note.toLowerCase().indexOf('манипулятор') > -1) {
+      cargo.manipulator = 1;
+    }
 
-          //full load
-          if (object.add_info.toLowerCase().indexOf('полная') > -1 ||
-            object.note.toLowerCase().indexOf('полная') > -1) {
-            cargo.full = 1;
-          }
+    //auto_col_tip
+    if (object.auto_col_id && object.auto_col_id.length > 0 && object.auto_col_id !== '0') {
+      object.auto_col = parseInt(object.auto_col);
+      if (object.auto_col > 0) {
+        note.push(object.auto_col + ' ' + getName(aTips, object.auto_col_id));
+      }
+    }
 
-          //partly load
-          if (object.add_info.toLowerCase().indexOf('частичная') > -1 ||
-            object.note.toLowerCase().indexOf('частичная') > -1) {
-            cargo.partly = 1;
-          }
+    //Notes
+    if (object.note.length > 0) {
+      note.push(object.note);
+    }
 
-          //fift load
-          if (object.add_info.toLowerCase().indexOf('лифт') > -1 ||
-            object.note.toLowerCase().indexOf('лифт') > -1) {
-            cargo.lift = 1;
-          }
+    if (object.add_info.length > 0) {
+      note.push(object.add_info);
+    }
 
-          //manipulator load
-          if (object.add_info.toLowerCase().indexOf('манипулятор') > -1 ||
-            object.note.toLowerCase().indexOf('манипулятор') > -1) {
-            cargo.manipulator = 1;
-          }
-
-          //auto_col_tip
-          if (object.auto_col_id && object.auto_col_id.length > 0 && object.auto_col_id !== '0') {
-            object.auto_col = parseInt(object.auto_col);
-            if (object.auto_col > 0) {
-              note.push(object.auto_col + ' ' + getName(aTips, object.auto_col_id));
-            }
-          }
-
-          //Notes
-          if (object.note.length > 0) {
-            note.push(object.note);
-          }
-
-          if (object.add_info.length > 0) {
-            note.push(object.add_info);
-          }
-
-          cargo.notes = note.join('; ');
-          cargo.lardiID = object.id;
-
-          ready.resolve(cargo);
-
-        },
-        function (error) {
-          ready.reject(error);
-        }
-      );
-
-    return ready.promise();
+    cargo.notes = note.join('; ');
+    cargo.lardiID = object.id;
+    return cargo;
   },
 
   sendDuplicatesToCargo: function (duplicate) {
@@ -538,11 +536,142 @@ App.scenes.cargosList = {
     return def.promise();
   },
 
+  cargosExported: function () {
+    $('.check-all').prop('checked', false);
+    App.scenes.cargosList.setCheckAllAvailability();
+
+    App.stopLoading();
+
+    if ($('tr.error').length > 0) {
+      swal('Ошибка', 'Не удалось экспортировать некоторые грузы');
+    } else {
+      swal({
+        title: '',
+        text: 'Грузы успешно экспортированы',
+        imageUrl: '/css/images/success.png',
+        confirmButtonText: 'OK'
+      });
+    }
+
+    this.clear();
+  },
+
+  markCargos: function () {
+    var _this = this;
+    var args = [];
+    var success = [];
+    var error = [];
+    var $checked = $('.lardi-cargo-checkbox:checked');
+
+    for (var i = 0; i < arguments.length; i++) {
+      args.push(arguments[i]);
+    }
+
+    args.forEach(function (el) {
+      if (el.error && el.id) {
+        error.push(el.id);
+      } else {
+        success.push(el.id);
+      }
+    });
+
+    $checked.each(function (i, el) {
+      $(el).closest('tr').removeClass('new-cargo');
+
+      if (error.indexOf($(el).val()) !== -1) {
+        $(el).closest('tr').addClass('error');
+      }
+
+      if (success.indexOf($(el).val()) !== -1) {
+        $(el).closest('tr').addClass('successed');
+        $(el).prop('disabled', true);
+        $(el).prop('checked', false);
+      }
+    });
+
+    _this.exportedArray = _this.exportedArray.concat(success);
+    App.saveExportedCargos('lardi', _this.exportedArray);
+  },
+
+  sendBatchOfDuplicates: function (items) {
+    var _this = App.scenes.cargosList;
+    var queue = this;
+    var sendedDuplicates = [];
+    var ruCargos = '';
+    var amount = String(this.size());
+
+    if (!Array.isArray(items)) {
+      sendedDuplicates.push(_this.sendDuplicatesToCargo(items));
+    } else {
+      items.forEach(function (el) {
+        sendedDuplicates.push(_this.sendDuplicatesToCargo(el));
+      });
+    }
+
+    if (amount.length === 1) {
+      switch (amount) {
+        case '1':
+          ruCargos = 'груз';
+          break;
+        case '2':
+        case '3':
+        case '4':
+          ruCargos = 'груза';
+          break;
+        default:
+          ruCargos = 'грузов';
+      }
+    } else {
+      switch (amount[amount.length - 1]) {
+        case '1':
+          if (amount[amount.length - 2] === '1') {
+            ruCargos = 'грузов';
+          } else {
+            ruCargos = 'груз';
+          }
+
+          break;
+        case '2':
+        case '3':
+        case '4':
+          if (amount[amount.length - 2] === '1') {
+            ruCargos = 'грузов';
+          } else {
+            ruCargos = 'груза';
+          }
+
+          break;
+        default:
+          ruCargos = 'грузов';
+      }
+    }
+
+    App.loading('Осталось экспортировать ' + queue.size() + ' ' + ruCargos);
+
+    $.when.apply(_this, sendedDuplicates).then(
+      function () {
+        _this.markCargos.apply(_this, arguments);
+        queue.next();
+      },
+      function (error) {
+        App.stopLoading();
+        if (error.error === 'No object') {
+          swal('Ошибка', 'Не выбран ни один груз');
+        } else {
+          console.log(error);
+          swal('Ошибка', 'Не удалось отправить некоторые данные на Cargo.LT');
+        }
+      }
+    );
+  },
+
   exportDuplicates: function () {
     var _this = this;
     var selected = [];
     var duplicates = [];
     var $checked = $('.lardi-cargo-checkbox:checked');
+    var $errored = $('tr.error');
+    var getAutoColTips = App.exchanges.getLardiAutoTips();
 
     if (!$checked.length) {
       return swal('Ошибка', 'Не выбран ни один груз');
@@ -554,92 +683,25 @@ App.scenes.cargosList = {
 
     App.loading('Экспорт данных');
 
-    selected.forEach(function (id) {
-      _this.lardiCargos.forEach(function (cargo) {
-        if (cargo.id === id) {
-          duplicates.push(_this.createCargoDuplicate(cargo));
-        }
+    $errored.removeClass('error');
+
+    $.when(getAutoColTips).then(function (atips) {
+      selected.forEach(function (id) {
+        _this.lardiCargos.forEach(function (cargo) {
+          if (cargo.id === id) {
+            duplicates.push(_this.createCargoDuplicate(cargo, atips));
+          }
+        });
       });
+
+      _this.queue.addEach(duplicates);
+
+    }, function (err) {
+      App.stopLoading();
+      console.log(err);
+      swal('Ошибка', 'Сервер не отвечает');
     });
 
-    $.when.apply(this, duplicates).then(
-      function () {
-        var args = [];
-        var sendedDuplicates = [];
-        for (var i = 0; i < arguments.length; i++) {
-          args.push(arguments[i]);
-        }
-
-        args.forEach(function (el) {
-          sendedDuplicates.push(_this.sendDuplicatesToCargo(el));
-        });
-
-        $.when.apply(_this, sendedDuplicates).then(
-          function () {
-            var args = [];
-            var success = [];
-            var error = [];
-            for (var i = 0; i < arguments.length; i++) {
-              args.push(arguments[i]);
-            }
-
-            args.forEach(function (el) {
-              if (el.error && el.id) {
-                error.push(el.id);
-              } else {
-                success.push(el.id);
-              }
-            });
-
-            $checked.each(function (i, el) {
-              $(el).closest('tr').removeClass('new-cargo');
-              if (error.indexOf($(el).val()) !== -1) {
-                $(el).closest('tr').addClass('error');
-                $(el).closest('tr').removeClass('successed');
-              }
-
-              if (success.indexOf($(el).val()) !== -1) {
-                $(el).closest('tr').addClass('successed');
-                $(el).closest('tr').removeClass('error');
-                $(el).prop('disabled', true);
-                $(el).prop('checked', false);
-              }
-            });
-
-            _this.exportedArray = _this.exportedArray.concat(success);
-            App.saveExportedCargos('lardi', _this.exportedArray);
-
-            $('.check-all').prop('checked', false);
-            App.scenes.cargosList.setCheckAllAvailability();
-
-            App.stopLoading();
-            if (error.length > 0) {
-              swal('Ошибка', 'Не удалось экспортировать некоторые грузы');
-            } else {
-              swal({
-                title: '',
-                text: 'Грузы успешно добавлены',
-                imageUrl: '/css/images/success.png',
-                confirmButtonText: 'OK'
-              });
-            }
-          },
-          function (error) {
-            App.stopLoading();
-            if (error.error === 'No object') {
-              swal('Ошибка', 'Не выбран ни один груз');
-            } else {
-              console.log(error);
-              swal('Ошибка', 'Не удалось отправить данные на Cargo.LT');
-            }
-          }
-        );
-      },
-      function (error) {
-        App.stopLoading();
-        console.log(error);
-        swal('Ошибка', 'Не удалось создать копии для экспорта');
-      });
   },
 
   /**
