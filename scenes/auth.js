@@ -21,6 +21,7 @@ App.scenes.auth = {
     $('.lardi-site').bind('click', App.openTab.bind(null, 'https://lardi-trans.com'));
 
     this.initForm(['cargo', 'lardi'], this.checkAccess);
+    App.stopLoading();
   },
 
   hide: function () {
@@ -274,23 +275,18 @@ App.scenes.auth = {
   },
 
   validateData: function (key) {
-    // var pass = /^[0-9a-z\_\-\!\?\*\\\/\.\,\@]{6,15}$/i;
-    // var lpRegExp = /^\s*[0-9a-z\_\-\!\?\*\\\/\.\,\@\s]{6,15}\s*$/i;
-    // var emailRegExp = /^\s*(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))\s*$/;
-    // var login = $('#' + key + '_login').val();
-    // var password = $('#' + key + '_password').val();
-    //
-    // if ((!lpRegExp.exec(login) && !emailRegExp.exec(login)) || !pass.exec(password)) {
-    //   return false;
-    // }
-
     return true;
   },
 
   cargoSubmit: function (callback) {
+    function defaultCallback(key, result) {
+      App.scenes.auth.updateFormStatus(key, result);
+      App.exchanges.saveLardiCountries();
+    }
+
     callback = (typeof callback === 'function')
         ? callback
-        : this.updateFormStatus.bind(this);
+        : defaultCallback;
     var login = $('#cargo_login').val().trim();
     var password = $('#cargo_password').val().trim();
 

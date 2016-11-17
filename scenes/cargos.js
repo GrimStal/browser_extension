@@ -54,16 +54,14 @@ App.scenes.cargos = {
     var calendar = this.getCalendarDates(4, 'ru');
     var today = new Date().setHours(0, 0, 0, 0) / 1000;
     var cargosData = Templates.cargosOffer;
-    var getCargoTypes = App.exchanges.getCargoTypes();
     var getTrailerTypes = App.exchanges.getTrailerTypes();
     var getCurrencies = App.exchanges.getCurrencies();
 
     this.cargoTypeSet = 0;
     this.cargo = new CargoObject();
 
-    $.when(getCargoTypes, getTrailerTypes, getCurrencies).then(function (ctypes, ttypes, currencies) {
+    $.when(getTrailerTypes, getCurrencies).then(function (ttypes, currencies) {
       var curFtt = concatArraysInArray(cargosData.trailerTypes.fixed);
-      var cargoTypes = createSortedObjectsArray(ctypes.cargoTypes);
       var currencies = createSortedObjectsArray(currencies.currencies);
       var trailerTypes = createSortedObjectsArray(ttypes.trailerTypes);
       trailerTypes = removeDuplicates(trailerTypes, curFtt);
@@ -133,6 +131,7 @@ App.scenes.cargos = {
       $('#goCargos').addClass('current-scene');
 
       _this.setDates();
+      App.stopLoading();
     }, function (errors) {
       console.log(errors);
     });
@@ -439,7 +438,7 @@ App.scenes.cargos = {
     cargo.pallets = setParam($pallets.val(), null);
     cargo.volumeldm = setFloatParam($ldm, 13.6);
 
-    if (!$('#temperature').prop('disabled')) {
+    if ($tempMin.val() !== '' || $tempMax.val() !== '') {
       cargo.minTemperature = setParam($tempMin.val(), 0);
       cargo.maxTemperature = setParam($tempMax.val(), 0);
       lnote.push('t от ' + setParam($tempMin.val(), 0) + ' до ' + setParam($tempMax.val(), 0));

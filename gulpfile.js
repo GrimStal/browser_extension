@@ -65,6 +65,7 @@ gulp.task('production', function () {
     './lodash.templates.js',
     './sweetalert.min.js',
     './xml2json.min.js',
+    './jquery.ba-jqmq.min.js',
     './background.js',
     './css/**/*.*',
     './*.json',

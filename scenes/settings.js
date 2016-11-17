@@ -55,7 +55,7 @@ App.scenes.settings = {
         });
 
       $('#addOrder').addClass('white');
-
+      App.stopLoading();
     },
 
   hide: function () {
@@ -115,6 +115,7 @@ App.scenes.settings = {
       if (key === 'cargo') {
         binds.fields[0].value = data.login;
         binds.fields[1].value = data.name;
+        App.exchanges.saveCargoTypes();
       } else if (key === 'lardi') {
         binds.fields[0].value = data.login;
         binds.fields[1].value = data.name.replace(/[\"\']/g, '');
