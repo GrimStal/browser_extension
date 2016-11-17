@@ -646,7 +646,7 @@ App.scenes.cargosList = {
       }
     }
 
-    App.loading('Осталось экспортировать ' + queue.size() + ' ' + ruCargos);
+    App.loading('Осталось экспортировать ' +  queue.size() + ' ' + ruCargos);
 
     $.when.apply(_this, sendedDuplicates).then(
       function () {
