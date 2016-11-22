@@ -238,18 +238,19 @@ App.scenes.cargosList = {
     return result.promise();
   },
 
-  createCargoDuplicate: function (object, /*ctypes,*/ atips) {
+  createCargoDuplicate: function (object, atips) {
     var _this = this;
     var note = [];
     var loads = this.setLoadTypes(object.zagruz_set);
     var cargo = new CargoObject();
-    // var cargoTypes = ctypes.cargoTypes;
     var autoTips = XMLtoJson(atips).response.item;
     var placeFrom = [];
     var areaFrom;
     var placeTo = [];
     var areaTo;
     var day;
+    var countryFrom;
+    var countryTo;
 
     if (!object) {
       ready.reject('Object not set');
@@ -258,23 +259,25 @@ App.scenes.cargosList = {
 
     areaFrom = getLardiAreaName(object.country_from_id, object.area_from_id);
     areaTo = getLardiAreaName(object.country_to_id, object.area_to_id);
+    countryFrom = getLardiCountryCode(object.country_from_id);
+    countryTo = getLardiCountryCode(object.country_to_id);
 
     placeFrom.push(object.city_from);
     if (areaFrom) {
-      placeFrom.push(areaFrom);
+      placeFrom.push(getCargoArea(areaFrom, countryFrom));
     }
 
     placeTo.push(object.city_to);
     if (areaTo) {
-      placeTo.push(areaTo);
+      placeTo.push(getCargoArea(areaTo, countryTo));
     }
 
     delete cargo.from;
     delete cargo.to;
     cargo.origins = [];
     cargo.destinations = [];
-    cargo.origins.push({ country: getLardiCountryCode(object.country_from_id), name: placeFrom.join(', ') });
-    cargo.destinations.push({ country: getLardiCountryCode(object.country_to_id), name: placeTo.join(', ') });
+    cargo.origins.push({ country: countryFrom, name: placeFrom.join(', ') });
+    cargo.destinations.push({ country: countryTo, name: placeTo.join(', ') });
 
     //Cargo type
     cargo.type = getID(cargoTypes, object.gruz);
@@ -508,6 +511,7 @@ App.scenes.cargosList = {
       creq.headers = {
         'Access-Token': App.appData.cargo.token,
       };
+      // console.log(creq);
       App.exchanges.getDataFromServer(creq).then(
         function (response) {
           def.resolve({ error: null, response: response, id: id });
