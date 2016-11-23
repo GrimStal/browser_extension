@@ -24,11 +24,9 @@ function setCargoBodyType(id, group) {
     return trailers;
   }
 
-  if (id) {
-    if (typeof id !== 'number') {
-      id = parseInt(id);
-    }
+  id = parseInt(id);
 
+  if (id) {
     switch (id) {
       case 34:
       case 44:

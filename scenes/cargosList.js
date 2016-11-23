@@ -263,17 +263,11 @@ App.scenes.cargosList = {
     countryTo = getLardiCountryCode(object.country_to_id);
 
     placeFrom.push(object.city_from);
-    // if (areaFrom && countryFrom !== 'PL') {
-    //   placeFrom.push(getCargoArea(areaFrom));
-    // }
     if (areaFrom) {
       placeFrom.push(getCargoArea(areaFrom, countryFrom));
     }
 
     placeTo.push(object.city_to);
-    // if (areaTo && countryTo !== 'PL') {
-    //   placeTo.push(getCargoArea(areaTo, countryTo));
-    // }
     if (areaTo) {
       placeTo.push(getCargoArea(areaTo, countryTo));
     }
@@ -284,6 +278,9 @@ App.scenes.cargosList = {
     cargo.destinations = [];
     cargo.origins.push({ country: countryFrom, name: placeFrom.join(', ') });
     cargo.destinations.push({ country: countryTo, name: placeTo.join(', ') });
+
+    //trailers
+    cargo.trailers = setCargoBodyType(object.body_type_id, object.body_type_group_id);
 
     //Cargo type
     cargo.type = getID(cargoTypes, object.gruz);
@@ -517,7 +514,7 @@ App.scenes.cargosList = {
       creq.headers = {
         'Access-Token': App.appData.cargo.token,
       };
-      console.log(creq);
+      // console.log(creq);
       App.exchanges.getDataFromServer(creq).then(
         function (response) {
           def.resolve({ error: null, response: response, id: id });
