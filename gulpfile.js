@@ -50,30 +50,46 @@ gulp.task('production', function () {
     '!./gulpfile.js',
     '!./lodash*.*',
     '!./xml2json*.*',
+    '!./jquery*.*',
+    '!./sweetalert*.*',
     './templates/**/*.js',
     './*.js',
     './js/**/*.js',
-    '!./server/**/*.*',
     './scenes/**/*.js',
   ])
   .pipe(concat('javascript.js'))
   .pipe(gulp.dest('dist/'));
 
   gulp.src([
-    './bower_components/**/*.*',
     './popup.html',
     './lodash.templates.js',
-    './sweetalert.min.js',
-    './xml2json.min.js',
-    './jquery.ba-jqmq.min.js',
     './background.js',
     './css/**/*.*',
     './*.json',
     '!./package.json',
     '!./bower.json',
-    '!./css/**/*.css',
   ], {
     base: '.',
   })
   .pipe(gulp.dest('dist/'));
+
+  gulp.src([
+    './bower_components/bootstrap/dist/**/*.*',
+    './bower_components/jquery/dist/**/*.*',
+    './bower_components/jquery-ui/**/*.*',
+    './bower_components/js-md5/build/**/*.*',
+    './bower_components/lodash/dist/**/*.*',
+  ], {
+    base: './bower_components/',
+  })
+  .pipe(gulp.dest('dist/src/'));
+
+  gulp.src([
+    './sweetalert.min.js',
+    './xml2json.min.js',
+    './jquery.ba-jqmq.min.js',
+  ], {
+    base: './',
+  })
+  .pipe(gulp.dest('dist/src/'));
 });
