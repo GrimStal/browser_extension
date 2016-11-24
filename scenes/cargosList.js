@@ -243,7 +243,7 @@ App.scenes.cargosList = {
     var note = [];
     var loads = this.setLoadTypes(object.zagruz_set);
     var cargo = new CargoObject();
-    var autoTips = XMLtoJson(atips).response.item;
+    var autoTips = atips;
     var placeFrom = [];
     var areaFrom;
     var placeTo = [];
@@ -484,7 +484,7 @@ App.scenes.cargosList = {
     if (object.auto_col_id && object.auto_col_id.length > 0 && object.auto_col_id !== '0') {
       object.auto_col = parseInt(object.auto_col);
       if (object.auto_col > 0) {
-        note.push(object.auto_col + ' ' + getName(aTips, object.auto_col_id));
+        note.push(object.auto_col + ' ' + getName(atips, object.auto_col_id));
       }
     }
 
@@ -517,7 +517,7 @@ App.scenes.cargosList = {
       // console.log(creq);
       App.exchanges.getDataFromServer(creq).then(
         function (response) {
-          def.resolve({ error: null, response: response, id: id });
+          def.resolve({ error: null, id: id });
         },
         function (error) {
           var err;
@@ -533,7 +533,7 @@ App.scenes.cargosList = {
             err = 'Unknown error';
           }
 
-          def.resolve({ error: err, response: null, id: id });
+          def.resolve({ error: err, id: id });
         }
       );
     } else {
@@ -561,6 +561,8 @@ App.scenes.cargosList = {
     }
 
     this.clear();
+    console.timeEnd('sended all cargos');
+    console.log(Date.now());
   },
 
   markCargos: function () {
@@ -673,6 +675,8 @@ App.scenes.cargosList = {
   },
 
   exportDuplicates: function () {
+    console.log(Date.now());
+    console.time('sended all cargos');
     var _this = this;
     var selected = [];
     var duplicates = [];
@@ -692,7 +696,26 @@ App.scenes.cargosList = {
 
     $errored.removeClass('error');
 
-    $.when(getAutoColTips).then(function (atips) {
+    $.when(getAutoColTips).then(function (resp) {
+      var atips = [];
+      resp = XMLtoJson(resp);
+
+      if (!('response' in resp)) {
+        App.stopLoading();
+        console.log('Couldn\'t get AutoColTips from lardi');
+        return swal('Ошибка', 'Сервер не отвечает');
+      }
+
+      resp = resp.response;
+
+      if ('item' in resp) {
+        if (Array.isArray(resp.item)) {
+          atips = resp.item;
+        } else if (resp.item instanceof Object && 'id' in resp.item && 'name' in resp.item) {
+          atips.push(resp.item);
+        }
+      }
+
       selected.forEach(function (id) {
         _this.lardiCargos.forEach(function (cargo) {
           if (cargo.id === id) {

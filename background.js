@@ -59,3 +59,12 @@ if (navigator.userAgent.search(/Gecko/) > -1) {
     return true;
   });
 }
+
+// if (!this.queue) {
+//   this.queue = $.jqmq({
+//     delay: -1,
+//     batch: 5,
+//     callback: _this.sendBatchOfDuplicates,
+//     complete: _this.cargosExported
+//   });
+// }

@@ -22,9 +22,10 @@
 
   "background": {
     "scripts": [
-      "xml2json.min.js",
+      "src/xml2json.min.js",
       "background.js",
-      "bower_components/jquery/dist/jquery.min.js"
+      "src/jquery/dist/jquery.min.js",
+      "src/jquery.ba-jqmq.min.js"
     ]
   },
 

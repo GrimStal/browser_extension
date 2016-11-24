@@ -75,8 +75,9 @@ gulp.task('production', function () {
 
   gulp.src([
     './bower_components/bootstrap/dist/**/*.*',
-    './bower_components/jquery/dist/**/*.*',
-    './bower_components/jquery-ui/**/*.*',
+    './bower_components/jquery/dist/jquery.min.js',
+    './bower_components/jquery-ui/themes/**/*.*',
+    './bower_components/jquery-ui/jquery-ui.min.js',
     './bower_components/js-md5/build/**/*.*',
     './bower_components/lodash/dist/**/*.*',
   ], {
