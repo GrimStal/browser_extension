@@ -171,14 +171,14 @@ App.scenes.auth = {
   },
 
   checkLardiContact: function (login, companyID, token, callback) {
-    var _this = this;
+    var self = this;
     var uid = App.appData.lardi.id;
 
     this.getLardiUsersData(companyID, token, function (array) {
-      var name = _this.getLardiUserName(uid, array);
+      var name = self.getLardiUserName(uid, array);
       if (!name) {
         uid = '0';
-        name = _this.getLardiUserName(uid, array);
+        name = self.getLardiUserName(uid, array);
       }
 
       callback(name, uid);
@@ -186,7 +186,7 @@ App.scenes.auth = {
   },
 
   signIn: function (key, login, password, callback) {
-    var _this = this;
+    var self = this;
     var link = (key === 'cargo') ? 'accounts/signin' : '';
     var req = new Request(key, 'POST', link);
     var data = {
@@ -225,8 +225,8 @@ App.scenes.auth = {
         userData.login = login;
         userData.password = password;
         userData.contact = contact;
-        App.saveToken(key, token);
-        App.saveUserData(key, userData);
+        SMData.saveToken(key, token);
+        SMData.saveUserData(key, userData);
       },
       function (error) {
         console.error(error);
@@ -251,7 +251,7 @@ App.scenes.auth = {
           token = res.sig;
           cid = res.uid;
           if (!res.is_contact || res.is_contact === 'false') {
-            _this.checkLardiContact(login, cid, token, function (name, id) {
+            self.checkLardiContact(login, cid, token, function (name, id) {
               processing.resolve(name, id);
             });
           } else {
@@ -345,8 +345,8 @@ App.scenes.auth = {
     var id = e.currentTarget.id;
     var key = id.substr(0, id.lastIndexOf('_'));
 
-    App.removeUserData(key);
-    App.removeToken(key);
+    SMData.removeUserData(key);
+    SMData.removeToken(key);
     App.updateAppData(key, {});
 
     return this.clearFormStatus(key);

@@ -60,11 +60,148 @@ if (navigator.userAgent.search(/Gecko/) > -1) {
   });
 }
 
-// if (!this.queue) {
-//   this.queue = $.jqmq({
-//     delay: -1,
-//     batch: 5,
-//     callback: _this.sendBatchOfDuplicates,
-//     complete: _this.cargosExported
-//   });
-// }
+function exportBatch(items) {
+  var queue = this.queue;
+  var sended = [];
+  var ruCargos = '';
+  var amount = String(this.size());
+  var promise;
+
+  if (!Array.isArray(items)) {
+    if ('promise' in items) {
+      promise = items.promise;
+      delete items.promise;
+      sended.push(sendRequest(item, null, promise));
+    }
+  } else {
+    items.forEach(function (el) {
+      if ('promise' in el) {
+        promise = el.promise;
+        delete el.promise;
+        sended.push(sendRequest(el, null, promise));
+      }
+    });
+  }
+
+  if (sended.length > 0) {
+    $.when.apply(self, sended).then(
+      function () {
+        var args = [];
+        for (var i = 0; i < arguments.length; i++) {
+          args.push(arguments[i]);
+        }
+
+        port.postMessage({ sended: args });
+        queue.next();
+      },
+      function (error) {
+        queue.next();
+      }
+    );
+  } else {
+    queue.next();
+  }
+}
+
+function addBatch(item) {
+  var queue = this.queue;
+  var sended = [];
+  var ruCargos = '';
+  var amount = String(this.size());
+  var promise;
+
+  if (!Array.isArray(items)) {
+    if ('promise' in items) {
+      promise = items.promise;
+      delete items.promise;
+      sended.push(sendRequest(item, null, promise));
+    }
+  } else {
+    items.forEach(function (el) {
+      if ('promise' in el) {
+        promise = el.promise;
+        delete el.promise;
+        sended.push(sendRequest(el, null, promise));
+      }
+    });
+  }
+
+  if (sended.length > 0) {
+    $.when.apply(self, sended).then(
+      function () {
+        var args = [];
+        for (var i = 0; i < arguments.length; i++) {
+          args.push(arguments[i]);
+        }
+
+        port.postMessage({ sended: args });
+        queue.next();
+      },
+      function (error) {
+        queue.next();
+      }
+    );
+  } else {
+    queue.next();
+  }
+}
+
+function exportComplete() {
+  if (this.port) {
+    this.port.postMessage({ done: true });
+  }
+}
+
+var MQ = function (portName, defaults) {
+  if (!name || !defaults) {
+    return false;
+  }
+
+  var self = this;
+  this.port = undefined;
+  this.queue = $.jqmq(defaults);
+};
+
+var exportQueue = new MQ('export',
+{
+  delay: -1,
+  batch: 5,
+  callback: exportBatch.bind(exportQueue),
+  complete: exportComplete.bind(exportQueue)
+});
+
+var addQueue = new MQ('add',
+{
+  delay: -1,
+  batch: 1,
+  callback: addBatch.bind(exportQueue),
+  complete: exportComplete.bind(addQueue)
+});
+
+chrome.runtime.onConnect.addListener(function (port) {
+  var Queue;
+
+  if (port.name === 'export') {
+    Queue = exportQueue;
+    console.log('export');
+  } else if (port.name === 'add') {
+    Queue = addQueue;
+    console.log('add');
+  } else {
+    return false;
+  }
+
+  Queue.port = port;
+
+  port.onMessage.addListener(function (msg) {
+      if (msg.task === 'addToQueue' && msg.props) {
+        if (Array.isArray(msg.props)) {
+          Queue.queue.addEach(msg.props);
+        } else if (typeof msg.props === 'object') {
+          Queue.queue.add(msg.props);
+        } else {
+          port.postMessage({ error: 'Incorrect data' });
+        }
+      }
+    });
+});

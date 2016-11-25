@@ -1,112 +1,11 @@
 'use strict';
 
-var SM = (function () {
-  var sm = {};
-
-  sm.get = function (key) {
-    return localStorage.getItem(key);
-  };
-
-  sm.put = function (key, data) {
-    return localStorage.setItem(key, data);
-  };
-
-  sm.delete = function (key) {
-    return localStorage.removeItem(key);
-  };
-
-  return sm;
-}());
-
 var App = (function () {
   var app = {};
 
   app.scenes = [];
 
   app.exchanges = {};
-
-  app.saveToken = function (key, data) {
-    return SM.put(key + 'Token', data);
-  };
-
-  app.getToken = function (key) {
-    return SM.get(key + 'Token');
-  };
-
-  app.removeToken = function (key) {
-    SM.delete(key + 'Token');
-  };
-
-  app.saveUserData = function (key, data) {
-    SM.put(key + 'Login', data.login);
-    SM.put(key + 'Password', data.password);
-    SM.put(key + 'Name', data.name);
-    SM.put(key + 'ID', data.id);
-    SM.put(key + 'CompanyID', data.cid);
-    SM.put(key + 'Contact', data.contact);
-  };
-
-  app.updateUserData = function (key, variable, data) {
-    return SM.put(key + variable, data);
-  };
-
-  app.removeUserData = function (key) {
-    SM.delete(key + 'Login');
-    SM.delete(key + 'Password');
-    SM.delete(key + 'Name');
-    SM.delete(key + 'ID');
-    SM.delete(key + 'CompanyID');
-    SM.delete(key + 'Contact');
-  };
-
-  app.getUserData = function (key) {
-    return {
-      login: SM.get(key + 'Login'),
-      password: SM.get(key + 'Password'),
-      name: SM.get(key + 'Name'),
-      id: SM.get(key + 'ID'),
-      cid: SM.get(key + 'CompanyID'),
-      contact: SM.get(key + 'Contact'),
-    };
-  };
-
-  app.getWatchedCargos = function (key) {
-    var resp = [];
-    var ids = SM.get(key + 'CargoIDs');
-
-    if (typeof ids === 'string') {
-      resp = ids.split(',');
-    }
-
-    return resp;
-  };
-
-  app.saveWatchedCargos = function (key, array) {
-    return SM.put(key + 'CargoIDs', array);
-  };
-
-  app.removeWatchedCargos = function (key) {
-    SM.delete(key + 'CargoIDs');
-  };
-
-  app.getExportedCargos = function (key) {
-    var resp = [];
-    var ids = SM.get(key + 'exportedCargoIDs');
-
-    if (typeof ids === 'string') {
-      resp = ids.split(',');
-    }
-
-    return resp;
-  };
-
-  app.saveExportedCargos = function (key, array) {
-    return SM.put(key + 'exportedCargoIDs', array);
-  };
-
-  app.removeExportedCargos = function (key) {
-    SM.delete(key + 'exportedCargoIDs');
-  };
 
   app.checkRouteButtons = function () {
     $('.current-scene').removeClass('current-scene');
@@ -174,10 +73,10 @@ var App = (function () {
     var cargoData = this.appData.cargo;
     var lardiData = this.appData.lardi;
 
-    this.removeToken('cargo');
+    SMData.removeToken('cargo');
     this.scenes.auth.signIn('cargo', cargoData.login, cargoData.password, callback(cargoRelogin));
 
-    this.removeToken('lardi');
+    SMData.removeToken('lardi');
     this.scenes.auth.signIn('lardi', lardiData.login, lardiData.password, callback(lardiRelogin));
 
     $.when(cargoRelogin.promise(), lardiRelogin.promise()).then(function () {
@@ -223,7 +122,7 @@ var App = (function () {
       return lardiDef.resolve('ok');
     }
 
-    var _this = this;
+    var self = this;
     var cargoDef = $.Deferred();
     var lardiDef = $.Deferred();
     var checkResult = $.Deferred();
@@ -261,7 +160,7 @@ var App = (function () {
 
       function (cargoErr, lardiErr) {
         console.log(cargoErr);
-        _this.tryToRelogin(checkResult, [cargoErr, lardiErr]);
+        self.tryToRelogin(checkResult, [cargoErr, lardiErr]);
       });
 
     return checkResult.promise();
@@ -279,7 +178,7 @@ var App = (function () {
       Cross-Domain requests error.
       @param  {Object}   data      Request object.
       @param  {Function} callback  Callback function.
-      @return {object}   response  Response object. Has error and success keys
+      @return {object}   response  Response object. Has "error" and "success" keys
   */
   app.sendRequest = function (data, callback) {
     if (navigator.userAgent.search(/Gecko/) > -1) {
@@ -308,7 +207,7 @@ var App = (function () {
   };
 
   app.init = function () {
-    var _this = this;
+    var self = this;
     var $cargoDef = $.Deferred();
 
     setSweetAlertDefaults();
@@ -320,19 +219,19 @@ var App = (function () {
     this.loading('Проверка авторизации');
     this.updateAppData();
     $('.header-icons .cog-icon').bind('click', function () {
-      if (_this.currentScene === _this.scenes.settings) {
-        return _this.changeScene('cargos');
+      if (self.currentScene === self.scenes.settings) {
+        return self.changeScene('cargos');
       }
 
-      return _this.changeScene('settings');
+      return self.changeScene('settings');
     });
 
     $('#goCargos').bind('click', function () {
-      _this.changeScene('cargos');
+      self.changeScene('cargos');
     });
 
     $('#goCargosList').bind('click', function () {
-      _this.changeScene('cargosList');
+      self.changeScene('cargosList');
     });
 
     $('.header-icons .message-icon').bind('click', App.changeScene.bind(App, 'cargos'));
@@ -340,17 +239,17 @@ var App = (function () {
     if (this.checkToken('cargo')) {
       this.doAuth().then(
         function () {
-          var lardi = _this.appData.lardi;
+          var lardi = self.appData.lardi;
           var $contactSet = $.Deferred();
           var $lardiCountries = $.Deferred();
           var $cargoTypes = App.exchanges.saveCargoTypes();
 
-          if (_this.checkToken('lardi')) {
+          if (self.checkToken('lardi')) {
             if (!lardi.contact) {
-              _this.scenes.auth.checkLardiContact(lardi.login, lardi.cid, lardi.token, function (name, id) {
-                _this.updateUserData('lardi', 'Name', name);
-                _this.updateUserData('lardi', 'ID', id);
-                _this.updateAppData();
+              self.scenes.auth.checkLardiContact(lardi.login, lardi.cid, lardi.token, function (name, id) {
+                SMData.updateUserData('lardi', 'Name', name);
+                SMData.updateUserData('lardi', 'ID', id);
+                self.updateAppData();
                 $contactSet.resolve();
               });
             } else {
@@ -373,7 +272,7 @@ var App = (function () {
           );
         },
         function (err) {
-          _this.updateAppData();
+          self.updateAppData();
           $cargoDef.reject(err);
         });
     } else {
@@ -381,20 +280,20 @@ var App = (function () {
     }
 
     $cargoDef.then(function (cargo) {
-      _this.changeScene('cargos');
+      self.changeScene('cargos');
     },
     function (error) {
       console.log(error);
-      _this.changeScene('auth');
+      self.changeScene('auth');
     }
   );
   };
 
   app.updateAppData = function () {
-    var cargo = app.getUserData('cargo');
-    var lardi = app.getUserData('lardi');
-    cargo.token = app.getToken('cargo');
-    lardi.token = app.getToken('lardi');
+    var cargo = SMData.getUserData('cargo');
+    var lardi = SMData.getUserData('lardi');
+    cargo.token = SMData.getToken('cargo');
+    lardi.token = SMData.getToken('lardi');
 
     return this.appData = {
       cargo: cargo,
@@ -402,6 +301,17 @@ var App = (function () {
     };
 
   };
+
+  app.exportPort = chrome.runtime.connect({ name: 'export' });
+  app.addPort = chrome.runtime.connect({ name: 'add' });
+
+  app.exportPort.onMessage.addListener(function (msg) {
+    if (msg) {
+      if ('sended' in msg && msg.sended.length > 0) {
+
+      }
+    }
+  });
 
   return app;
 }());

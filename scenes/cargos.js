@@ -50,7 +50,7 @@ App.scenes.cargos = {
       });
     }
 
-    var _this = this;
+    var self = this;
     var calendar = this.getCalendarDates(4, 'ru');
     var today = new Date().setHours(0, 0, 0, 0) / 1000;
     var cargosData = Templates.cargosOffer;
@@ -78,7 +78,7 @@ App.scenes.cargos = {
       *   for available dates to set cargos, mark past dates,
       */
       $('.date').filter(getToday).addClass('today');
-      $('.date').filter(availableDates).bind('click', _this.selectDate.bind(_this));
+      $('.date').filter(availableDates).bind('click', self.selectDate.bind(self));
       $('.date').filter(pastDates).addClass('past');
       $('.date').filter(currentMonth).find('div').addClass('current-month');
       $('.date').filter(nextMonth).find('div').addClass('next-month');
@@ -91,30 +91,30 @@ App.scenes.cargos = {
       $('#origin').autocomplete({
         source: parseForAutocomplete,
         select: function (event, obj) {
-          _this.cargo.from[0] = obj.item.object;
+          self.cargo.from[0] = obj.item.object;
         },
       });
 
       $('#destination').autocomplete({
         source: parseForAutocomplete,
         select: function (event, obj) {
-          _this.cargo.to[0] = obj.item.object;
+          self.cargo.to[0] = obj.item.object;
         },
       });
 
       $('#removeSelection').bind('click', function () {
-        _this.removeSelection(true);
+        self.removeSelection(true);
       });
 
-      $('#origin, #destination').bind('keyup', _this.toggleClear);
-      $('.origin-remove, .destination-remove').bind('click', _this.removeCity);
-      $('.revert-cities').bind('click', _this.revertCities.bind(_this));
+      $('#origin, #destination').bind('keyup', self.toggleClear);
+      $('.origin-remove, .destination-remove').bind('click', self.removeCity);
+      $('.revert-cities').bind('click', self.revertCities.bind(self));
       $('.trailer-type-select').change(insertCheckbox);
       $('#cargo-types').change(setCargoDependencies);
       // $('.trailer-type-checkbox[value=1],' +
       //   '.trailer-type-checkbox[value=3]').change(checkTemperature);
-      $('#sendOrder').bind('click', _this.sendCargosData.bind(_this));
-      $('#clean').bind('click', _this.clearForm.bind(_this));
+      $('#sendOrder').bind('click', self.sendCargosData.bind(self));
+      $('#clean').bind('click', self.clearForm.bind(self));
 
       $('#weight, #volume, #palets, #temperatureMin, #temperatureMax, .trailer-type-select, ' +
         '.trailer-type-checkbox').bind('change', useEnteredData);
@@ -130,7 +130,7 @@ App.scenes.cargos = {
 
       $('#goCargos').addClass('current-scene');
 
-      _this.setDates();
+      self.setDates();
       App.stopLoading();
     }, function (errors) {
       console.log(errors);
@@ -351,7 +351,7 @@ App.scenes.cargos = {
   },
 
   sendCargosData: function () {
-    var _this = this;
+    var self = this;
     var cargo = this.cargo;
     var dates = this.dates;
     var $cargoType = $('#cargo-types');
@@ -594,7 +594,7 @@ App.scenes.cargos = {
     $.when(cargoDef, lardiDef).then(function (cargoResp, lardiResp) {
       App.stopLoading();
       if (App.checkToken('lardi')) {
-        App.saveExportedCargos('lardi', App.getExportedCargos('lardi').concat(lardiResp));
+        SMData.saveExportedCargos('lardi', SMData.getExportedCargos('lardi').concat(lardiResp));
       }
 
       return App.showScene('cargoAdded');

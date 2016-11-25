@@ -3,12 +3,12 @@
 App.scenes.cargosList = {
 
   show: function () {
-    var _this = this;
+    var self = this;
     var template;
     var today = new Date().setUTCHours(0, 0, 0, 0);
     var getLardiCargos = this.getLardiCargos();
     var getLardiCurrencies = App.exchanges.getLardiCurrencies();
-    var exportedArray = App.getExportedCargos('lardi') || [];
+    var exportedArray = SMData.getExportedCargos('lardi') || [];
 
     if (!App.checkToken('lardi')) {
       return App.changeScene('cargos');
@@ -18,15 +18,15 @@ App.scenes.cargosList = {
       this.queue = $.jqmq({
         delay: -1,
         batch: 5,
-        callback: _this.sendBatchOfDuplicates,
-        complete: _this.cargosExported
+        callback: self.sendBatchOfDuplicates,
+        complete: self.cargosExported
       });
     }
 
     this.currentArray = [];
     this.lardiCargos = [];
     this.newArray = [];
-    this.oldArray = App.getWatchedCargos('lardi') || [];
+    this.oldArray = SMData.getWatchedCargos('lardi') || [];
     this.exportedArray = [];
 
     App.loading('Получение данных');
@@ -43,12 +43,12 @@ App.scenes.cargosList = {
 
         for (var i = 0; i < lardiCargos.length; i++) {
           if (new Date(lardiCargos[i].date_from) >= today) {
-            _this.lardiCargos.push(lardiCargos[i]);
+            self.lardiCargos.push(lardiCargos[i]);
           }
         }
 
-        _this.lardiCargos.forEach(function (cargo) {
-            _this.currentArray.push(cargo.id);
+        self.lardiCargos.forEach(function (cargo) {
+            self.currentArray.push(cargo.id);
             currencies.forEach(function (el) {
               if (Number(el.id) == Number(cargo.payment_currency_id)) {
                 cargo.payment_currency_name = el.name;
@@ -56,38 +56,38 @@ App.scenes.cargosList = {
             });
           });
 
-        if (_this.oldArray && Array.isArray(_this.oldArray)) {
-          _this.currentArray.forEach(function (el) {
-            if (_this.oldArray.indexOf(el) < 0) {
-              _this.newArray.push(el);
+        if (self.oldArray && Array.isArray(self.oldArray)) {
+          self.currentArray.forEach(function (el) {
+            if (self.oldArray.indexOf(el) < 0) {
+              self.newArray.push(el);
             }
           });
         }
 
-        if (_this.exportedArray && exportedArray && Array.isArray(exportedArray)) {
+        if (self.exportedArray && exportedArray && Array.isArray(exportedArray)) {
           exportedArray.forEach(function (el) {
-            if (_this.currentArray.indexOf(el) > -1) {
-              _this.exportedArray.push(el);
+            if (self.currentArray.indexOf(el) > -1) {
+              self.exportedArray.push(el);
             }
           });
         }
 
-        _this.lardiCargos.forEach(function (cargo) {
-            if (_this.newArray.indexOf(cargo.id) > -1) {
+        self.lardiCargos.forEach(function (cargo) {
+            if (self.newArray.indexOf(cargo.id) > -1) {
               cargo.isNew = 1;
             } else {
               cargo.isNew = 0;
             }
 
-            if (_this.exportedArray.indexOf(cargo.id) > -1) {
+            if (self.exportedArray.indexOf(cargo.id) > -1) {
               cargo.isExported = 1;
             } else {
               cargo.isExported = 0;
             }
           });
 
-        App.saveWatchedCargos('lardi', _this.currentArray);
-        App.saveExportedCargos('lardi', _this.exportedArray);
+        SMData.saveWatchedCargos('lardi', self.currentArray);
+        SMData.saveExportedCargos('lardi', self.exportedArray);
 
         template = _.templates.cargosList({
             wrapper_class: 'cargos-list',
@@ -98,15 +98,15 @@ App.scenes.cargosList = {
         $('.ce__wrapper').empty().append(template);
 
         if (App.appData.lardi.contact === 'true' || App.appData.lardi.id === '0') {
-          _this.createTable();
+          self.createTable();
         } else {
-          _this.createTable(App.appData.lardi.id);
+          self.createTable(App.appData.lardi.id);
         }
 
         if (App.appData.lardi.contact === 'false') {
-          _this.createSelect();
+          self.createSelect();
           $('#contacts').bind('change', function () {
-            _this.createTable($(this).val());
+            self.createTable($(this).val());
           });
         } else {
           $('.manager-block').addClass('hidden');
@@ -119,7 +119,7 @@ App.scenes.cargosList = {
           $('.check-all').prop('checked', false);
         });
         $('#goCargosList').addClass('current-scene');
-        $('#export').bind('click', _this.exportDuplicates.bind(_this));
+        $('#export').bind('click', self.exportDuplicates.bind(self));
         App.stopLoading();
       },
       function (error) {
@@ -239,7 +239,7 @@ App.scenes.cargosList = {
   },
 
   createCargoDuplicate: function (object, atips) {
-    var _this = this;
+    var self = this;
     var note = [];
     var loads = this.setLoadTypes(object.zagruz_set);
     var cargo = new CargoObject();
@@ -561,22 +561,24 @@ App.scenes.cargosList = {
     }
 
     this.clear();
-    console.timeEnd('sended all cargos');
-    console.log(Date.now());
   },
 
   markCargos: function () {
-    var _this = this;
+    var self = this;
     var args = [];
     var success = [];
     var error = [];
-    var $checked = $('.lardi-cargo-checkbox:checked');
+    var $checked;
 
     for (var i = 0; i < arguments.length; i++) {
       args.push(arguments[i]);
     }
 
     args.forEach(function (el) {
+      if (!('id' in el)) {
+        return false;
+      }
+
       if (el.error && el.id) {
         error.push(el.id);
       } else {
@@ -584,36 +586,40 @@ App.scenes.cargosList = {
       }
     });
 
-    $checked.each(function (i, el) {
-      $(el).closest('tr').removeClass('new-cargo');
+    if (App.currentScene === this) {
+      $checked = $('.lardi-cargo-checkbox:checked');
+      $checked.each(function (i, el) {
+        $(el).closest('tr').removeClass('new-cargo');
 
-      if (error.indexOf($(el).val()) !== -1) {
-        $(el).closest('tr').addClass('error');
-      }
+        if (error.indexOf($(el).val()) !== -1) {
+          $(el).closest('tr').addClass('error');
+        }
 
-      if (success.indexOf($(el).val()) !== -1) {
-        $(el).closest('tr').addClass('successed');
-        $(el).prop('disabled', true);
-        $(el).prop('checked', false);
-      }
-    });
+        if (success.indexOf($(el).val()) !== -1) {
+          $(el).closest('tr').addClass('successed');
+          $(el).prop('disabled', true);
+          $(el).prop('checked', false);
+        }
+      });
 
-    _this.exportedArray = _this.exportedArray.concat(success);
-    App.saveExportedCargos('lardi', _this.exportedArray);
+      self.exportedArray = self.exportedArray.concat(success);
+    }
+
+    SMData.saveExportedCargos('lardi', SMData.getExportedCargos('lardi').concat(success));
   },
 
   sendBatchOfDuplicates: function (items) {
-    var _this = App.scenes.cargosList;
+    var self = App.scenes.cargosList;
     var queue = this;
     var sendedDuplicates = [];
     var ruCargos = '';
     var amount = String(this.size());
 
     if (!Array.isArray(items)) {
-      sendedDuplicates.push(_this.sendDuplicatesToCargo(items));
+      sendedDuplicates.push(self.sendDuplicatesToCargo(items));
     } else {
       items.forEach(function (el) {
-        sendedDuplicates.push(_this.sendDuplicatesToCargo(el));
+        sendedDuplicates.push(self.sendDuplicatesToCargo(el));
       });
     }
 
@@ -657,9 +663,9 @@ App.scenes.cargosList = {
 
     App.loading('Осталось экспортировать ' + queue.size() + ' ' + ruCargos);
 
-    $.when.apply(_this, sendedDuplicates).then(
+    $.when.apply(self, sendedDuplicates).then(
       function () {
-        _this.markCargos.apply(_this, arguments);
+        self.markCargos.apply(self, arguments);
         queue.next();
       },
       function (error) {
@@ -675,9 +681,7 @@ App.scenes.cargosList = {
   },
 
   exportDuplicates: function () {
-    console.log(Date.now());
-    console.time('sended all cargos');
-    var _this = this;
+    var self = this;
     var selected = [];
     var duplicates = [];
     var $checked = $('.lardi-cargo-checkbox:checked');
@@ -717,14 +721,14 @@ App.scenes.cargosList = {
       }
 
       selected.forEach(function (id) {
-        _this.lardiCargos.forEach(function (cargo) {
+        self.lardiCargos.forEach(function (cargo) {
           if (cargo.id === id) {
-            duplicates.push(_this.createCargoDuplicate(cargo, atips));
+            duplicates.push(self.createCargoDuplicate(cargo, atips));
           }
         });
       });
 
-      _this.queue.addEach(duplicates);
+      self.queue.addEach(duplicates);
 
     }, function (err) {
       App.stopLoading();

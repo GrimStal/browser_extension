@@ -24,6 +24,7 @@
     "scripts": [
       "src/xml2json.min.js",
       "background.js",
+      "SM.js",
       "src/jquery/dist/jquery.min.js",
       "src/jquery.ba-jqmq.min.js"
     ]
