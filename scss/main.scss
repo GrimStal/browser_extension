@@ -12,6 +12,7 @@ $lighterGrey: #eee;
 $lightOrange: #ffdb90;
 $lightRed: #ffcdcd;
 $lightRed2: #ffe8ec;
+$lightYellow: #ffffe7;
 
 body {
     width: 700px;
@@ -309,6 +310,11 @@ label {
             top: 100%;
             left: 45%;
         }
+    }
+
+    &.status {
+      font-size: 14px;
+      float: left;
     }
 }
 
@@ -718,6 +724,10 @@ label {
 
                 &.successed {
                     background-color: $lightLime;
+                }
+
+                &.pending {
+                    background-color: $lightYellow;
                 }
 
                 td {

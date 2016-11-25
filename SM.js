@@ -104,5 +104,24 @@ var SMData = (function () {
     SM.delete(key + 'exportedCargoIDs');
   };
 
+  smdata.getPendingCargos = function (key) {
+    var resp = [];
+    var ids = SM.get(key + 'pendingCargoIDs');
+
+    if (typeof ids === 'string') {
+      resp = ids.split(',');
+    }
+
+    return resp;
+  };
+
+  smdata.savePendingCargos = function (key, array) {
+    return SM.put(key + 'pendingCargoIDs', array);
+  };
+
+  smdata.removePendingCargos = function (key) {
+    SM.delete(key + 'pendingCargoIDs');
+  };
+
   return smdata;
 }());

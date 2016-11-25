@@ -1,9 +1,9 @@
 <% _.forEach(lardiCargos, function(cargo) { %>
-  <tr class="<% if (cargo.isExported) {%>exported<% } else { %><% if (cargo.isNew) {%>new-cargo<% } }%>">
+  <tr class="<% if (cargo.isExported) {%>exported<% } else { %><% if (cargo.isNew) {%> new-cargo<% } else if (cargo.isPending){ %> pending<% } }%>">
       <td>
         <label>
           <input type='checkbox' class="lardi-cargo-checkbox" value='<%-cargo.id%>'
-          <% if (cargo.isExported) {%>
+          <% if (cargo.isExported || cargo.isPending) {%>
             disabled
           <% } %>
           />

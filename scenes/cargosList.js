@@ -9,25 +9,27 @@ App.scenes.cargosList = {
     var getLardiCargos = this.getLardiCargos();
     var getLardiCurrencies = App.exchanges.getLardiCurrencies();
     var exportedArray = SMData.getExportedCargos('lardi') || [];
+    var pendingArray = SMData.getPendingCargos('lardi') || [];
 
     if (!App.checkToken('lardi')) {
       return App.changeScene('cargos');
     }
 
-    if (!this.queue) {
-      this.queue = $.jqmq({
-        delay: -1,
-        batch: 5,
-        callback: self.sendBatchOfDuplicates,
-        complete: self.cargosExported
-      });
-    }
+    // if (!this.queue) {
+    //   this.queue = $.jqmq({
+    //     delay: -1,
+    //     batch: 5,
+    //     callback: self.sendBatchOfDuplicates,
+    //     complete: self.cargosExported
+    //   });
+    // }
 
     this.currentArray = [];
     this.lardiCargos = [];
     this.newArray = [];
     this.oldArray = SMData.getWatchedCargos('lardi') || [];
     this.exportedArray = [];
+    this.pendingArray = [];
 
     App.loading('Получение данных');
 
@@ -72,6 +74,14 @@ App.scenes.cargosList = {
           });
         }
 
+        if (self.pendingArray && pendingArray && Array.isArray(pendingArray)) {
+          pendingArray.forEach(function (el) {
+            if (self.currentArray.indexOf(el) > -1) {
+              self.pendingArray.push(el);
+            }
+          });
+        }
+
         self.lardiCargos.forEach(function (cargo) {
             if (self.newArray.indexOf(cargo.id) > -1) {
               cargo.isNew = 1;
@@ -84,10 +94,17 @@ App.scenes.cargosList = {
             } else {
               cargo.isExported = 0;
             }
+
+            if (self.pendingArray.indexOf(cargo.id) > -1) {
+              cargo.isPending = 1;
+            } else {
+              cargo.isPending = 0;
+            }
           });
 
         SMData.saveWatchedCargos('lardi', self.currentArray);
         SMData.saveExportedCargos('lardi', self.exportedArray);
+        SMData.savePendingCargos('lardi', self.pendingArray);
 
         template = _.templates.cargosList({
             wrapper_class: 'cargos-list',
@@ -96,6 +113,7 @@ App.scenes.cargosList = {
           });
 
         $('.ce__wrapper').empty().append(template);
+        App.exportPort.postMessage({ task: 'exportEnabled' });
 
         if (App.appData.lardi.contact === 'true' || App.appData.lardi.id === '0') {
           self.createTable();
@@ -160,6 +178,7 @@ App.scenes.cargosList = {
   setCheckAllAvailability: function () {
     if ($('.lardi-cargo-checkbox:disabled').length >= $('.lardi-cargo-checkbox').length) {
       $('.check-all').prop('disabled', true);
+      $('.check-all').prop('checked', false);
     } else {
       $('.check-all').prop('disabled', false);
     }
@@ -499,69 +518,73 @@ App.scenes.cargosList = {
 
     cargo.notes = note.join('; ');
     cargo.lardiID = object.id;
+    cargo.token = App.appData.cargo.token;
     return cargo;
   },
 
-  sendDuplicatesToCargo: function (duplicate) {
-    var id = '';
-    var def = $.Deferred();
-    var creq = new Request('cargo', 'POST', 'cargos');
+  // sendDuplicatesToCargo: function (duplicate) {
+  //   var id;
+  //   var token;
+  //   var def = $.Deferred();
+  //   var creq = new Request('cargo', 'POST', 'cargos');
+  //
+  //   if (duplicate) {
+  //     id = duplicate.lardiID;
+  //     token = duplicate.token;
+  //     delete duplicate.lardiID;
+  //     delete duplicate.lardiID;
+  //     creq.data = duplicate;
+  //     creq.headers = {
+  //       'Access-Token': token,
+  //     };
+  //     // console.log(creq);
+  //     App.exchanges.getDataFromServer(creq).then(
+  //       function (response) {
+  //         def.resolve({ error: null, id: id });
+  //       },
+  //       function (error) {
+  //         var err;
+  //
+  //         console.log(error);
+  //         if ('responseJSON' in error) {
+  //           if ('error' in error.responseJSON) {
+  //             err = error.responseJSON.error;
+  //           }
+  //         }
+  //
+  //         if (err.length === 0) {
+  //           err = 'Unknown error';
+  //         }
+  //
+  //         def.resolve({ error: err, id: id });
+  //       }
+  //     );
+  //   } else {
+  //     def.reject({ error: 'No object', response: null, id: null });
+  //   }
+  //
+  //   return def.promise();
+  // },
 
-    if (duplicate) {
-      id = duplicate.lardiID;
-      delete duplicate.lardiID;
-      creq.data = duplicate;
-      creq.headers = {
-        'Access-Token': App.appData.cargo.token,
-      };
-      // console.log(creq);
-      App.exchanges.getDataFromServer(creq).then(
-        function (response) {
-          def.resolve({ error: null, id: id });
-        },
-        function (error) {
-          var err;
-
-          console.log(error);
-          if ('responseJSON' in error) {
-            if ('error' in error.responseJSON) {
-              err = error.responseJSON.error;
-            }
-          }
-
-          if (err.length === 0) {
-            err = 'Unknown error';
-          }
-
-          def.resolve({ error: err, id: id });
-        }
-      );
-    } else {
-      def.reject({ error: 'No object', response: null, id: null });
-    }
-
-    return def.promise();
-  },
-
-  cargosExported: function () {
-    $('.check-all').prop('checked', false);
-    App.scenes.cargosList.setCheckAllAvailability();
-
-    App.stopLoading();
-
-    if ($('tr.error').length > 0) {
-      swal('Ошибка', 'Не удалось экспортировать некоторые грузы');
-    } else {
-      swal({
-        title: '',
-        text: 'Грузы успешно экспортированы',
-        imageUrl: '/css/images/success.png',
-        confirmButtonText: 'OK'
-      });
-    }
-
-    this.clear();
-  },
+  // cargosExported: function () {
+  //   $('.check-all').prop('checked', false);
+  //   App.scenes.cargosList.setCheckAllAvailability();
+  //
+  //   App.stopLoading();
+  //
+  //   if ($('tr.error').length > 0) {
+  //     swal('Ошибка', 'Не удалось экспортировать некоторые грузы');
+  //   } else {
+  //     swal({
+  //       title: '',
+  //       text: 'Грузы успешно экспортированы',
+  //       imageUrl: '/css/images/success.png',
+  //       confirmButtonText: 'OK'
+  //     });
+  //   }
+  //
+  //   this.clear();
+  // },
 
   markCargos: function () {
     var self = this;
@@ -589,7 +612,7 @@ App.scenes.cargosList = {
     if (App.currentScene === this) {
       $checked = $('.lardi-cargo-checkbox:checked');
       $checked.each(function (i, el) {
-        $(el).closest('tr').removeClass('new-cargo');
+        $(el).closest('tr').removeClass('pending');
 
         if (error.indexOf($(el).val()) !== -1) {
           $(el).closest('tr').addClass('error');
@@ -605,80 +628,80 @@ App.scenes.cargosList = {
       self.exportedArray = self.exportedArray.concat(success);
     }
 
-    SMData.saveExportedCargos('lardi', SMData.getExportedCargos('lardi').concat(success));
+    // SMData.saveExportedCargos('lardi', SMData.getExportedCargos('lardi').concat(success));
   },
 
-  sendBatchOfDuplicates: function (items) {
-    var self = App.scenes.cargosList;
-    var queue = this;
-    var sendedDuplicates = [];
-    var ruCargos = '';
-    var amount = String(this.size());
-
-    if (!Array.isArray(items)) {
-      sendedDuplicates.push(self.sendDuplicatesToCargo(items));
-    } else {
-      items.forEach(function (el) {
-        sendedDuplicates.push(self.sendDuplicatesToCargo(el));
-      });
-    }
-
-    if (amount.length === 1) {
-      switch (amount) {
-        case '1':
-          ruCargos = 'груз';
-          break;
-        case '2':
-        case '3':
-        case '4':
-          ruCargos = 'груза';
-          break;
-        default:
-          ruCargos = 'грузов';
-      }
-    } else {
-      switch (amount[amount.length - 1]) {
-        case '1':
-          if (amount[amount.length - 2] === '1') {
-            ruCargos = 'грузов';
-          } else {
-            ruCargos = 'груз';
-          }
-
-          break;
-        case '2':
-        case '3':
-        case '4':
-          if (amount[amount.length - 2] === '1') {
-            ruCargos = 'грузов';
-          } else {
-            ruCargos = 'груза';
-          }
-
-          break;
-        default:
-          ruCargos = 'грузов';
-      }
-    }
-
-    App.loading('Осталось экспортировать ' + queue.size() + ' ' + ruCargos);
-
-    $.when.apply(self, sendedDuplicates).then(
-      function () {
-        self.markCargos.apply(self, arguments);
-        queue.next();
-      },
-      function (error) {
-        App.stopLoading();
-        if (error.error === 'No object') {
-          swal('Ошибка', 'Не выбран ни один груз');
-        } else {
-          console.log(error);
-          swal('Ошибка', 'Не удалось отправить некоторые данные на Cargo.LT');
-        }
-      }
-    );
-  },
+  // sendBatchOfDuplicates: function (items) {
+  //   var self = App.scenes.cargosList;
+  //   var queue = this;
+  //   var sendedDuplicates = [];
+  //   var ruCargos = '';
+  //   var amount = String(this.size());
+  //
+  //   if (!Array.isArray(items)) {
+  //     sendedDuplicates.push(self.sendDuplicatesToCargo(items));
+  //   } else {
+  //     items.forEach(function (el) {
+  //       sendedDuplicates.push(self.sendDuplicatesToCargo(el));
+  //     });
+  //   }
+  //
+  //   if (amount.length === 1) {
+  //     switch (amount) {
+  //       case '1':
+  //         ruCargos = 'груз';
+  //         break;
+  //       case '2':
+  //       case '3':
+  //       case '4':
+  //         ruCargos = 'груза';
+  //         break;
+  //       default:
+  //         ruCargos = 'грузов';
+  //     }
+  //   } else {
+  //     switch (amount[amount.length - 1]) {
+  //       case '1':
+  //         if (amount[amount.length - 2] === '1') {
+  //           ruCargos = 'грузов';
+  //         } else {
+  //           ruCargos = 'груз';
+  //         }
+  //
+  //         break;
+  //       case '2':
+  //       case '3':
+  //       case '4':
+  //         if (amount[amount.length - 2] === '1') {
+  //           ruCargos = 'грузов';
+  //         } else {
+  //           ruCargos = 'груза';
+  //         }
+  //
+  //         break;
+  //       default:
+  //         ruCargos = 'грузов';
+  //     }
+  //   }
+  //
+  //   App.loading('Осталось экспортировать ' + queue.size() + ' ' + ruCargos);
+  //
+  //   $.when.apply(self, sendedDuplicates).then(
+  //     function () {
+  //       self.markCargos.apply(self, arguments);
+  //       queue.next();
+  //     },
+  //     function (error) {
+  //       App.stopLoading();
+  //       if (error.error === 'No object') {
+  //         swal('Ошибка', 'Не выбран ни один груз');
+  //       } else {
+  //         console.log(error);
+  //         swal('Ошибка', 'Не удалось отправить некоторые данные на Cargo.LT');
+  //       }
+  //     }
+  //   );
+  // },
 
   exportDuplicates: function () {
     var self = this;
@@ -692,11 +715,20 @@ App.scenes.cargosList = {
       return swal('Ошибка', 'Не выбран ни один груз');
     }
 
+    this.enableExport(false);
+
     $checked.each(function (i, el) {
       selected.push($(el).val());
+      $(el).closest('tr').removeClass('new-cargo');
+      $(el).closest('tr').addClass('pending');
+      $(el).prop('disabled', true);
     });
 
-    App.loading('Экспорт данных');
+    this.setCheckAllAvailability();
+
+    SMData.savePendingCargos('lardi', SMData.getPendingCargos().concat(selected));
+
+    // App.loading('Экспорт данных');
 
     $errored.removeClass('error');
 
@@ -728,7 +760,8 @@ App.scenes.cargosList = {
         });
       });
 
-      self.queue.addEach(duplicates);
+      // self.queue.addEach(duplicates);
+      App.exportPort.postMessage({ task: 'addToQueue', props: duplicates });
 
     }, function (err) {
       App.stopLoading();
@@ -736,6 +769,17 @@ App.scenes.cargosList = {
       swal('Ошибка', 'Сервер не отвечает');
     });
 
+  },
+
+  enableExport: function (bool) {
+    var disabled = bool || false;
+    $('#export').prop('disabled', bool || false);
+    if (!disabled) {
+      $('.pending').find('.lardi-cargo-checkbox').prop('disabled', false);
+      $('.pending').removeClass('pending');
+      SMData.savePendingCargos('lardi', []);
+    }
+    this.setCheckAllAvailability();
   },
 
   /**

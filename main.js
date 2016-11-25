@@ -29,7 +29,6 @@ var App = (function () {
       return false;
     }
 
-    this.checkRouteButtons();
     this.loading('Загрузка страницы');
     return this.showScene(scene);
   };
@@ -49,8 +48,9 @@ var App = (function () {
 
       newScene.show();
       this.currentScene = newScene;
-      this.stopLoading();
+      this.checkRouteButtons();
     };
+    this.stopLoading();
   };
 
   app.tryToRelogin = function (result) {
@@ -280,13 +280,13 @@ var App = (function () {
     }
 
     $cargoDef.then(function (cargo) {
-      self.changeScene('cargos');
-    },
-    function (error) {
-      console.log(error);
-      self.changeScene('auth');
-    }
-  );
+        self.changeScene('cargos');
+      },
+      function (error) {
+        console.log(error);
+        self.changeScene('auth');
+      }
+    );
   };
 
   app.updateAppData = function () {
@@ -306,9 +306,25 @@ var App = (function () {
   app.addPort = chrome.runtime.connect({ name: 'add' });
 
   app.exportPort.onMessage.addListener(function (msg) {
-    if (msg) {
-      if ('sended' in msg && msg.sended.length > 0) {
+    if (!msg || typeof msg !== 'object') {
+      console.log('Object not set: msg');
+      return false;
+    }
 
+    if ('sended' in msg && typeof msg.sended === 'object') {
+      if ('ids' in msg.sended && msg.sended.ids.length > 0) {
+        if (app.currentScene === app.scenes.cargosList) {
+          app.currentScene.markCargos.apply(app.currentScene, msg.sended.ids);
+        }
+        $('#status').text('В очереди экспортирования ' + msg.sended.left + ' из ' + msg.sended.of);
+      }
+    } else if ('done' in msg) {
+      if (app.currentScene === app.scenes.cargosList) {
+        app.currentScene.enableExport.call(app.currentScene, !msg.done);
+        console.log('Грузы ' + (msg.done ? '' : 'не ') + 'экспортированы');
+      }
+      if ('show' in msg && msg.show) {
+        $('#status').text('Грузы экспортированы');
       }
     }
   });
@@ -327,3 +343,10 @@ var cargoTypes = [];
 $.get('regions.json').then(function (regionsFile) {
   regions = JSON.parse(regionsFile);
 });
+
+window.onunload = function () {
+  if (App) {
+    App.exportPort.disconnect();
+    App.addPort.disconnect();
+  }
+};

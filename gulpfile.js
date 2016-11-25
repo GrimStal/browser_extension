@@ -22,6 +22,7 @@ gulp.task('production:watch', function () {
     'scenes/**/*.js',
     'templates/**/*.js',
     'js/**/*.js',
+    'background/**/*.js',
     './lodash*.*',
     './*.*',
     '!./gulpfile.*',
@@ -46,7 +47,6 @@ gulp.task('production', function () {
   .pipe(gulp.dest('dist/'));
 
   gulp.src([
-    '!./background.js',
     '!./gulpfile.js',
     '!./lodash*.*',
     '!./xml2json*.*',
@@ -62,9 +62,17 @@ gulp.task('production', function () {
   .pipe(gulp.dest('dist/'));
 
   gulp.src([
+    './background/functions.js',
+    './background/objects.js',
+    './background/cargolt.js',
+    './background/**/*.js',
+  ])
+  .pipe(concat('background.js'))
+  .pipe(gulp.dest('dist/'));
+
+  gulp.src([
     './popup.html',
     './lodash.templates.js',
-    './background.js',
     './SM.js',
     './css/**/*.*',
     './*.json',

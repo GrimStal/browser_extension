@@ -430,12 +430,14 @@
      } else {
 
      if (cargo.isNew) {
-    __p += 'new-cargo';
+    __p += ' new-cargo';
+     } else if (cargo.isPending){
+    __p += ' pending';
      } }
     __p += '">\n      <td>\n        <label>\n          <input type=\'checkbox\' class="lardi-cargo-checkbox" value=\'' +
     __e(cargo.id) +
     '\'\n          ';
-     if (cargo.isExported) {
+     if (cargo.isExported || cargo.isPending) {
     __p += '\n            disabled\n          ';
      }
     __p += '\n          />\n          <span class="checkbox-text"></span>\n        </label>\n      </td>\n      <td>\n        <strong>' +

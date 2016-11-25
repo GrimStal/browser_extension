@@ -216,6 +216,9 @@ label input[type=checkbox] {
       border-top-color: #55692a;
       top: 100%;
       left: 45%; }
+  .header-message.status {
+    font-size: 14px;
+    float: left; }
 
 .header-icons {
   text-align: right;
@@ -490,6 +493,8 @@ label input[type=checkbox] {
         background-color: #ffe8ec; }
     .cargos-list table tbody tr.successed {
       background-color: #b2ca7b; }
+    .cargos-list table tbody tr.pending {
+      background-color: #ffffe7; }
     .cargos-list table tbody tr td:first-child {
       width: 30px;
       text-align: center; }

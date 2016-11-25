@@ -70,9 +70,7 @@
         "typeof"
     ],
     "requirePaddingNewLinesBeforeLineComments": false,
-    "requirePaddingNewLinesAfterBlocks": {
-      "allExcept": ["inCallExpressions"]
-    },
+    "requirePaddingNewLinesAfterBlocks": false,
     "requireSemicolons": true,
     "requireShorthandArrowFunctions": true,
     "requireSpacesInsideImportedObjectBraces": true,
