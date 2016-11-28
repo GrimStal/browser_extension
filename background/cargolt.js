@@ -128,6 +128,8 @@ function exportCargoBatch(items) {
     });
   }
 
+  chrome.browserAction.setIcon({ path: 'css/images/icons/loading-icon.png' });
+
   if (sended.length > 0) {
     $.when.apply(self, sended).then(
       function () {
@@ -165,6 +167,7 @@ function exportCargoBatch(items) {
         });
 
         SMData.saveExportedCargos('lardi', SMData.getExportedCargos('lardi').concat(success));
+        chrome.browserAction.setBadgeText({ text: (queue.size() < 1000 ? String(queue.size()) : '999+') });
         if (self.port) {
           self.port.postMessage({ sended: { ids: args, left: queue.size(), of: amount } });
         }
@@ -252,11 +255,14 @@ function addCargoBatch(items) {
 
 function exportComplete() {
   if (this.port) {
-    this.port.postMessage({ done: this.queue.size() === 0, show: true });
+    this.port.postMessage({ done: this.queue.size() === 0, show: true, errored: this.errored, of: this.amount });
   }
 
   this.amount = this.queue.size();
+  this.errored = 0;
   SMData.savePendingCargos('lardi', []);
+  chrome.browserAction.setIcon({ path: 'css/images/icons/16x16.png' });
+  chrome.browserAction.setBadgeText({ text: '' });
 }
 
 function addComplete() {

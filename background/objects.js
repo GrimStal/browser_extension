@@ -15,6 +15,7 @@ var MQ = function () {
   this.port = undefined;
   this.queue = $.jqmq();
   this.amount = 0;
+  this.errored = 0;
   this.init = function (options) {
     self.queue.update(options);
     init = true;

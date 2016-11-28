@@ -316,14 +316,20 @@ var App = (function () {
         if (app.currentScene === app.scenes.cargosList) {
           app.currentScene.markCargos.apply(app.currentScene, msg.sended.ids);
         }
-        $('#status').text('Экспортировано ' + (msg.sended.of - msg.sended.left) + ' из ' + msg.sended.of);
+        $('#status').text('Экспорт: ' + (msg.sended.of - msg.sended.left) + ' из ' + msg.sended.of);
+        $('#status').parent().find('.loading-gif').show();
       }
     } else if ('done' in msg) {
       if (app.currentScene === app.scenes.cargosList) {
         app.currentScene.enableExport.call(app.currentScene, !msg.done);
       }
       if ('show' in msg && msg.show) {
-        $('#status').text('Грузы экспортированы');
+        $('#status').parent().find('.loading-gif').hide();
+        if ('errored' in msg && 'of' in msg && msg.errored) {
+          $('#status').text('Экспортировано ' + (msg.of - msg.errored) + ' из ' + msg.of + ' грузов');
+        } else {
+          $('#status').text('Грузы экспортированы');
+        }
       }
     } else if ('error' in msg && msg.error) {
       swal('Ошибка', msg.error);

@@ -242,6 +242,9 @@ label input[type=checkbox] {
         vertical-align: sub; }
       .header-icons .nav-icons .icon:active {
         background-color: rgba(0, 0, 0, 0.3); }
+  .header-icons .loading-gif {
+    margin-top: 2px;
+    display: none; }
 
 .header-icons .glyphicon {
   padding: 0 0.2em; }
