@@ -214,16 +214,20 @@ App.scenes.cargosList = {
             id: el.contact,
             name: el.contact === '0' ? el.name : el.face,
             selected: selected,
-            count: 1
+            count: el.isExported ? 0 : 1
           };
 
           if (!selections.some(isIDInArray.bind(null, contact))) {
             selections.push(contact);
           } else {
-            updateContactsCounter(selections, contact.id);
+            if (!el.isExported) {
+              updateContactsCounter(selections, contact.id);
+            }
           }
 
-          updateContactsCounter(selections, '');
+          if (!el.isExported) {
+            updateContactsCounter(selections, '');
+          }
         }
       });
 
