@@ -316,7 +316,7 @@ var App = (function () {
         if (app.currentScene === app.scenes.cargosList) {
           app.currentScene.markCargos.apply(app.currentScene, msg.sended.ids);
         }
-        $('#status').text('В очереди экспортирования ' + msg.sended.left + ' из ' + msg.sended.of);
+        $('#status').text('Экспортировано ' + (msg.sended.of - msg.sended.left) + ' из ' + msg.sended.of);
       }
     } else if ('done' in msg) {
       if (app.currentScene === app.scenes.cargosList) {
