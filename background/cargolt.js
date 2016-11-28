@@ -22,7 +22,7 @@ function sendDuplicateToCargo(item) {
         def.resolve({ error: null, id: id });
       },
       function (error) {
-        var err;
+        var err = '';
 
         console.log(error);
         if ('responseJSON' in error) {
@@ -45,11 +45,75 @@ function sendDuplicateToCargo(item) {
   return def.promise();
 };
 
+function sendNewCargo(item) {
+  var def = $.Deferred();
+  var req;
+  var type;
+
+  if (item) {
+
+    if ('token' in item) {
+      req = new Request('cargo', 'POST', 'cargos');
+      req.headers = { 'Access-Token': item.token };
+      delete item.token;
+      type = 'cargo';
+    } else if ('sig' in item) {
+      req = new Request('lardi', 'POST');
+      type = 'lardi';
+    } else {
+      def.reject('Server not set');
+      return def.promise();
+    }
+
+    req.data = item;
+    // console.log(creq);
+    sendToServer(req).then(
+      function (response) {
+        if (type === 'cargo') {
+          def.resolve({ error: null, server: 'cargo', id: response.id });
+        } else if (type === 'lardi') {
+          var resp = XMLtoJson(response);
+          if ('response' in resp) {
+            resp = resp.response;
+          } else {
+            return def.resolve({ error: 'Could not parse response', server: 'lardi', id: null });
+          }
+
+          if ('error' in resp) {
+            def.resolve({ error: resp.error, server: 'lardi', id: null });
+          } else {
+            def.resolve({ error: null, server: 'lardi', id: resp.id });
+          }
+        }
+      },
+      function (error) {
+        var err = '';
+
+        console.log(error);
+        if ('responseJSON' in error) {
+          if ('error' in error.responseJSON) {
+            err = error.responseJSON.error;
+          }
+        }
+
+        if (err.length === 0) {
+          err = 'Unknown error';
+        }
+
+        def.resolve({ error: err, server: (type === 'cargo' ? 'cargo' : 'lardi'), id: null });
+      }
+    );
+  } else {
+    def.resolve({ error: 'No object' });
+  }
+
+  return def.promise();
+};
+
 function exportCargoBatch(items) {
   var self = this;
   var queue = this.queue;
   var sended = [];
-  var ruCargos = '';
   var amount = this.amount;
 
   if (!this.inited) {
@@ -120,17 +184,21 @@ function exportCargoBatch(items) {
   }
 }
 
-function addCargoBatch(item) {
+function addCargoBatch(items) {
+  var self = this;
   var queue = this.queue;
   var sended = [];
-  var ruCargos = '';
-  var amount = String(queue.size());
+  var amount = this.amount;
+
+  if (!this.inited) {
+    return console.log('Not inited MQ');
+  }
 
   if (!Array.isArray(items)) {
-    sended.push(sendRequest(item, null, promise));
+    sended.push(sendNewCargo(items));
   } else {
     items.forEach(function (el) {
-      sended.push(sendRequest(el, null, promise));
+      sended.push(sendNewCargo(el));
     });
   }
 
@@ -138,16 +206,43 @@ function addCargoBatch(item) {
     $.when.apply(self, sended).then(
       function () {
         var args = [];
+        var success = [];
+        var cargo = { success: false, error: '' };
+        var lardi = { success: false, error: '' };
         for (var i = 0; i < arguments.length; i++) {
           args.push(arguments[i]);
         }
-        if (port) {
-          port.postMessage({ sended: args });
+
+        args.forEach(function (el) {
+          if (el.server === 'cargo') {
+            if (el.error) {
+              cargo.error = el.error;
+            } else {
+              cargo.success = true;
+            }
+          } else if (el.server === 'lardi') {
+            if (el.error) {
+              lardi.error = el.error;
+            } else {
+              lardi.success = true;
+              if (el.id) {
+                SMData.saveExportedCargos('lardi', SMData.getExportedCargos('lardi').concat([el.id]));
+              }
+            }
+          }
+        });
+        if (self.port) {
+          self.port.postMessage({ sended: { cargo: cargo, lardi: lardi } });
         }
         queue.next();
       },
       function (error) {
-        queue.next();
+        console.log(error);
+        console.log('This mistake never might happen! Cargolt.js 241:8');
+        if (self.port) {
+          self.port.postMessage({ error: 'Не удалось связаться с сервером' });
+        }
+        queue.pause();
       }
     );
   } else {
@@ -162,4 +257,12 @@ function exportComplete() {
 
   this.amount = this.queue.size();
   SMData.savePendingCargos('lardi', []);
+}
+
+function addComplete() {
+  if (this.port) {
+    this.port.postMessage({ done: this.queue.size() === 0, show: true });
+  }
+
+  this.amount = this.queue.size();
 }

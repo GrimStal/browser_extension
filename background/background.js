@@ -12,9 +12,9 @@ exportQueue.init({
 
 addQueue.init({
   delay: -1,
-  batch: 1,
+  batch: 2,
   callback: addCargoBatch.bind(addQueue),
-  complete: exportComplete.bind(addQueue)
+  complete: addComplete.bind(addQueue)
 });
 
 if (navigator.userAgent.search(/Gecko/) > -1) {

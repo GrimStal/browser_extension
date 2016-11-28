@@ -116,3 +116,7 @@ function onConnect(port) {
         Queue.port = undefined;
       });
 }
+
+function XMLtoJson(xml) {
+  return x2js.xml_str2json(xml);
+}

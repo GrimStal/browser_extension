@@ -25,3 +25,5 @@ var MQ = function () {
 
   return this;
 };
+
+var x2js = new X2JS();

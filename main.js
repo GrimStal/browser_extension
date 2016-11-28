@@ -325,6 +325,62 @@ var App = (function () {
       if ('show' in msg && msg.show) {
         $('#status').text('Грузы экспортированы');
       }
+    } else if ('error' in msg && msg.error) {
+      swal('Ошибка', msg.error);
+    }
+  });
+
+  app.addPort.onMessage.addListener(function (msg) {
+    var message;
+    var title;
+    var success = false;
+
+    if (!msg || typeof msg !== 'object') {
+      console.log('Object not set: msg');
+      return false;
+    }
+
+    if ('sended' in msg && typeof msg.sended === 'object') {
+      if (!('cargo' in msg.sended) || !('lardi' in msg.sended)) {
+        console.log('Invalid data in message');
+        return false;
+      }
+      if (!msg.sended.cargo.success && !msg.sended.lardi.success) {
+        title = 'Ошибка';
+        message = 'Данные не отправлены';
+        success = false;
+        if (msg.sended.cargo.error) {
+          message +=  '\nCargo.lt: ' + msg.sended.cargo.error;
+        }
+        if (msg.sended.lardi.error) {
+          message +=  '\nLardi-Trans: ' + msg.sended.lardi.error;
+        }
+      } else {
+        title = 'Данные отправлены';
+        message = 'Данные успешно отправлены на ';
+        success = true;
+        if (msg.sended.cargo.success && msg.sended.lardi.success) {
+          message += ' Cargo.lt и Lardi-Trans';
+        } else if (msg.sended.cargo.success) {
+          message += ' Cargo.lt' + (msg.sended.lardi.error ? '\nLardi-Trans: ' + msg.sended.lardi.error : '');
+        } else if (msg.sended.lardi.success) {
+          message += ' Lardi-Trans' + (msg.sended.cargo.error ? '\nCargo: ' + msg.sended.cargo.error : '');
+        }
+      }
+
+      swal({
+        title: title,
+        text: message,
+        imageUrl: (success ? '/css/images/success.png' : '/css/images/error.png'),
+        confirmButtonText: 'Добавить новый груз'
+      });
+
+      if (App.currentScene === App.scenes.cargos) {
+        App.scenes.cargos.clearForm.call(App.scenes.cargos);
+        App.stopLoading();
+      }
+    } else if ('error' in msg && msg.error) {
+      swal('Ошибка', msg.error);
     }
   });
 

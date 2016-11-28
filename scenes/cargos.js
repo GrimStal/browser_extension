@@ -59,6 +59,7 @@ App.scenes.cargos = {
 
     this.cargoTypeSet = 0;
     this.cargo = new CargoObject();
+    this.lardi = new LardiTransCargoObject();
 
     $.when(getTrailerTypes, getCurrencies).then(function (ttypes, currencies) {
       var curFtt = concatArraysInArray(cargosData.trailerTypes.fixed);
@@ -111,8 +112,6 @@ App.scenes.cargos = {
       $('.revert-cities').bind('click', self.revertCities.bind(self));
       $('.trailer-type-select').change(insertCheckbox);
       $('#cargo-types').change(setCargoDependencies);
-      // $('.trailer-type-checkbox[value=1],' +
-      //   '.trailer-type-checkbox[value=3]').change(checkTemperature);
       $('#sendOrder').bind('click', self.sendCargosData.bind(self));
       $('#clean').bind('click', self.clearForm.bind(self));
 
@@ -353,6 +352,7 @@ App.scenes.cargos = {
   sendCargosData: function () {
     var self = this;
     var cargo = this.cargo;
+    var lardi = this.lardi;
     var dates = this.dates;
     var $cargoType = $('#cargo-types');
     var $adr = $('#adr');
@@ -371,16 +371,15 @@ App.scenes.cargos = {
     var $note = $('#note');
     var cnote = [];
     var lnote = [];
-    var lardi = new LardiTransCargoObject();
     var dateOptions = {
       day: 'numeric',
       month: 'numeric',
       year: 'numeric',
     };
-    var creq = new Request('cargo', 'POST', 'cargos');
-    var lreq = new Request('lardi', 'POST');
     var originAddress;
     var destinationAddress;
+    var requests = [];
+
     var cargoDef = $.Deferred();
     var lardiDef = $.Deferred();
 
@@ -419,6 +418,8 @@ App.scenes.cargos = {
     if ($price.val().length > 6) {
       return swal('Ошибка!', 'Укажите правильную сумму!');
     }
+
+    App.loading('Отправка данных');
 
     cargo.fromDate = this.dates[0];
     cargo.tillDate = new Date(dates[dates.length - 1] * 1000).setUTCHours(23, 59) / 1000;
@@ -503,14 +504,8 @@ App.scenes.cargos = {
 
     cargo.notes = cnote.join(', ');
 
-    creq.data = cargo;
-    creq.headers = {
-      'Access-Token': App.appData.cargo.token,
-    };
-
-    cargoDef = App.exchanges.getDataFromServer(creq);
-
-    App.loading('Отправка данных');
+    cargo.token = App.appData.cargo.token;
+    cargoDef.resolve({ obj: cargo });
 
     if (App.appData.lardi.token) {
       var getMoments = App.exchanges.getLardiPaymentMoments();
@@ -559,54 +554,45 @@ App.scenes.cargos = {
         lardi.user_contact = parseInt(App.appData.lardi.id);
         lardi.sig = App.appData.lardi.token;
 
-        lreq.data = lardi;
-
-        App.sendRequest(lreq, function (response) {
-          var resp;
-          if (response.error && !response.success) {
-            return lardiDef.reject(response.error);
-          }
-
-          resp = XMLtoJson(response.success);
-          if ('response' in resp) {
-            resp = resp.response;
-            if ('error' in resp && resp.response.error) {
-              return lardiDef.reject(resp.response.error);
-            }
-
-            if ('id' in resp && resp.id) {
-              return lardiDef.resolve(resp.id);
-            }
-          }
-
-          return lardiDef.resolve();
-        });
+        lardiDef.resolve({ obj: lardi });
 
       }, function (error) {
-        lardiDef.reject(error);
-        console.log(error);
-        swal('Ошибка!', 'Не удалось получить данные от Lardi-Trans: ' + error.responseText);
+        lardiDef.resolve({ error: error });
       });
     } else {
-      lardiDef.resolve();
+      lardiDef.resolve({});
     }
 
     $.when(cargoDef, lardiDef).then(function (cargoResp, lardiResp) {
-      App.stopLoading();
-      if (App.checkToken('lardi')) {
-        SMData.saveExportedCargos('lardi', SMData.getExportedCargos('lardi').concat(lardiResp));
+      if (cargoResp && 'obj' in cargoResp) {
+        requests.push(cargoResp.obj);
+      }
+      if (lardiResp) {
+        if ('obj' in lardiResp) {
+          requests.push(lardiResp.obj);
+        } else if ('error' in lardiResp) {
+          console.log(lardiResp.error);
+        }
       }
 
-      return App.showScene('cargoAdded');
-    }, function (error) {
-      App.stopLoading();
-      console.log(error);
-      if (error.responseJSON && error.responseJSON.error && error.responseJSON.error.message) {
-        return swal('Ошибка!', 'Данные на Cargo.LT не отправлены: ' + error.responseJSON.error.message);
+      if ('error' in lardiResp) {
+        swal({
+          title: 'Внимание!',
+          text: 'Произошла ошибка при получении данных от Lardi-Trans.',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#b2ca7b',
+          confirmButtonText: 'Отправить на Cargo.lt',
+          closeOnConfirm: false
+        }, function () {
+          App.addPort.postMessage({ task: 'addToQueue', props: requests });
+        });
       } else {
-        return swal('Ошибка!', 'Данные на Lardi-Trans не отправлены: ' + error);
+        App.addPort.postMessage({ task: 'addToQueue', props: requests });
       }
-
+    }, function (error) {
+      console.log('This mistake could not happen!');
+      console.log(error);
     });
   },
 
@@ -619,7 +605,6 @@ App.scenes.cargos = {
     $('#currency').val('15');
     $('#payment-fieldset').prop('disabled', false);
     $('input[type=checkbox]').prop('checked', false);
-    // $('#temperature').prop('disabled', true);
     $('#temperatureMin, #temperatureMax').val('');
     $('.trailer-type-select option').css('display', 'block');
   },
