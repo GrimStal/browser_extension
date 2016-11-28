@@ -133,14 +133,10 @@ App.scenes.cargosList = {
           self.createTable(App.appData.lardi.id);
         }
 
-        if (App.appData.lardi.contact === 'false') {
-          self.createSelect();
-          $('#contacts').bind('change', function () {
-            self.createTable($(this).val());
-          });
-        } else {
-          $('.manager-block').addClass('hidden');
-        }
+        self.createSelect();
+        $('#contacts').bind('change', function () {
+          self.createTable($(this).val());
+        });
 
         $('.check-all').bind('change', function () {
           $('input[type=checkbox]:not(:disabled)').prop('checked', this.checked);
@@ -232,10 +228,25 @@ App.scenes.cargosList = {
       });
 
       selections.sort(sortContacts);
+    } else {
+      selections = [{
+        id: '',
+        name: 'Мои грузы',
+        selected: true,
+        count: 0
+      }];
 
-      template = _.templates.cargosListContacts({ contacts: selections });
-      $('.contacts-block').empty().append(template);
+      this.lardiCargos.forEach(function (el) {
+        if ('contact' in el && 'face' in el && 'name' in el) {
+          if (!el.isExported) {
+            updateContactsCounter(selections, '');
+          }
+        }
+      });
     }
+
+    template = _.templates.cargosListContacts({ contacts: selections });
+    $('.contacts-block').empty().append(template);
   },
 
   getLardiCargos: function (callback) {
