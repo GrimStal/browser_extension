@@ -433,12 +433,18 @@
     __p += ' new-cargo';
      } else if (cargo.isPending){
     __p += ' pending';
+     } else if (cargo.isErrored) {
+    __p += ' error';
      } }
     __p += '">\n      <td>\n        <label>\n          <input type=\'checkbox\' class="lardi-cargo-checkbox" value=\'' +
     __e(cargo.id) +
     '\'\n          ';
      if (cargo.isExported || cargo.isPending) {
     __p += '\n            disabled\n          ';
+     }
+    __p += '\n          ';
+     if (cargo.isPending) {
+    __p += '\n            checked\n          ';
      }
     __p += '\n          />\n          <span class="checkbox-text"></span>\n        </label>\n      </td>\n      <td>\n        <strong>' +
     __e(cargo.country_from) +

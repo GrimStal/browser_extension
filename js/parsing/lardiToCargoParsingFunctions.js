@@ -253,3 +253,22 @@ function getCargoArea(rus, country) {
     return rus;
   }
 }
+
+function setLardiDate(date) {
+  var newDate;
+  var day;
+  var month;
+  var year;
+
+  if (!date) {
+    newDate = new Date();
+  } else {
+    newDate = new Date(date);
+  }
+
+  day = String(newDate.getDate());
+  month =  String(newDate.getMonth() + 1);
+  year =  String(newDate.getFullYear());
+
+  return (year + '-' + (month.length < 2 ? '0' + month : month) + '-' + (day.length < 2 ? '0' + day : day));
+}

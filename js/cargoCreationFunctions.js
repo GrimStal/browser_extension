@@ -43,35 +43,13 @@ function insertCheckbox() {
   var len = 100;
   var $target;
 
-  /** Get elements with label elements and search wich element contains
-  * the least of elements to add checkbox there.
-  */
-  // container.children().find('label').parent().each(function (i, el) {
-  //   var length = $(el).children().length;
-  //   if (length < len) {
-  //     $target = $(el);
-  //     len = length++;
-  //   } else {
-  //     len = length;
-  //   }
-  // });
-
   if ($currentSelect && $currentSelect.val() !== '') {
     element = _.templates.trailerCheckbox({
       value: $currentSelect.val(),
       type: $currentSelect.text(),
     });
 
-    // if ($target.get(0) === $select.parent().get(0)) {
     $(element).insertBefore($select);
-    // } else {
-    //   $target.append(element);
-    // }
-
-    // if ($currentSelect.val() == '7') {
-    //   $('.trailer-type-checkbox[value=7]').change(checkTemperature);
-    //   $('#temperature').prop('disabled', false);
-    // }
 
     $currentSelect.css('display', 'none');
     $select.val('');

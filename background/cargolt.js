@@ -46,8 +46,8 @@ function sendDuplicateToCargo(item) {
 };
 
 function exportCargoBatch(items) {
+  var self = this;
   var queue = this.queue;
-  var port = this.port;
   var sended = [];
   var ruCargos = '';
   var amount = this.amount;
@@ -69,6 +69,7 @@ function exportCargoBatch(items) {
       function () {
         var args = [];
         var success = [];
+        var errored = SMData.getErrorCargos('lardi');
         var pending = SMData.getPendingCargos('lardi');
         for (var i = 0; i < arguments.length; i++) {
           args.push(arguments[i]);
@@ -86,25 +87,32 @@ function exportCargoBatch(items) {
           }
 
           if (el.error) {
-            return false;
+            if (errored.indexOf(el.id) === -1) {
+              errored.push(el.id);
+              SMData.saveErrorCargos('lardi', errored);
+            }
+          } else {
+            if (errored.indexOf(el.id) > -1) {
+              errored.splice(errored.indexOf(el.id), 1);
+              SMData.saveErrorCargos('lardi', errored);
+            }
+            success.push(el.id);
           }
-
-          success.push(el.id);
         });
 
         SMData.saveExportedCargos('lardi', SMData.getExportedCargos('lardi').concat(success));
-        if (port) {
-          port.postMessage({ sended: { ids: args, left: queue.size(), of: amount } });
+        if (self.port) {
+          self.port.postMessage({ sended: { ids: args, left: queue.size(), of: amount } });
         }
         queue.next();
       },
       function (error) {
         console.log(error);
-        if (port) {
-          port.postMessage({ error: 'Не удалось связаться с сервером' });
+        console.log('This mistake never might happen! Cargolt.js 103:8');
+        if (self.port) {
+          self.port.postMessage({ error: 'Не удалось связаться с сервером' });
         }
         queue.pause();
-        console.log('paused');
       }
     );
   } else {

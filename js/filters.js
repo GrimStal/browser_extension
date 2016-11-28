@@ -50,8 +50,11 @@ function sortContacts(a, b) {
   return 0;
 }
 
-function sortByNewAndID(a, b) {
-  return (a.isNew < b.isNew) - (b.isNew < a.isNew) || (a.id < b.id) - (b.id < a.id);
+function sortExportTable(a, b) {
+  return (a.isExported > b.isExported) - (b.isExported > a.isExported) ||
+   (a.isPending > b.isPending) - (b.isPending > a.isPending) ||
+   (a.isNew < b.isNew) - (b.isNew < a.isNew) ||
+   (a.id < b.id) - (b.id < a.id);
 }
 
 function onlyPositiveDigits(e) {

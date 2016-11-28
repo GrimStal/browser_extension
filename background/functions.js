@@ -113,6 +113,6 @@ function onConnect(port) {
     });
 
   port.onDisconnect.addListener(function (event) {
-        // Queue.port = undefined;
+        Queue.port = undefined;
       });
 }

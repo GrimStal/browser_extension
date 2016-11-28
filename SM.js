@@ -123,5 +123,24 @@ var SMData = (function () {
     SM.delete(key + 'pendingCargoIDs');
   };
 
+  smdata.getErrorCargos = function (key) {
+    var resp = [];
+    var ids = SM.get(key + 'errorCargoIDs');
+
+    if (typeof ids === 'string') {
+      resp = ids.split(',');
+    }
+
+    return resp;
+  };
+
+  smdata.saveErrorCargos = function (key, array) {
+    return SM.put(key + 'errorCargoIDs', array);
+  };
+
+  smdata.removeErrorCargos = function (key) {
+    SM.delete(key + 'errorCargoIDs');
+  };
+
   return smdata;
 }());

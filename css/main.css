@@ -218,7 +218,11 @@ label input[type=checkbox] {
       left: 45%; }
   .header-message.status {
     font-size: 14px;
-    float: left; }
+    float: left;
+    padding-right: 10px; }
+    .header-message.status:hover {
+      background-color: transparent;
+      cursor: default; }
 
 .header-icons {
   text-align: right;

@@ -321,7 +321,6 @@ var App = (function () {
     } else if ('done' in msg) {
       if (app.currentScene === app.scenes.cargosList) {
         app.currentScene.enableExport.call(app.currentScene, !msg.done);
-        console.log('Грузы ' + (msg.done ? '' : 'не ') + 'экспортированы');
       }
       if ('show' in msg && msg.show) {
         $('#status').text('Грузы экспортированы');

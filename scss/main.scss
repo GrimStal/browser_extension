@@ -315,6 +315,12 @@ label {
     &.status {
       font-size: 14px;
       float: left;
+      padding-right: 10px;
+
+      &:hover {
+        background-color: transparent;
+        cursor: default;
+      }
     }
 }
 

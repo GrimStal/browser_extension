@@ -10,19 +10,11 @@ App.scenes.cargosList = {
     var getLardiCurrencies = App.exchanges.getLardiCurrencies();
     var exportedArray = SMData.getExportedCargos('lardi') || [];
     var pendingArray = SMData.getPendingCargos('lardi') || [];
+    var erroredArray = SMData.getErrorCargos('lardi') || [];
 
     if (!App.checkToken('lardi')) {
       return App.changeScene('cargos');
     }
-
-    // if (!this.queue) {
-    //   this.queue = $.jqmq({
-    //     delay: -1,
-    //     batch: 5,
-    //     callback: self.sendBatchOfDuplicates,
-    //     complete: self.cargosExported
-    //   });
-    // }
 
     this.currentArray = [];
     this.lardiCargos = [];
@@ -30,6 +22,7 @@ App.scenes.cargosList = {
     this.oldArray = SMData.getWatchedCargos('lardi') || [];
     this.exportedArray = [];
     this.pendingArray = [];
+    this.erroredArray = [];
 
     App.loading('Получение данных');
 
@@ -39,12 +32,16 @@ App.scenes.cargosList = {
 
         if (!currencies || !currencies.item) {
           console.log('Lardi doesn\'t response for currencies request');
+          return App.changeScene('cargos');
         } else {
           currencies = currencies.item;
         }
 
         for (var i = 0; i < lardiCargos.length; i++) {
           if (new Date(lardiCargos[i].date_from) >= today) {
+            self.lardiCargos.push(lardiCargos[i]);
+          } else if (lardiCargos[i].date_to && new Date(lardiCargos[i].date_to) >= today) {
+            lardiCargos[i].date_from = setLardiDate();
             self.lardiCargos.push(lardiCargos[i]);
           }
         }
@@ -82,6 +79,14 @@ App.scenes.cargosList = {
           });
         }
 
+        if (self.erroredArray && erroredArray && Array.isArray(erroredArray)) {
+          erroredArray.forEach(function (el) {
+            if (self.currentArray.indexOf(el) > -1) {
+              self.erroredArray.push(el);
+            }
+          });
+        }
+
         self.lardiCargos.forEach(function (cargo) {
             if (self.newArray.indexOf(cargo.id) > -1) {
               cargo.isNew = 1;
@@ -100,11 +105,18 @@ App.scenes.cargosList = {
             } else {
               cargo.isPending = 0;
             }
+
+            if (self.erroredArray.indexOf(cargo.id) > -1) {
+              cargo.isErrored = 1;
+            } else {
+              cargo.isErrored = 0;
+            }
           });
 
         SMData.saveWatchedCargos('lardi', self.currentArray);
         SMData.saveExportedCargos('lardi', self.exportedArray);
         SMData.savePendingCargos('lardi', self.pendingArray);
+        SMData.saveErrorCargos('lardi', self.erroredArray);
 
         template = _.templates.cargosList({
             wrapper_class: 'cargos-list',
@@ -160,7 +172,7 @@ App.scenes.cargosList = {
     var filteredCargos = cloneObj(this.lardiCargos);
     var filter = selectedContact(id);
     var template;
-    filteredCargos.sort(sortByNewAndID);
+    filteredCargos.sort(sortExportTable);
 
     if (id) {
       filteredCargos = filteredCargos.filter(filter);
@@ -522,70 +534,6 @@ App.scenes.cargosList = {
     return cargo;
   },
 
-  // sendDuplicatesToCargo: function (duplicate) {
-  //   var id;
-  //   var token;
-  //   var def = $.Deferred();
-  //   var creq = new Request('cargo', 'POST', 'cargos');
-  //
-  //   if (duplicate) {
-  //     id = duplicate.lardiID;
-  //     token = duplicate.token;
-  //     delete duplicate.lardiID;
-  //     delete duplicate.lardiID;
-  //     creq.data = duplicate;
-  //     creq.headers = {
-  //       'Access-Token': token,
-  //     };
-  //     // console.log(creq);
-  //     App.exchanges.getDataFromServer(creq).then(
-  //       function (response) {
-  //         def.resolve({ error: null, id: id });
-  //       },
-  //       function (error) {
-  //         var err;
-  //
-  //         console.log(error);
-  //         if ('responseJSON' in error) {
-  //           if ('error' in error.responseJSON) {
-  //             err = error.responseJSON.error;
-  //           }
-  //         }
-  //
-  //         if (err.length === 0) {
-  //           err = 'Unknown error';
-  //         }
-  //
-  //         def.resolve({ error: err, id: id });
-  //       }
-  //     );
-  //   } else {
-  //     def.reject({ error: 'No object', response: null, id: null });
-  //   }
-  //
-  //   return def.promise();
-  // },
-
-  // cargosExported: function () {
-  //   $('.check-all').prop('checked', false);
-  //   App.scenes.cargosList.setCheckAllAvailability();
-  //
-  //   App.stopLoading();
-  //
-  //   if ($('tr.error').length > 0) {
-  //     swal('Ошибка', 'Не удалось экспортировать некоторые грузы');
-  //   } else {
-  //     swal({
-  //       title: '',
-  //       text: 'Грузы успешно экспортированы',
-  //       imageUrl: '/css/images/success.png',
-  //       confirmButtonText: 'OK'
-  //     });
-  //   }
-  //
-  //   this.clear();
-  // },
-
   markCargos: function () {
     var self = this;
     var args = [];
@@ -603,22 +551,29 @@ App.scenes.cargosList = {
       }
 
       if (el.error && el.id) {
+        if (self.erroredArray.indexOf(el.id) === -1) {
+          self.erroredArray.push(el.id);
+        }
         error.push(el.id);
       } else {
+        if (self.erroredArray.indexOf(el.id) > -1) {
+          self.erroredArray.splice(self.erroredArray.indexOf(el.id), 1);
+        }
         success.push(el.id);
       }
     });
 
-    if (App.currentScene === this) {
+    if (App.currentScene === App.scenes.cargosList) {
       $checked = $('.lardi-cargo-checkbox:checked');
       $checked.each(function (i, el) {
-        $(el).closest('tr').removeClass('pending');
 
         if (error.indexOf($(el).val()) !== -1) {
+          $(el).closest('tr').removeClass('pending');
           $(el).closest('tr').addClass('error');
         }
 
         if (success.indexOf($(el).val()) !== -1) {
+          $(el).closest('tr').removeClass('pending');
           $(el).closest('tr').addClass('successed');
           $(el).prop('disabled', true);
           $(el).prop('checked', false);
@@ -628,80 +583,7 @@ App.scenes.cargosList = {
       self.exportedArray = self.exportedArray.concat(success);
     }
 
-    // SMData.saveExportedCargos('lardi', SMData.getExportedCargos('lardi').concat(success));
   },
-
-  // sendBatchOfDuplicates: function (items) {
-  //   var self = App.scenes.cargosList;
-  //   var queue = this;
-  //   var sendedDuplicates = [];
-  //   var ruCargos = '';
-  //   var amount = String(this.size());
-  //
-  //   if (!Array.isArray(items)) {
-  //     sendedDuplicates.push(self.sendDuplicatesToCargo(items));
-  //   } else {
-  //     items.forEach(function (el) {
-  //       sendedDuplicates.push(self.sendDuplicatesToCargo(el));
-  //     });
-  //   }
-  //
-  //   if (amount.length === 1) {
-  //     switch (amount) {
-  //       case '1':
-  //         ruCargos = 'груз';
-  //         break;
-  //       case '2':
-  //       case '3':
-  //       case '4':
-  //         ruCargos = 'груза';
-  //         break;
-  //       default:
-  //         ruCargos = 'грузов';
-  //     }
-  //   } else {
-  //     switch (amount[amount.length - 1]) {
-  //       case '1':
-  //         if (amount[amount.length - 2] === '1') {
-  //           ruCargos = 'грузов';
-  //         } else {
-  //           ruCargos = 'груз';
-  //         }
-  //
-  //         break;
-  //       case '2':
-  //       case '3':
-  //       case '4':
-  //         if (amount[amount.length - 2] === '1') {
-  //           ruCargos = 'грузов';
-  //         } else {
-  //           ruCargos = 'груза';
-  //         }
-  //
-  //         break;
-  //       default:
-  //         ruCargos = 'грузов';
-  //     }
-  //   }
-  //
-  //   App.loading('Осталось экспортировать ' + queue.size() + ' ' + ruCargos);
-  //
-  //   $.when.apply(self, sendedDuplicates).then(
-  //     function () {
-  //       self.markCargos.apply(self, arguments);
-  //       queue.next();
-  //     },
-  //     function (error) {
-  //       App.stopLoading();
-  //       if (error.error === 'No object') {
-  //         swal('Ошибка', 'Не выбран ни один груз');
-  //       } else {
-  //         console.log(error);
-  //         swal('Ошибка', 'Не удалось отправить некоторые данные на Cargo.LT');
-  //       }
-  //     }
-  //   );
-  // },
 
   exportDuplicates: function () {
     var self = this;
@@ -727,8 +609,6 @@ App.scenes.cargosList = {
     this.setCheckAllAvailability();
 
     SMData.savePendingCargos('lardi', SMData.getPendingCargos().concat(selected));
-
-    // App.loading('Экспорт данных');
 
     $errored.removeClass('error');
 
@@ -760,7 +640,6 @@ App.scenes.cargosList = {
         });
       });
 
-      // self.queue.addEach(duplicates);
       App.exportPort.postMessage({ task: 'addToQueue', props: duplicates });
 
     }, function (err) {
