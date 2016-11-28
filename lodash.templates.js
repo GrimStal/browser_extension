@@ -19,7 +19,6 @@
     'accountUnbinding': {},
     'addOrder': {},
     'auth': {},
-    'cargoAdded': {},
     'cargos': {},
     'cargosList': {},
     'cargosListContacts': {},
@@ -126,18 +125,6 @@
     __p += '\n                </fieldset>\n                <div class="ce__auth_btn">\n                    <button id="' +
     ((__t = (submit_id)) == null ? '' : __t) +
     '" type="button" class="btn ce__btn btn-default ce__auth_btn-confirm col-xs-8 col-sm-8 col-sm-offset-2 col-xs-offset-2">\n                      Привязать аккаунт\n                    </button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n';
-
-    }
-    return __p
-  };
-
-  templates['cargoAdded'] =   function(obj) {
-    obj || (obj = {});
-    var __t, __p = '', __e = _.escape;
-    with (obj) {
-    __p += '<div class="ce__success">\n    <div class="row">\n        <div class="success-img-holder">\n            <img src="css/images/success.png" class=\'success-img\' />\n        </div>\n        <div class="success-text-holder">\n            <span class="ce__success-text">' +
-    __e(text) +
-    '</span>\n        </div>\n    </div>\n</div>\n';
 
     }
     return __p
