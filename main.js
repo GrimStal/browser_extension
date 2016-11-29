@@ -89,10 +89,10 @@ var App = (function () {
 
   app.doAuth = function () {
     function cargoCB(response) {
-      var err = response.error;
-      if (err && err.responseJSON) {
+      var err = response.error;;
+      if (err && 'responseJSON' in err) {
         err = err.responseJSON;
-        if (err.error && err.error.code) {
+        if (err.error && 'code' in err.error) {
           if (err.error.code == '2') {
             return cargoDef.reject('cargo error');
           } else {
