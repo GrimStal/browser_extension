@@ -325,9 +325,6 @@ App.scenes.cargosList = {
     cargo.origins.push({ country: countryFrom, name: placeFrom.join(', ') });
     cargo.destinations.push({ country: countryTo, name: placeTo.join(', ') });
 
-    //trailers
-    cargo.trailers = setCargoBodyType(object.body_type_id, object.body_type_group_id);
-
     //Cargo type
     cargo.type = getID(cargoTypes, object.gruz);
     if (cargo.type === -1) {
@@ -389,6 +386,35 @@ App.scenes.cargosList = {
     } else {
       cargo.weight = parseFloat(object.mass2);
     }
+
+    //trailers
+    object.body_type_id = parseInt(object.body_type_id);
+    object.body_type_group_id = parseInt(object.body_type_group_id);
+    cargo.trailers = setCargoBodyType(object.body_type_id, object.body_type_group_id);
+
+    /**fix for "Крытые" body_type_group_id */
+    if (object.body_type_group_id && object.body_type_group_id === 1 && !object.body_type_id) {
+      if ((cargo.weight > 7.5 || cargo.volume > 50) && cargo.trailers.indexOf(10) > -1) {
+        cargo.trailers.splice(cargo.trailers.indexOf(10), 1);
+      }
+      if ((cargo.weight > 3.5 || cargo.volume > 35)  && cargo.trailers.indexOf(17) > -1) {
+        cargo.trailers.splice(cargo.trailers.indexOf(17), 1);
+      }
+      if ((cargo.weight > 2 || cargo.volume > 20) && cargo.trailers.indexOf(9) > -1) {
+        cargo.trailers.splice(cargo.trailers.indexOf(9), 1);
+      }
+      if (cargo.volume > 92 && cargo.trailers.indexOf(2) > -1) {
+        cargo.trailers.splice(cargo.trailers.indexOf(2), 1);
+      }
+      if (cargo.volume > 100 && cargo.trailers.indexOf(13) > -1) {
+        cargo.trailers.splice(cargo.trailers.indexOf(13), 1);
+      }
+      if (cargo.volume > 120 && cargo.trailers.indexOf(8) > -1) {
+        cargo.trailers.splice(cargo.trailers.indexOf(8), 1);
+      }
+    }
+
+    /* end fix*/
 
     //medbook
     if (object.medBook && object.medBook === 'true') {

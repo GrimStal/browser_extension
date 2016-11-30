@@ -228,7 +228,7 @@ function CargoObject() {
   this.pallets = 0;
   this.pallettype = 1;
   this.volume = 0;
-  this.volumeldm = 13.6;
+  this.volumeldm = 0;
   this.weight = 0;
   this.minTemperature = null;
   this.maxTemperature = null;
