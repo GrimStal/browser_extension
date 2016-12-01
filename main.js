@@ -306,6 +306,7 @@ var App = (function () {
   app.addPort = chrome.runtime.connect({ name: 'add' });
 
   app.exportPort.onMessage.addListener(function (msg) {
+    var message;
     if (!msg || typeof msg !== 'object') {
       console.log('Object not set: msg');
       return false;
@@ -316,7 +317,8 @@ var App = (function () {
         if (app.currentScene === app.scenes.cargosList) {
           app.currentScene.markCargos.apply(app.currentScene, msg.sended.ids);
         }
-        $('#status').text('Экспорт: ' + (msg.sended.of - msg.sended.left) + ' из ' + msg.sended.of);
+        message = 'Экспорт: ' + (msg.sended.of - msg.sended.left) + ' из ' + msg.sended.of;
+        $('#status').text(message);
         $('#status').parent().find('.loading-gif').show();
       }
     } else if ('done' in msg) {
@@ -326,10 +328,17 @@ var App = (function () {
       if ('show' in msg && msg.show) {
         $('#status').parent().find('.loading-gif').hide();
         if ('errored' in msg && 'of' in msg && msg.errored) {
-          $('#status').text('Экспортировано ' + (msg.of - msg.errored) + ' из ' + msg.of + ' грузов');
+          message = 'Экспортировано ' + (msg.of - msg.errored) + ' из ' + msg.of + ' грузов';
         } else {
-          $('#status').text('Грузы экспортированы');
+          message = 'Все грузы экспортированы';
         }
+        $('#status').text(message);
+        swal({
+          title: 'Экспорт завершён!',
+          text: message,
+          imageUrl: '/css/images/success.png',
+          confirmButtonText: 'ОК'
+        });
       }
     } else if ('error' in msg && msg.error) {
       swal('Ошибка', msg.error);
