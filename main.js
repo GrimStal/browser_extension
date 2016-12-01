@@ -212,7 +212,7 @@ var App = (function () {
 
     setSweetAlertDefaults();
 
-    if (navigator.userAgent.search(/Firefox/) == -1) {
+    if (!~navigator.userAgent.indexOf('Firefox/49')) {
       $(document.body).height('auto');
     }
 

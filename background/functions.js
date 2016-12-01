@@ -35,12 +35,14 @@ function sendRequest(data, uid, callback) {
       reqParams.contentType = 'application/x-www-form-urlencoded';
       reqParams.url = 'http://api.lardi-trans.com/api/';
       reqParams.data = data.data;
+      reqParams.headers['Accept-Language'] = 'ru-ru, ru';
       break;
     case 'cargo':
       reqParams.dataType = 'json';
       reqParams.contentType = 'application/json';
       reqParams.url = 'https://io.cargo.lt/' + data.url;
       reqParams.data = (reqParams.type === 'POST') ? JSON.stringify(data.data) : data.data;
+      reqParams.headers['Accept-Language'] = 'ru-ru, ru';
       break;
     case 'geo':
       reqParams.data = data.data;
