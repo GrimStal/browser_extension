@@ -206,13 +206,30 @@ var Templates = (function () {
   return t;
 }());
 
-var Request = function (to, type, url) {
+function Request(to, type, url) {
   this.to = to;
   this.url = url;
   this.type = type;
   this.data = {};
   this.headers = {};
-};
+}
+
+function GeoRequest(string) {
+  var request = new Request('geo', 'GET');
+  if (!string) {
+    return false;
+  }
+
+  request.data = {
+    key: 'AopwzhwRqQfWy-zFLEhVu2edSMGC7PpA9LK_vaZ2q4VdUOaxYao1Uj5nTi-OAgPW',
+    includeNeighborhood: 1,
+    include: 'queryParse,ciso2',
+    maxResults: 1,
+    query: encodeURIComponent(string)
+  };
+
+  return request;
+}
 
 function CargoObject() {
   this.from = [];
@@ -228,7 +245,7 @@ function CargoObject() {
   this.pallets = 0;
   this.pallettype = 1;
   this.volume = 0;
-  this.volumeldm = 0;
+  this.volumeldm = 0.0;
   this.weight = 0;
   this.minTemperature = null;
   this.maxTemperature = null;

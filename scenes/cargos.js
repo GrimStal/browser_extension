@@ -437,7 +437,7 @@ App.scenes.cargos = {
     lardi.value = setFloatParam($volume.val(), undefined);
 
     cargo.pallets = setParam($pallets.val(), null);
-    cargo.volumeldm = setFloatParam($ldm, 13.6);
+    cargo.volumeldm = setFloatParam($ldm.val(), 0.0);
 
     if ($tempMin.val() !== '' || $tempMax.val() !== '') {
       cargo.minTemperature = setParam($tempMin.val(), 0);
@@ -522,8 +522,8 @@ App.scenes.cargos = {
         var notSupportedLoadTypes = getAdditionalLoadTypes(loadTypes, $loadTypes);
         var bodyTypes = XMLtoJson(bodies).response.item;
         var countries = lardiCountries;
-        var originCC = origin[0]['alpha2Code'];
-        var destinationCC = destination[0]['alpha2Code'];
+        var originCC = parseGEO(origin, parseCountry);
+        var destinationCC = parseGEO(destination, parseCountry);
 
         if (!$('#by-request').prop('checked')) {
           lardi.payment_moment_id = getPaymentMomentID(paymentMoments, parseInt($paymentType.val()));
@@ -579,13 +579,17 @@ App.scenes.cargos = {
         swal({
           title: 'Внимание!',
           text: 'Произошла ошибка при получении данных от Lardi-Trans.',
-          type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#b2ca7b',
           confirmButtonText: 'Отправить на Cargo.lt',
-          closeOnConfirm: false
-        }, function () {
-          App.addPort.postMessage({ task: 'addToQueue', props: requests });
+          closeOnConfirm: true,
+          closeOnCancel: true
+        }, function (isConfirm) {
+          if (isConfirm) {
+            App.addPort.postMessage({ task: 'addToQueue', props: requests });
+          } else {
+            App.stopLoading();
+          }
         });
       } else {
         App.addPort.postMessage({ task: 'addToQueue', props: requests });

@@ -122,8 +122,7 @@ App.exchanges = {
   },
 
   getCountryCode: function (name) {
-    var req = new Request('countries', 'GET');
-    req.url = encodeURIComponent(name);
+    var req = new GeoRequest(name);
     return this.getDataFromServer(req);
   },
 

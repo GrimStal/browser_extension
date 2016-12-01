@@ -90,7 +90,6 @@ var App = (function () {
   app.doAuth = function () {
     function cargoCB(response) {
       var err = response.error;
-      console.log(err);
       if (err && 'responseJSON' in err) {
         err = err.responseJSON;
         if (err.error && 'code' in err.error) {

@@ -1,6 +1,6 @@
 'use strict';
 
-var Request = function (to, type, url) {
+function Request(to, type, url) {
   this.to = to;
   this.url = url;
   this.type = type;
@@ -8,7 +8,30 @@ var Request = function (to, type, url) {
   this.headers = {};
 };
 
-var MQ = function () {
+function GeoRequest(data) {
+  var request = new Request('geo', 'GET');
+  request.data = data;
+  return request;
+}
+
+function GeoRequest(string) {
+  var request = new Request('geo', 'GET');
+  if (!string) {
+    return false;
+  }
+
+  request.data = {
+    key: 'AopwzhwRqQfWy-zFLEhVu2edSMGC7PpA9LK_vaZ2q4VdUOaxYao1Uj5nTi-OAgPW',
+    includeNeighborhood: 1,
+    include: 'queryParse,ciso2',
+    maxResults: 1,
+    query: string
+  };
+
+  return request;
+}
+
+function MQ() {
   var self = this;
   var init = false;
 

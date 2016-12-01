@@ -374,18 +374,10 @@ App.scenes.cargosList = {
     }
 
     //volume
-    if (object.value_select === 'FROM' || !object.value.length) {
-      cargo.volume = parseFloat(object.value);
-    } else {
-      cargo.volume = parseFloat(object.value2);
-    }
+    cargo.volume = parseFloat(object.value) || 0.0;
 
     //weight
-    if (object.mass_select === 'FROM' || !object.mass_select.length) {
-      cargo.weight = parseFloat(object.mass);
-    } else {
-      cargo.weight = parseFloat(object.mass2);
-    }
+    cargo.weight = parseFloat(object.mass) || 0.0;
 
     //trailers
     object.body_type_id = parseInt(object.body_type_id);
@@ -611,6 +603,8 @@ App.scenes.cargosList = {
         if (error.indexOf($(el).val()) !== -1) {
           $(el).closest('tr').removeClass('pending');
           $(el).closest('tr').addClass('error');
+          $(el).prop('disabled', false);
+          $(el).prop('checked', false);
         }
 
         if (success.indexOf($(el).val()) !== -1) {
@@ -638,7 +632,7 @@ App.scenes.cargosList = {
       return swal('Ошибка', 'Не выбран ни один груз');
     }
 
-    this.enableExport(false);
+    this.enableExport(true);
 
     $checked.each(function (i, el) {
       selected.push($(el).val());

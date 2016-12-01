@@ -34,7 +34,8 @@
     "tabs",
     "https://io.cargo.lt/*",
     "http://api.lardi-trans.com/*",
-    "https://restcountries.eu/*"
+    "https://restcountries.eu/*",
+    "http://dev.virtualearth.net/REST/v1/Locations"
   ],
 
   "offline_enabled": false,
