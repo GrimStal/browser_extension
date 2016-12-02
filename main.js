@@ -365,7 +365,7 @@ var App = (function () {
         message = 'Данные не отправлены';
         success = false;
         if (msg.sended.cargo.error) {
-          message +=  '\nCargo.lt: ' + msg.sended.cargo.error;
+          message +=  '\nCargo.LT: ' + msg.sended.cargo.error;
         }
         if (msg.sended.lardi.error) {
           message +=  '\nLardi-Trans: ' + msg.sended.lardi.error;
@@ -375,11 +375,11 @@ var App = (function () {
         message = 'Данные успешно отправлены на ';
         success = true;
         if (msg.sended.cargo.success && msg.sended.lardi.success) {
-          message += ' Cargo.lt и Lardi-Trans';
+          message += ' Cargo.LT и Lardi-Trans';
         } else if (msg.sended.cargo.success) {
-          message += ' Cargo.lt' + (msg.sended.lardi.error ? '\nLardi-Trans: ' + msg.sended.lardi.error : '');
+          message += ' Cargo.LT' + (msg.sended.lardi.error ? '\nLardi-Trans: ' + msg.sended.lardi.error : '');
         } else if (msg.sended.lardi.success) {
-          message += ' Lardi-Trans' + (msg.sended.cargo.error ? '\nCargo: ' + msg.sended.cargo.error : '');
+          message += ' Lardi-Trans' + (msg.sended.cargo.error ? '\nCargo.LT: ' + msg.sended.cargo.error : '');
         }
       }
 

@@ -476,43 +476,43 @@ function setPLArea(area) {
   }
 }
 
-function parseGEO(response, cb) {
-  if (!response || typeof response !== 'object') {
-    return cb({ error: 'No response', success: null });
-  } else {
-    if (!('statusCode' in response) || response.statusCode !== 200) {
-      if ('errorDetails' in response) {
-        return cb({ error: response.errorDetails, success: null });
-      }
-      return cb({ error: 'Can not parse response', success: null });
-    } else {
-      if (!('resourceSets' in response) || !Array.isArray(response.resourceSets) ||
-       response.resourceSets.length === 0) {
-        return cb({ error: 'Can not parse response', success: null });
-      } else if (!('resources' in response.resourceSets[0]) || !response.resourceSets[0].estimatedTotal) {
-        return cb({ error: 'Nothing found', success: null });
-      }
-      return cb({ error: null, success: response.resourceSets[0].resources[0] });
-    }
-  }
-}
-
-function parseCountry(obj) {
-  var info;
-  var response = '';
-  if (obj.error || !obj.success) {
-    console.log(obj.error);
-    return response;
-  } else {
-    if ('address' in obj.success) {
-      info = obj.success.address;
-      if ('countryRegionIso2' in info) {
-        response = info.countryRegionIso2;
-      }
-    }
-    if (!response) {
-      console.log('API of Bing Locations has changed!');
-    }
-    return response;
-  }
-}
+// function parseGEO(response, cb) {
+//   if (!response || typeof response !== 'object') {
+//     return cb({ error: 'No response', success: null });
+//   } else {
+//     if (!('statusCode' in response) || response.statusCode !== 200) {
+//       if ('errorDetails' in response) {
+//         return cb({ error: response.errorDetails, success: null });
+//       }
+//       return cb({ error: 'Can not parse response', success: null });
+//     } else {
+//       if (!('resourceSets' in response) || !Array.isArray(response.resourceSets) ||
+//        response.resourceSets.length === 0) {
+//         return cb({ error: 'Can not parse response', success: null });
+//       } else if (!('resources' in response.resourceSets[0]) || !response.resourceSets[0].estimatedTotal) {
+//         return cb({ error: 'Nothing found', success: null });
+//       }
+//       return cb({ error: null, success: response.resourceSets[0].resources[0] });
+//     }
+//   }
+// }
+//
+// function parseCountry(obj) {
+//   var info;
+//   var response = '';
+//   if (obj.error || !obj.success) {
+//     console.log(obj.error);
+//     return response;
+//   } else {
+//     if ('address' in obj.success) {
+//       info = obj.success.address;
+//       if ('countryRegionIso2' in info) {
+//         response = info.countryRegionIso2;
+//       }
+//     }
+//     if (!response) {
+//       console.log('API of Bing Locations has changed!');
+//     }
+//     return response;
+//   }
+// }

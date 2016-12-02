@@ -269,11 +269,13 @@ App.scenes.cargosList = {
 
         resp = resp.response;
 
-        if (resp.gruz.item && typeof resp.gruz.item === 'object') {
-          if (Array.isArray(resp.gruz.item)) {
-            cargos = resp.gruz.item;
-          } else {
-            cargos.push(resp.gruz.item);
+        if ('gruz' in resp) {
+          if ('item' in resp.gruz && typeof resp.gruz.item === 'object') {
+            if (Array.isArray(resp.gruz.item)) {
+              cargos = resp.gruz.item;
+            } else {
+              cargos.push(resp.gruz.item);
+            }
           }
         }
 

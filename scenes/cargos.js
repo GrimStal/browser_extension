@@ -522,8 +522,10 @@ App.scenes.cargos = {
         var notSupportedLoadTypes = getAdditionalLoadTypes(loadTypes, $loadTypes);
         var bodyTypes = XMLtoJson(bodies).response.item;
         var countries = lardiCountries;
-        var originCC = parseGEO(origin, parseCountry);
-        var destinationCC = parseGEO(destination, parseCountry);
+        // var originCC = parseGEO(origin, parseCountry);
+        // var destinationCC = parseGEO(destination, parseCountry);
+        var originCC = origin[0]['alpha2Code'];
+        var destinationCC = destination[0]['alpha2Code'];
 
         if (!$('#by-request').prop('checked')) {
           lardi.payment_moment_id = getPaymentMomentID(paymentMoments, parseInt($paymentType.val()));

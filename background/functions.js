@@ -44,12 +44,17 @@ function sendRequest(data, uid, callback) {
       reqParams.data = (reqParams.type === 'POST') ? JSON.stringify(data.data) : data.data;
       reqParams.headers['Accept-Language'] = 'ru-ru, ru';
       break;
-    case 'geo':
-      reqParams.data = data.data;
+    case 'countries':
       reqParams.dataType = 'json';
       reqParams.contentType = 'application/json';
-      reqParams.url = 'http://dev.virtualearth.net/REST/v1/Locations';
+      reqParams.url = 'https://restcountries.eu/rest/v1/name/' + data.url;
       break;
+    // case 'geo':
+    //   reqParams.data = data.data;
+    //   reqParams.dataType = 'json';
+    //   reqParams.contentType = 'application/json';
+    //   reqParams.url = 'http://dev.virtualearth.net/REST/v1/Locations';
+    //   break;
     default:
       console.log(reqParams);
   }
