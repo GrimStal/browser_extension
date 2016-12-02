@@ -280,7 +280,7 @@ App.scenes.auth = {
   cargoSubmit: function (callback) {
     function defaultCallback(key, result) {
       App.scenes.auth.updateFormStatus(key, result);
-      App.exchanges.saveLardiCountries();
+      App.exchanges.saveCargoTypes();
     }
 
     callback = (typeof callback === 'function')
