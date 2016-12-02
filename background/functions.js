@@ -49,12 +49,6 @@ function sendRequest(data, uid, callback) {
       reqParams.contentType = 'application/json';
       reqParams.url = 'https://restcountries.eu/rest/v1/name/' + data.url;
       break;
-    // case 'geo':
-    //   reqParams.data = data.data;
-    //   reqParams.dataType = 'json';
-    //   reqParams.contentType = 'application/json';
-    //   reqParams.url = 'http://dev.virtualearth.net/REST/v1/Locations';
-    //   break;
     default:
       console.log(reqParams);
   }
@@ -131,47 +125,4 @@ function onConnect(port) {
 
 function XMLtoJson(xml) {
   return x2js.xml_str2json(xml);
-}
-
-function parseGEO(response, cb) {
-  if (!response || typeof response !== 'object') {
-    return cb({ error: 'No response', success: null });
-  } else {
-    if (!('statusCode' in response) || response.statusCode !== 200) {
-      if ('errorDetails' in response) {
-        return cb({ error: response.errorDetails, success: null });
-      }
-      return cb({ error: 'Can not parse response', success: null });
-    } else {
-      if (!('resourceSets' in response) || !Array.isArray(response.resourceSets) ||
-       response.resourceSets.length === 0) {
-        return cb({ error: 'Can not parse response', success: null });
-      } else if (!('resources' in response.resourceSets[0]) || !response.resourceSets[0].estimatedTotal) {
-        return cb({ error: 'Nothing found', success: null });
-      }
-      return cb({ error: null, success: response.resourceSets[0].resources[0] });
-    }
-  }
-}
-
-function parseCoordinates(obj) {
-  var info;
-  var response = '';
-  if (obj.error || !obj.success) {
-    return response;
-  } else {
-    if ('point' in obj.success) {
-      info = obj.success.point;
-      if ('coordinates' in info) {
-        response = {
-          latitude: info.coordinates[0],
-          longitude: info.coordinates[1]
-        };
-      }
-    }
-    if (!response) {
-      console.log('API of Bing Locations has changed!');
-    }
-    return response;
-  }
 }

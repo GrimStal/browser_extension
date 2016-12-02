@@ -8,29 +8,6 @@ function Request(to, type, url) {
   this.headers = {};
 };
 
-// function GeoRequest(data) {
-//   var request = new Request('geo', 'GET');
-//   request.data = data;
-//   return request;
-// }
-//
-// function GeoRequest(string) {
-//   var request = new Request('geo', 'GET');
-//   if (!string) {
-//     return false;
-//   }
-//
-//   request.data = {
-//     key: 'AopwzhwRqQfWy-zFLEhVu2edSMGC7PpA9LK_vaZ2q4VdUOaxYao1Uj5nTi-OAgPW',
-//     includeNeighborhood: 1,
-//     include: 'queryParse,ciso2',
-//     maxResults: 1,
-//     query: string
-//   };
-//
-//   return request;
-// }
-
 function MQ() {
   var self = this;
   var init = false;

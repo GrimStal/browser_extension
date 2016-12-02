@@ -8,10 +8,6 @@ function sendDuplicateToCargo(item) {
         def.resolve({ error: null, id: id });
       },
       function (error) {
-        console.log('---------');
-        console.log(error);
-        console.log(item);
-        console.log('---end---');
         var err = '';
         if ('responseJSON' in error) {
           if ('error' in error.responseJSON) {
@@ -43,36 +39,11 @@ function sendDuplicateToCargo(item) {
     delete item.lardiID;
     delete item.token;
 
-    // originRequest = sendToServer(new GeoRequest(item.origins[0].name + ', ' + item.origins[0].country));
-    // destinationRequest = sendToServer(new GeoRequest(item.destinations[0].name + ', ' + item.destinations[0].country));
-
     creq.headers = {
       'Access-Token': token,
     };
-
-    // // $.when(originRequest, destinationRequest).then(function (origin, destination) {
-    //   origin = parseGEO(origin, parseCoordinates);
-    //   destination = parseGEO(destination, parseCoordinates);
-    //
-    //   if (origin) {
-    //     delete item.origins[0].name;
-    //     item.origins[0].coordinates = origin;
-    //   }
-    //
-    //   if (destination) {
-    //     delete item.destinations[0].name;
-    //     item.destinations[0].coordinates = destination;
-    //   }
-
     creq.data = item;
     sendObject(creq);
-    // },
-    // function (error) {
-    //   console.log(error);
-    //   console.log('Sending data to cargo using place names');
-    //   creq.data = item;
-    //   sendObject(creq);
-    // });
   } else {
     def.resolve({ error: 'No object', response: null, id: null });
   }
