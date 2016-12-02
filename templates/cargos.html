@@ -262,7 +262,7 @@
                         <div class="col-xs-3 col-sm-3 wide-left">
                           <select class="form-control currency-select input-sm" id="currency" name="currency">
                               <% _.forEach(currencies, function(cur) { %>
-                                  <% if (cur.id === "15") { %>
+                                  <% if (cur.id === "2") { %>
                                   <option selected value="<%-cur.id%>"><%-cur.type%></option>
                                   <% } else { %>
                                   <option value="<%-cur.id%>"><%-cur.type%></option>
@@ -272,7 +272,7 @@
                         </div>
                         <div class="payment-type-block col-xs-6 col-sm-6 wide-left wide-right">
                           <select class="form-control payment-type-select input-sm" id="payment-type" name="payment-type">
-                            <option selected disabled value=""><%-paymentTypePlaceholder%></option>
+                            <option value=""><%-paymentTypePlaceholder%></option>
                               <% _.forEach(paymentTypes, function(type, key) { %>
                                   <option value="<%-key%>"><%-type%></option>
                               <% }) %>

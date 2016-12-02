@@ -320,7 +320,7 @@
     '</label>\n                 <div class="col-sm-10 col-xs-10 wide-right">\n                   <fieldset id="payment-fieldset" class="col-xs-7 col-sm-7 wide-left wide-right">\n                        <div class="col-xs-3 col-sm-3 wide-left">\n                          <input type="text" class="form-control payment-input input-sm" maxlength=6 id="price" name="price" />\n                        </div>\n\n                        <div class="col-xs-3 col-sm-3 wide-left">\n                          <select class="form-control currency-select input-sm" id="currency" name="currency">\n                              ';
      _.forEach(currencies, function(cur) {
     __p += '\n                                  ';
-     if (cur.id === "15") {
+     if (cur.id === "2") {
     __p += '\n                                  <option selected value="' +
     __e(cur.id) +
     '">' +
@@ -335,7 +335,7 @@
      }
     __p += '\n                              ';
      }) ;
-    __p += '\n                          </select>\n                        </div>\n                        <div class="payment-type-block col-xs-6 col-sm-6 wide-left wide-right">\n                          <select class="form-control payment-type-select input-sm" id="payment-type" name="payment-type">\n                            <option selected disabled value="">' +
+    __p += '\n                          </select>\n                        </div>\n                        <div class="payment-type-block col-xs-6 col-sm-6 wide-left wide-right">\n                          <select class="form-control payment-type-select input-sm" id="payment-type" name="payment-type">\n                            <option value="">' +
     __e(paymentTypePlaceholder) +
     '</option>\n                              ';
      _.forEach(paymentTypes, function(type, key) {
@@ -369,7 +369,7 @@
     ((__t = (wrapper_id)) == null ? '' : __t) +
     '">\n  <div class="col-xs-2 col-sm-2 wide-left">\n    <button id="export" type="button" class="btn btn-accept ce__btn ce__order_btn-confirm col-xs-12 col-sm-12">\n      ' +
     __e(orderButtonText) +
-    '\n    </button>\n  </div>\n    <div class="ce__wrapper_export-message export-message col-xs-7 col-sm-7 wide-right">\n      <div class="col-xs-12 col-sm-12 wide-left wide-right">\n        Чтобы продублировать груз на\n        <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span>\n        выберите\n      </div>\n      <div class="col-xs-12 col-sm-12 wide-left wide-right">\n        предложение и нажмите "Экспортировать".\n      </div>\n    </div>\n    <div class="col-xs-3 col-sm-3 manager-block wide-left wide-right">\n        <div class="col-xs-12 col-sm-12 manager-title wide-left wide-right">\n          Менеджер\n        </div>\n        <div class="col-xs-12 col-sm-12 contacts-block wide-left wide-right">\n        </div>\n    </div>\n  <table class=\'table table-striped table-hover table-condenced table-bordered\'>\n    <thead>\n      <tr>\n        <td>\n          <label>\n            <input type=\'checkbox\' class=\'check-all\' value=\'\'/>\n            <span class="checkbox-text"></span>\n          </label>\n        </td>\n        <td>Нас. пункт</td>\n        <td>Дата</td>\n        <td>Груз</td>\n        <td>Ставка</td>\n      </tr>\n    </thead>\n    <tbody>\n\n    </tbody>\n\n  </table>\n</div>\n';
+    '\n    </button>\n  </div>\n    <div class="ce__wrapper_export-message export-message col-xs-7 col-sm-7 wide-right">\n      <div class="col-xs-12 col-sm-12 wide-left wide-right">\n        Чтобы разместить груз на\n        <span class="ce__company-name cargo-site" title="https://www.cargo.lt">Cargo.LT</span>\n        выберите\n      </div>\n      <div class="col-xs-12 col-sm-12 wide-left wide-right">\n        предложение и нажмите "Экспортировать".\n      </div>\n    </div>\n    <div class="col-xs-3 col-sm-3 manager-block wide-left wide-right">\n        <div class="col-xs-12 col-sm-12 manager-title wide-left wide-right">\n          Менеджер\n        </div>\n        <div class="col-xs-12 col-sm-12 contacts-block wide-left wide-right">\n        </div>\n    </div>\n  <table class=\'table table-striped table-hover table-condenced table-bordered\'>\n    <thead>\n      <tr>\n        <td>\n          <label>\n            <input type=\'checkbox\' class=\'check-all\' value=\'\'/>\n            <span class="checkbox-text"></span>\n          </label>\n        </td>\n        <td>Нас. пункт</td>\n        <td>Дата</td>\n        <td>Груз</td>\n        <td>Ставка</td>\n      </tr>\n    </thead>\n    <tbody>\n\n    </tbody>\n\n  </table>\n</div>\n';
 
     }
     return __p

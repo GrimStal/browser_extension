@@ -88,20 +88,53 @@ App.scenes.cargos = {
       $('#price, #weight, #volume, #palets').bind('keyup keypress', onlyPositiveDigits);
       $('#temperatureMin, #temperatureMax').bind('keyup keypress', onlyDigits);
 
-      /** Save the origin and destination objects on authocomplete select */
+      /** Save the origin and destination objects on authocomplete select.
+      * Also check if origin and destination are different countries - set tir.
+      * Check if cargo is not Ukraine-Ukraine - set currency to EURO. Else - UAH.
+      */
       $('#origin').autocomplete({
         source: parseForAutocomplete,
         select: function (event, obj) {
+          var index;
           self.cargo.from[0] = obj.item.object;
+          if (self.cargo.to.length) {
+            if (!self.isSameCountry()) {
+              $('.document-type-checkbox[value=tir]').prop('checked', true);
+              $('#currency').val(2);
+            } else {
+              index = ~obj.item.label.lastIndexOf(', ') ? (obj.item.label.lastIndexOf(', ') + 3) : 0;
+              if (obj.item.label.slice(index) === 'Ukraine') {
+                $('#currency').val(15);
+              } else {
+                $('#currency').val(2);
+              }
+            }
+          }
         },
       });
 
       $('#destination').autocomplete({
         source: parseForAutocomplete,
         select: function (event, obj) {
+          var index;
           self.cargo.to[0] = obj.item.object;
+          if (self.cargo.from.length) {
+            if (!self.isSameCountry()) {
+              $('.document-type-checkbox[value=tir]').prop('checked', true);
+              $('#currency').val(2);
+            } else {
+              index = ~obj.item.label.lastIndexOf(', ') ? (obj.item.label.lastIndexOf(', ') + 3) : 0;
+              if (obj.item.label.slice(index) === 'Ukraine') {
+                $('#currency').val(15);
+              } else {
+                $('#currency').val(2);
+              }
+            }
+          }
         },
       });
+
+      $('#payment-type').val(2);
 
       $('#removeSelection').bind('click', function () {
         self.removeSelection(true);
@@ -155,6 +188,27 @@ App.scenes.cargos = {
     $('.origin-remove, .destination-remove').unbind('click');
 
     $('.ce__wrapper').empty();
+  },
+
+  isSameCountry: function () {
+    var from;
+    var to;
+    if (this.cargo && 'from' in this.cargo && 'to' in this.cargo) {
+      if (Array.isArray(this.cargo.from) && Array.isArray(this.cargo.to)) {
+        if (this.cargo.to.length && this.cargo.from.length) {
+          if ('name' in this.cargo.from[0] && 'name' in this.cargo.to[0]) {
+            from = this.cargo.from[0].name;
+            from = from.slice(from.lastIndexOf(', ') || 0);
+            to = this.cargo.to[0].name;
+            to = to.slice(to.lastIndexOf(', ') || 0);
+            if (from !== to) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return true;
   },
 
   selectionRule: function ($elements) {
@@ -605,7 +659,7 @@ App.scenes.cargos = {
     this.removeSelection(true);
     this.removeAdditionalCheckboxes();
     $('input[type=text], textarea').val('');
-    $('select:not("#currency")').val('');
+    $('select:not("#currency,#payment-type")').val('');
     $('#currency').val('15');
     $('#payment-fieldset').prop('disabled', false);
     $('input[type=checkbox]').prop('checked', false);

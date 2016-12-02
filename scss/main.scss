@@ -13,6 +13,7 @@ $lightOrange: #ffdb90;
 $lightRed: #ffcdcd;
 $lightRed2: #ffe8ec;
 $lightYellow: #ffffe7;
+$orange: #ff6600;
 
 body {
     width: 700px;
@@ -674,6 +675,10 @@ label {
 
         &#export {
           width: 120px;
+
+          &.active {
+            background-color: $orange;
+          }
         }
     }
 

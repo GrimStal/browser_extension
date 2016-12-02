@@ -134,15 +134,19 @@ App.scenes.cargosList = {
         }
 
         self.createSelect();
-        $('#contacts').bind('change', function () {
+        $('#contacts').on('change', function () {
           self.createTable($(this).val());
         });
 
-        $('.check-all').bind('change', function () {
+        $('.check-all').on('change', function () {
           $('input[type=checkbox]:not(:disabled)').prop('checked', this.checked);
+          $($('.lardi-cargo-checkbox')[0]).trigger('change', { isCheckAll: true });
         });
-        $('.lardi-cargo-checkbox').bind('change', function () {
-          $('.check-all').prop('checked', false);
+        $('.lardi-cargo-checkbox').on('change', function (e, obj) {
+          if (!obj || !obj.isCheckAll) {
+            $('.check-all').prop('checked', false);
+          }
+          App.exportPort.postMessage({ task: 'exportEnabled' });
         });
         $('#goCargosList').addClass('current-scene');
         $('#export').bind('click', self.exportDuplicates.bind(self));
@@ -267,14 +271,16 @@ App.scenes.cargosList = {
           return result.reject(resp.error);
         }
 
-        resp = resp.response;
-
-        if ('gruz' in resp) {
-          if ('item' in resp.gruz && typeof resp.gruz.item === 'object') {
-            if (Array.isArray(resp.gruz.item)) {
-              cargos = resp.gruz.item;
-            } else {
-              cargos.push(resp.gruz.item);
+        if ('response' in resp) {
+          resp = resp.response;
+          if ('gruz' in resp) {
+            resp = resp.gruz;
+            if (typeof resp === 'object' && 'item' in resp && typeof resp.item === 'object') {
+              if (Array.isArray(resp.item)) {
+                cargos = resp.item;
+              } else {
+                cargos.push(resp.item);
+              }
             }
           }
         }
@@ -689,11 +695,22 @@ App.scenes.cargosList = {
 
   enableExport: function (bool) {
     var disabled = bool || false;
-    $('#export').prop('disabled', bool || false);
+
     if (!disabled) {
       $('.pending').find('.lardi-cargo-checkbox').prop('disabled', false);
       $('.pending').removeClass('pending');
       SMData.savePendingCargos('lardi', []);
+
+      if ($('.lardi-cargo-checkbox:checked:not(:disabled)').length) {
+        $('#export').prop('disabled', false);
+        $('#export').addClass('active');
+      } else {
+        $('#export').prop('disabled', true);
+        $('#export').removeClass('active');
+      }
+    } else {
+      $('#export').prop('disabled', true);
+      $('#export').removeClass('active');
     }
     this.setCheckAllAvailability();
   },

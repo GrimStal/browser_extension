@@ -466,6 +466,8 @@ label input[type=checkbox] {
   top: 4px; }
   .cargos-list .btn#export {
     width: 120px; }
+    .cargos-list .btn#export.active {
+      background-color: #ff6600; }
 
 .cargos-list .export-message {
   margin-bottom: 10px; }
