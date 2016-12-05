@@ -57,6 +57,7 @@ App.scenes.cargos = {
     var getTrailerTypes = App.exchanges.getTrailerTypes();
     var getCurrencies = App.exchanges.getCurrencies();
 
+    this.addingObj = SMData.getCargoAdding() || new AddingCargo();
     this.cargoTypeSet = 0;
     this.cargo = new CargoObject();
     this.lardi = new LardiTransCargoObject();
@@ -97,9 +98,12 @@ App.scenes.cargos = {
         select: function (event, obj) {
           var index;
           self.cargo.from[0] = obj.item.object;
+          self.addingObj.from[0] = obj.item.object;
+          SMData.saveCargoAdding(self.addingObj);
           if (self.cargo.to.length) {
             if (!self.isSameCountry()) {
               $('.document-type-checkbox[value=tir]').prop('checked', true);
+              $('.document-type-checkbox[value=tir]').trigger('change');
               $('#currency').val(2);
             } else {
               index = ~obj.item.label.lastIndexOf(', ') ? (obj.item.label.lastIndexOf(', ') + 3) : 0;
@@ -108,6 +112,7 @@ App.scenes.cargos = {
               } else {
                 $('#currency').val(2);
               }
+              $('#currency').trigger('change');
             }
           }
         },
@@ -118,9 +123,12 @@ App.scenes.cargos = {
         select: function (event, obj) {
           var index;
           self.cargo.to[0] = obj.item.object;
+          self.addingObj.to[0] = obj.item.object;
+          SMData.saveCargoAdding(self.addingObj);
           if (self.cargo.from.length) {
             if (!self.isSameCountry()) {
               $('.document-type-checkbox[value=tir]').prop('checked', true);
+              $('.document-type-checkbox[value=tir]').trigger('change');
               $('#currency').val(2);
             } else {
               index = ~obj.item.label.lastIndexOf(', ') ? (obj.item.label.lastIndexOf(', ') + 3) : 0;
@@ -129,6 +137,7 @@ App.scenes.cargos = {
               } else {
                 $('#currency').val(2);
               }
+              $('#currency').trigger('change');
             }
           }
         },
@@ -151,16 +160,72 @@ App.scenes.cargos = {
       $('#weight, #volume, #palets, #temperatureMin, #temperatureMax, .trailer-type-select, ' +
         '.trailer-type-checkbox').bind('change', useEnteredData);
 
+      $('#price, #currency').on('change', function () {
+        self.addingObj[this.id] = $(this).val();
+        SMData.saveCargoAdding(self.addingObj);
+      });
+
+      $('#payment-type').on('change', function () {
+        self.addingObj.paymentType = $(this).val();
+        SMData.saveCargoAdding(self.addingObj);
+      });
+
       $('#by-request').change(function () {
         $('#payment-fieldset').attr('disabled', this.checked);
         if (this.checked) {
-          $('#price, #currency, #payment-type').val('');
+          $('#price, #currency').val('');
+          $('#payment-type').val('2');
         } else {
-          $('#currency').val('15');
+          $('#currency').val('2');
         }
+        $('#price, #currency, #payment-type').trigger('change');
+        self.addingObj.priceRequest = this.checked;
+        SMData.saveCargoAdding(self.addingObj);
       });
 
       $('#goCargos').addClass('current-scene');
+
+      /** Fix for saving data */
+      self.restoreData();
+      $('#weight, #volume, #palets, #ldm,  #temperatureMin,' +
+        '#temperatureMax, #adr').bind('change', function () {
+        self.addingObj[this.id] = $(this).val();
+        SMData.saveCargoAdding(self.addingObj);
+      });
+
+      $('.trailer-type-checkbox').on('change', function () {
+        if ($(this).prop('checked')) {
+          addToArrayWithoutDuplicates(App.scenes.cargos.addingObj.trailers, $(this).val());
+        } else {
+          removeFromArray(App.scenes.cargos.addingObj.trailers, $(this).val());
+        }
+        SMData.saveCargoAdding(self.addingObj);
+      });
+
+      $('.load-type-checkbox').on('change', function () {
+        if ($(this).prop('checked')) {
+          addToArrayWithoutDuplicates(App.scenes.cargos.addingObj.loadTypes, $(this).val());
+        } else {
+          removeFromArray(App.scenes.cargos.addingObj.loadTypes, $(this).val());
+        }
+        SMData.saveCargoAdding(self.addingObj);
+      });
+
+      $('.document-type-checkbox').on('change', function () {
+        if ($(this).prop('checked')) {
+          addToArrayWithoutDuplicates(App.scenes.cargos.addingObj.documentTypes, $(this).val());
+        } else {
+          removeFromArray(App.scenes.cargos.addingObj.documentTypes, $(this).val());
+        }
+        SMData.saveCargoAdding(self.addingObj);
+      });
+
+      $('#note').on('change', function () {
+        self.addingObj.note = $(this).val();
+        SMData.saveCargoAdding(self.addingObj);
+      });
+
+      /** End Fix */
 
       self.setDates();
       App.stopLoading();
@@ -170,7 +235,6 @@ App.scenes.cargos = {
   },
 
   hide: function () {
-    this.removeSelection();
     $('.date').unbind('click');
     $('#removeSelection').unbind('click');
     $('.revert-cities').unbind('click');
@@ -188,6 +252,141 @@ App.scenes.cargos = {
     $('.origin-remove, .destination-remove').unbind('click');
 
     $('.ce__wrapper').empty();
+  },
+
+  restoreData: function () {
+    var self = this;
+    var trailers = [];
+    var loadTypes = [];
+    var documentTypes = [];
+
+    // Dates
+    this.addingObj.dates.forEach(function (timestamp) {
+      $('.date').each(function () {
+        if (parseInt($(this).attr('timestamp')) === timestamp) {
+          $(this).addClass('selected');
+        }
+      });
+    });
+
+    if ($('.date.selected').length) {
+      $('#removeSelection').show();
+    }
+
+    //cities
+    if (this.addingObj.from.length) {
+      this.cargo.from = cloneObj(this.addingObj.from);
+      $('#origin').val(this.cargo.from[0].name);
+    }
+    if (this.addingObj.to.length) {
+      this.cargo.to = cloneObj(this.addingObj.to);
+      $('#destination').val(this.cargo.to[0].name);
+    }
+
+    $('#origin, #destination').trigger('keyup', this.toggleClear);
+
+    //cargoType
+    if (this.addingObj.cargoType) {
+      $('#cargo-types').find('option[value="' + this.addingObj.cargoType + '"]').prop('selected', true);
+    }
+
+    //weight
+    if (this.addingObj.weight !== '') {
+      $('#weight').val(this.addingObj.weight);
+    }
+
+    //volume
+    if (this.addingObj.volume !== '') {
+      $('#volume').val(this.addingObj.volume);
+    }
+
+    //ldm
+    if (this.addingObj.ldm !== '') {
+      $('#ldm').val(this.addingObj.ldm);
+    }
+
+    //palets
+    if (this.addingObj.palets !== '') {
+      $('#palets').val(this.addingObj.palets);
+    }
+
+    //temperatureMin
+    if (this.addingObj.temperatureMin !== '') {
+      $('#temperatureMin').val(this.addingObj.temperatureMin);
+    }
+
+    //temperatureMax
+    if (this.addingObj.temperatureMax !== '') {
+      $('#temperatureMax').val(this.addingObj.temperatureMax);
+    }
+
+    //adr
+    if (this.addingObj.adr) {
+      $('#adr').find('option[value=' + this.addingObj.adr + ']').prop('selected', true);
+    }
+
+    //trailers
+    if (this.addingObj.trailers && Array.isArray(this.addingObj.trailers)) {
+      trailers = trailers.concat(this.addingObj.trailers);
+
+      trailers.forEach(function (el, i) {
+        if ($('.trailer-type-checkbox[value=' + el + ']').length) {
+          $('.trailer-type-checkbox[value=' + el + ']').prop('checked', true);
+        } else if ($('.trailer-type-select').find('option[value=' + el + ']').length) {
+          $('.trailer-type-select').find('option[value=' + el + ']').prop('selected', true).trigger('change');
+        }
+        self.cargoTypeSet = 0;
+      });
+    }
+
+    //loadTypes
+    if (this.addingObj.loadTypes && Array.isArray(this.addingObj.loadTypes)) {
+      loadTypes = loadTypes.concat(this.addingObj.loadTypes);
+
+      loadTypes.forEach(function (el, i) {
+        if ($('.load-type-checkbox[value=' + el + ']').length) {
+          $('.load-type-checkbox[value=' + el + ']').prop('checked', true);
+        }
+        self.cargoTypeSet = 0;
+      });
+    }
+
+    //documentTypes
+    if (this.addingObj.documentTypes && Array.isArray(this.addingObj.documentTypes)) {
+      documentTypes = documentTypes.concat(this.addingObj.documentTypes);
+
+      documentTypes.forEach(function (el, i) {
+        if ($('.document-type-checkbox[value=' + el + ']').length) {
+          $('.document-type-checkbox[value=' + el + ']').prop('checked', true);
+        }
+        self.cargoTypeSet = 0;
+      });
+    }
+
+    //pricerequest
+    if (this.addingObj.priceRequest) {
+      $('#by-request').prop('checked', true);
+      return $('#by-request').trigger('change');
+    }
+
+    //price
+    if (this.addingObj.price) {
+      $('#price').val(this.addingObj.price);
+    }
+
+    //currency
+    if (this.addingObj.currency) {
+      $('#currency').find('option[value="' + this.addingObj.currency + '"]').prop('selected', true);
+    }
+
+    //payment-type
+    if (this.addingObj.paymentType) {
+      $('#payment-type').find('option[value=' + this.addingObj.paymentType + ']').prop('selected', true);
+    }
+
+    if (this.addingObj.note) {
+      $('#note').val(this.addingObj.note);
+    }
   },
 
   isSameCountry: function () {
@@ -251,7 +450,7 @@ App.scenes.cargos = {
     var dates = [];
     this.dates = [];
 
-    $('.selected').each(function (key, el, arr) {
+    $('.date.selected').each(function (key, el, arr) {
       var timestamp = parseInt($(el).attr('timestamp'));
       var lastAdded;
       if (timestamp < today) {
@@ -272,6 +471,10 @@ App.scenes.cargos = {
       }
 
     });
+
+    //saveCargoAdding
+    this.addingObj.dates = dates;
+    SMData.saveCargoAdding(this.addingObj);
 
     return this.dates = dates;
   },
@@ -296,13 +499,17 @@ App.scenes.cargos = {
     switch ($(input).attr('id')) {
       case 'origin':
         context.cargo.from.pop();
+        context.addingObj.from = context.cargo.from;
         break;
       case 'destination':
         context.cargo.to.pop();
+        context.addingObj.to = context.cargo.to;
         break;
       default:
         console.log('Unknown id');
     }
+    //saveCargoAdding
+    SMData.saveCargoAdding(context.addingObj);
   },
 
   removeAdditionalCheckboxes: function () {
@@ -400,7 +607,12 @@ App.scenes.cargos = {
 
     revObj = cloneObj(this.cargo.from);
     this.cargo.from = cloneObj(this.cargo.to);
+    this.addingObj.from = cloneObj(this.cargo.to);
     this.cargo.to = cloneObj(revObj);
+    this.addingObj.to = cloneObj(revObj);
+
+    //saveCargoAdding
+    SMData.saveCargoAdding(this.addingObj);
   },
 
   sendCargosData: function () {
@@ -665,6 +877,7 @@ App.scenes.cargos = {
     $('input[type=checkbox]').prop('checked', false);
     $('#temperatureMin, #temperatureMax').val('');
     $('.trailer-type-select option').css('display', 'block');
+    SMData.removeCargoAdding();
   },
 
   /**

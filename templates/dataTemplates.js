@@ -320,3 +320,25 @@ function LardiTransCargoObject() {
   // this.ext_url = '';         //URL for tendors
   this.add_info = '';        //Additional info, max length 255 symbols
 }
+
+function AddingCargo() {
+  this.dates = [];
+  this.from = [];
+  this.to = [];
+  this.cargoType = '';
+  this.weight = '';
+  this.volume = '';
+  this.palets = '';
+  this.ldm = '';
+  this.temperatureMin = '';
+  this.temperatureMax = '';
+  this.adr = '';
+  this.trailers = [];
+  this.loadTypes = [];
+  this.documentTypes = [];
+  this.price = '';
+  this.currency = '';
+  this.paymentType = '';
+  this.priceRequest = 0;
+  this.note = '';
+}

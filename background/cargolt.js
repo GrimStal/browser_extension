@@ -29,7 +29,7 @@ function sendDuplicateToCargo(item) {
   var originRequest;
   var destinationRequest;
 
-  if (Number(item.origins[0].name) || Number(item.destinations[0].name)) {
+  if (~item.origins[0].name.search(/[0-9]/) || ~item.destinations[0].name.search(/[0-9]/)) {
     def.resolve({ error: 'Place can not be only numeric', response: null, id: null });
   }
 

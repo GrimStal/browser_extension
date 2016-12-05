@@ -35,6 +35,18 @@ function concatArraysInArray(array) {
   return result;
 }
 
+function addToArrayWithoutDuplicates(array, el) {
+  if (!~array.indexOf(el)) {
+    array.push(el);
+  }
+}
+
+function removeFromArray(array, el) {
+  if (~array.indexOf(el)) {
+    array.splice(array.indexOf(el), 1);
+  }
+}
+
 function insertCheckbox() {
   var $select = $('.trailer-type-select');
   var $currentSelect = $select.find(':selected');
@@ -52,6 +64,23 @@ function insertCheckbox() {
     $(element).insertBefore($select);
 
     $currentSelect.css('display', 'none');
+
+    // fix for saving data
+    if ('addingObj' in App.scenes.cargos) {
+      addToArrayWithoutDuplicates(App.scenes.cargos.addingObj.trailers, $currentSelect.val());
+      SMData.saveCargoAdding(App.scenes.cargos.addingObj);
+      $('.trailer-type-checkbox').off('change');
+      $('.trailer-type-checkbox').on('change', function () {
+        if ($(this).prop('checked')) {
+          addToArrayWithoutDuplicates(App.scenes.cargos.addingObj.trailers, $(this).val());
+        } else {
+          removeFromArray(App.scenes.cargos.addingObj.trailers, $(this).val());
+        }
+        SMData.saveCargoAdding(App.scenes.cargos.addingObj);
+      });
+    }
+    //end fix
+
     $select.val('');
   }
 }
@@ -66,6 +95,7 @@ function setCargoDependencies() {
     var $select = $('.trailer-type-select').find('option[value=' + val + ']');
     if ($checkbox[0]) {
       $checkbox.prop('checked', true);
+      addToArrayWithoutDuplicates(App.scenes.cargos.addingObj.trailers, $checkbox.val());
     } else {
       $select.prop('selected', true).trigger('change');
     }
@@ -75,6 +105,7 @@ function setCargoDependencies() {
     var $el = $(selector);
     if (!$el.val()) {
       $el.val(val);
+      $el.trigger('change');
     }
   }
 
@@ -91,6 +122,10 @@ function setCargoDependencies() {
   $('.trailer-type-select option').css('display', 'block');
 
   var cargoType = parseInt($(this).val());
+
+  //saveCargoAdding
+  App.scenes.cargos.addingObj.cargoType = cargoType;
+  App.scenes.cargos.addingObj.trailers = [];
 
   switch (cargoType) {
     case 56:
@@ -323,6 +358,9 @@ function setCargoDependencies() {
       console.log(cargoType);
       break;
   }
+  $('.load-type[value="full"]').trigger('change');
+
+  SMData.saveCargoAdding(App.scenes.cargos.addingObj);
 }
 
 function checkTemperature() {

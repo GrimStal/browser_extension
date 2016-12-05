@@ -142,5 +142,23 @@ var SMData = (function () {
     SM.delete(key + 'errorCargoIDs');
   };
 
+  smdata.saveCargoAdding = function (obj) {
+    var data;
+    if (obj && typeof obj === 'object' && obj instanceof AddingCargo) {
+      data = $.extend(smdata.getCargoAdding(), obj);
+      return SM.put('cargoObject', JSON.stringify(data));
+    }
+  };
+
+  smdata.getCargoAdding = function () {
+    var obj = new AddingCargo();
+    $.extend(obj, JSON.parse(SM.get('cargoObject')));
+    return obj;
+  };
+
+  smdata.removeCargoAdding = function () {
+    SM.delete('cargoObject');
+  };
+
   return smdata;
 }());

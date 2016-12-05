@@ -32,7 +32,14 @@ App.scenes.cargosList = {
 
         if (!currencies || !currencies.item) {
           console.log('Lardi doesn\'t response for currencies request');
-          return App.changeScene('cargos');
+          SMData.removeToken('lardi');
+          return App.scenes.auth.signIn('lardi', App.appData.lardi.login, App.appData.lardi.password, function (key, result) {
+            if (result) {
+              self.show();
+            } else {
+              App.changeScene('cargos');
+            }
+          });
         } else {
           currencies = currencies.item;
         }
@@ -125,7 +132,6 @@ App.scenes.cargosList = {
           });
 
         $('.ce__wrapper').empty().append(template);
-        App.exportPort.postMessage({ task: 'exportEnabled' });
 
         if (App.appData.lardi.contact === 'true' || App.appData.lardi.id === '0') {
           self.createTable();
@@ -142,12 +148,7 @@ App.scenes.cargosList = {
           $('input[type=checkbox]:not(:disabled)').prop('checked', this.checked);
           $($('.lardi-cargo-checkbox')[0]).trigger('change', { isCheckAll: true });
         });
-        $('.lardi-cargo-checkbox').on('change', function (e, obj) {
-          if (!obj || !obj.isCheckAll) {
-            $('.check-all').prop('checked', false);
-          }
-          App.exportPort.postMessage({ task: 'exportEnabled' });
-        });
+
         $('#goCargosList').addClass('current-scene');
         $('#export').bind('click', self.exportDuplicates.bind(self));
         App.stopLoading();
@@ -183,6 +184,16 @@ App.scenes.cargosList = {
       });
 
     $('#cargos-list table > tbody').empty().append(template);
+
+    $('.lardi-cargo-checkbox').on('change', function (e, obj) {
+      if (!obj || !obj.isCheckAll) {
+        $('.check-all').prop('checked', false);
+      }
+      App.exportPort.postMessage({ task: 'exportEnabled' });
+    });
+
+    App.exportPort.postMessage({ task: 'exportEnabled' });
+    $('.check-all').prop('checked', false);
     App.scenes.cargosList.setCheckAllAvailability();
     App.stopLoading();
   },
