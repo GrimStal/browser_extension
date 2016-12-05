@@ -32,14 +32,17 @@ App.scenes.cargosList = {
 
         if (!currencies || !currencies.item) {
           console.log('Lardi doesn\'t response for currencies request');
-          SMData.removeToken('lardi');
-          return App.scenes.auth.signIn('lardi', App.appData.lardi.login, App.appData.lardi.password, function (key, result) {
-            if (result) {
-              self.show();
-            } else {
-              App.changeScene('cargos');
-            }
-          });
+          if (currencies.error && currencies.error === 'SIG идентификатор устарел или указан не верно') {
+            SMData.removeToken('lardi');
+            return App.scenes.auth.signIn('lardi', App.appData.lardi.login, App.appData.lardi.password, function (key, result) {
+              if (result) {
+                self.show();
+              } else {
+                App.changeScene('cargos');
+              }
+            });
+          }
+          return App.changeScene('cargos');
         } else {
           currencies = currencies.item;
         }
