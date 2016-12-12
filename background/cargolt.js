@@ -29,9 +29,14 @@ function sendDuplicateToCargo(item) {
   var originRequest;
   var destinationRequest;
 
-  if (~item.origins[0].name.search(/[0-9]/) || ~item.destinations[0].name.search(/[0-9]/)) {
-    def.resolve({ error: 'Place can not be only numeric', response: null, id: null });
-  }
+  item.origins[0].name.replace(/[\!\;]/g, '');
+  item.origins[0].name.replace(/\,,/g, ',');
+  item.destinations[0].name.replace(/[\!\;]/g, '');
+  item.destinations[0].name.replace(/\,,/g, ',');
+
+  // if (~item.origins[0].name.search(/[0-9]/) || ~item.destinations[0].name.search(/[0-9]/)) {
+  //   def.resolve({ error: 'Place can not be only numeric', id: item.lardiID });
+  // }
 
   if (item) {
     id = item.lardiID;
@@ -153,18 +158,18 @@ function exportCargoBatch(items) {
           }
 
           var pendingEl = pending.indexOf(el.id);
-          if (pendingEl > -1) {
+          if (~pendingEl) {
             pending.splice(pendingEl, 1);
             SMData.savePendingCargos('lardi', pending);
           }
 
           if (el.error) {
-            if (errored.indexOf(el.id) === -1) {
+            if (!~errored.indexOf(el.id)) {
               errored.push(el.id);
               SMData.saveErrorCargos('lardi', errored);
             }
           } else {
-            if (errored.indexOf(el.id) > -1) {
+            if (~errored.indexOf(el.id)) {
               errored.splice(errored.indexOf(el.id), 1);
               SMData.saveErrorCargos('lardi', errored);
             }

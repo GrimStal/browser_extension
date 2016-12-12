@@ -19,6 +19,7 @@ App.scenes.auth = {
     $('.auth-input').bind('input', this.onChange.bind(this));
     $('.cargo-site').bind('click', App.openTab.bind(null, 'https://www.cargo.lt'));
     $('.lardi-site').bind('click', App.openTab.bind(null, 'https://lardi-trans.com'));
+    $('.icon.cog-icon').addClass('hidden');
 
     this.initForm(['cargo', 'lardi'], this.checkAccess);
     App.stopLoading();
@@ -343,11 +344,12 @@ App.scenes.auth = {
 
   onChange: function (e) {
     var id = e.currentTarget.id;
-    var key = id.substr(0, id.lastIndexOf('_'));
-
-    SMData.removeUserData(key);
+    var key = id.slice(0, id.lastIndexOf('_'));
+    var variable = id.slice(id.lastIndexOf('_') + 1);
     SMData.removeToken(key);
-    App.updateAppData(key, {});
+    App.appData[key][variable] = $(e.currentTarget).val();
+    variable = variable.charAt(0).toUpperCase() + variable.slice(1);
+    SMData.updateUserData(key, variable, $(e.currentTarget).val());
 
     return this.clearFormStatus(key);
   },

@@ -13,6 +13,7 @@ var App = (function () {
     if (this.checkToken('cargo')) {
       $('#intro').addClass('hidden');
       $('#goCargos').removeClass('hidden');
+      $('.icon.cog-icon').removeClass('hidden');
 
       if (this.checkToken('lardi')) {
         $('#goCargosList').removeClass('hidden');
@@ -53,7 +54,7 @@ var App = (function () {
     this.stopLoading();
   };
 
-  app.tryToRelogin = function (result) {
+  app.tryToRelogin = function (result, err) {
     function callback(def) {
       return function (key, result) {
         if (!def) {
@@ -73,17 +74,16 @@ var App = (function () {
     var cargoData = this.appData.cargo;
     var lardiData = this.appData.lardi;
 
-    SMData.removeToken('cargo');
-    this.scenes.auth.signIn('cargo', cargoData.login, cargoData.password, callback(cargoRelogin));
-
     SMData.removeToken('lardi');
     this.scenes.auth.signIn('lardi', lardiData.login, lardiData.password, callback(lardiRelogin));
 
+    SMData.removeToken('cargo');
+    this.scenes.auth.signIn('cargo', cargoData.login, cargoData.password, callback(cargoRelogin));
+
     $.when(cargoRelogin.promise(), lardiRelogin.promise()).then(function () {
       result.resolve();
-    }, function (err1, err2) {
-
-      result.reject(err1 + ' ' + err2);
+    }, function (err) {
+      result.reject(err);
     });
   };
 
@@ -93,7 +93,7 @@ var App = (function () {
       if (err && 'responseJSON' in err) {
         err = err.responseJSON;
         if (err.error && 'code' in err.error) {
-          if (err.error.code == '2') {
+          if (err.error.code == '2' || err.error.code == '1') {
             return cargoDef.reject('cargo error');
           } else {
             return cargoDef.resolve('ok');
@@ -115,7 +115,7 @@ var App = (function () {
       }
 
       var res = XMLtoJson(response.success).response;
-      if (res.error && res.error === 'SIG идентификатор устарел или указан не верно') {
+      if (res.error) {
         return lardiDef.reject('lardi error');
       }
 
@@ -158,9 +158,9 @@ var App = (function () {
         checkResult.resolve();
       },
 
-      function (cargoErr, lardiErr) {
-        console.log(cargoErr);
-        self.tryToRelogin(checkResult, [cargoErr, lardiErr]);
+      function (err) {
+        console.log(err);
+        self.tryToRelogin(checkResult, err);
       });
 
     return checkResult.promise();

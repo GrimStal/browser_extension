@@ -54,6 +54,7 @@ App.scenes.settings = {
           App.showScene('cargos');
         });
 
+      $('.auth-input').bind('input', this.onChange.bind(this));
       $('#addOrder').addClass('white');
       App.stopLoading();
     },
@@ -85,6 +86,7 @@ App.scenes.settings = {
         App.showScene('cargos');
       });
 
+      $('.auth-input').unbind('input');
       $('.ce__wrapper').empty();
     },
 
@@ -165,5 +167,17 @@ App.scenes.settings = {
     $('#' + key + 'Submit').bind('click', context[key + 'Submit'].bind(context, this.showUnbind));
     $('#' + key + '_password').bind('keyup', onEnter.bind(context, context[key + 'Submit'].bind(context, this.showUnbind)));
     context.initForm(key);
+    $('.auth-input').unbind('input');
+    $('.auth-input').bind('input', this.onChange.bind(this));
+  },
+
+  onChange: function (e) {
+    var id = e.currentTarget.id;
+    var key = id.slice(0, id.lastIndexOf('_'));
+    var variable = id.slice(id.lastIndexOf('_') + 1);
+    SMData.removeToken(key);
+    App.appData[key][variable] = $(e.currentTarget).val();
+    variable = variable.charAt(0).toUpperCase() + variable.slice(1);
+    SMData.updateUserData(key, variable, $(e.currentTarget).val());
   },
 };

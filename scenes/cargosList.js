@@ -32,13 +32,15 @@ App.scenes.cargosList = {
 
         if (!currencies || !currencies.item) {
           console.log('Lardi doesn\'t response for currencies request');
-          if (currencies.error && currencies.error === 'SIG идентификатор устарел или указан не верно') {
+          if (currencies.error) {
             SMData.removeToken('lardi');
             return App.scenes.auth.signIn('lardi', App.appData.lardi.login, App.appData.lardi.password, function (key, result) {
               if (result) {
                 self.show();
               } else {
-                App.changeScene('cargos');
+                App.checkRouteButtons();
+                SMData.removeUserData('lardi');
+                App.changeScene('settings');
               }
             });
           }
@@ -330,14 +332,36 @@ App.scenes.cargosList = {
     countryFrom = getLardiCountryCode(object.country_from_id);
     countryTo = getLardiCountryCode(object.country_to_id);
 
-    placeFrom.push(object.city_from);
-    if (areaFrom) {
-      placeFrom.push(getCargoArea(areaFrom, countryFrom));
+    if (~object.city_from.indexOf(',')) {
+      placeFrom.push(object.city_from.slice(0, object.city_from.indexOf(',')));
+    } else if (~object.city_from.indexOf('+')) {
+      placeFrom.push(object.city_from.slice(0, object.city_from.indexOf('+')));
+    } else {
+      if (object.city_from.match(/\d/g).length === 1 && object.city_from.length > 1) {
+        placeFrom.push(object.city_from.replace(/\-?\d/g, ''));
+      } else {
+        placeFrom.push(object.city_from);
+      }
     }
 
-    placeTo.push(object.city_to);
+    if (~object.city_to.indexOf(',')) {
+      placeTo.push(object.city_to.slice(0, object.city_to.indexOf(',')));
+    } else if (~object.city_to.indexOf('+')) {
+      placeTo.push(object.city_to.slice(0, object.city_to.indexOf('+')));
+    } else {
+      if (object.city_to.match(/\d/g).length === 1 && object.city_to.length > 1) {
+        placeTo.push(object.city_to.replace(/\-?\d/g, ''));
+      } else {
+        placeTo.push(object.city_to);
+      }
+    }
+
+    if (areaFrom) {
+      placeFrom.push(getCargoArea(object.area_from_id, areaFrom, countryFrom));
+    }
+
     if (areaTo) {
-      placeTo.push(getCargoArea(areaTo, countryTo));
+      placeTo.push(getCargoArea(object.area_to_id, areaTo, countryTo));
     }
 
     delete cargo.from;

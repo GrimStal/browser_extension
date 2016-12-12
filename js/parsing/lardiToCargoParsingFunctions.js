@@ -87,9 +87,9 @@ function setCargoBodyType(id, group) {
       case 20:
         trailers.push(6);
         break;
-      // case 26:
-      //   trailers.push(22);
-      //   break;
+      case 26:
+        trailers.push(22);
+        break;
       case 48:
         // case 59:
         // case 60:
@@ -202,39 +202,285 @@ function updateContactsCounter(array, id) {
   });
 }
 
-function getCargoArea(rus, country) {
+function getCargoArea(id, rus, country) {
   if (country === 'UA') {
-    switch (rus) {
-      case 'Житомир. обл.':
-        return 'Житомирская область';
-      case 'Запорож. обл.':
-        return 'Запорожская область';
-      case 'Закарп. обл.':
-        return 'Закарпатская область';
-      case 'Терноп. обл.':
-        return 'Тернопольская область';
-      case 'Полтавск. обл.':
-        return 'Полтавская область';
-      case 'Николаев. обл.':
-        return 'Николаевская область';
-      case 'Хмельниц. обл.':
-        return 'Хмельницкая область';
-      case 'Херсон. обл.':
-        return 'Херсонская область';
-      case 'Харьков. обл.':
-        return 'Харьковская область';
-      case 'Кировогр. обл.':
-        return 'Кировоградская область';
-      case 'Ив.Франк. обл.':
-        return 'Ивано-Франковская область';
-      case 'Днепроп. обл.':
-        return 'Днепропетровская область';
-      case 'Черкас. обл.':
-        return 'Черкасская область';
-      case 'Черновиц. обл.':
-        return 'Черновицкая область';
-      case 'Чернигов. обл.':
-        return 'Черниговская область';
+    switch (Number(id)) {
+      case 15:
+        return 'Винницкая обл.';
+      case 16:
+        return 'Волынская обл.';
+      case 17:
+        return 'Днепропетровская обл.';
+      case 18:
+        return 'Донецкая обл.';
+      case 19:
+        return 'Житомирская обл.';
+      case 20:
+        return 'Закарпатская обл.';
+      case 21:
+        return 'Запорожская обл.';
+      case 22:
+        return 'Ивано-Франковская обл.';
+      case 23:
+        return 'Киевская обл.';
+      case 24:
+        return 'Кировоградская обл.';
+      case 25:
+        return 'Крым';
+      case 26:
+        return 'Луганская обл.';
+      case 27:
+        return 'Львовская обл.';
+      case 28:
+        return 'Николаевская обл.';
+      case 29:
+        return 'Одесская обл.';
+      case 30:
+        return 'Полтавская обл.';
+      case 31:
+        return 'Ровенская обл.';
+      case 32:
+        return 'Сумская обл.';
+      case 33:
+        return 'Тернопольская обл.';
+      case 34:
+        return 'Харьковская обл.';
+      case 35:
+        return 'Херсонская обл.';
+      case 36:
+        return 'Хмельницкая обл.';
+      case 37:
+        return 'Черкасская обл.';
+      case 38:
+        return 'Черниговская обл.';
+      case 39:
+        return 'Черновецкая обл.';
+      default:
+        if (~rus.indexOf('обл.')) {
+          return (rus.slice(0, rus.indexOf('обл.')) + 'область');
+        }
+        return rus;
+    }
+  } else if (country === 'BY') {
+    switch (Number(id)) {
+      case 127:
+        return 'Брестская обл.';
+      case 128:
+        return 'Витебская обл.';
+      case 129:
+        return 'Гомельская обл.';
+      case 130:
+        return 'Гродненская обл.';
+      case 131:
+        return 'Минская обл.';
+      case 132:
+        return 'Могилёвская обл.';
+      default:
+        if (~rus.indexOf('обл.')) {
+          return (rus.slice(0, rus.indexOf('обл.')) + 'область');
+        }
+        return rus;
+    }
+  } else if (country === 'KZ') {
+    switch (Number(id)) {
+      case 133:
+        return 'Кокшетау';
+      case 134:
+        return 'Актюбинск';
+      case 135:
+        return 'Алма-Ата';
+      case 136:
+        return 'Атырау';
+      case 137:
+        return 'Усть-Каменогорск';
+      case 138:
+        return 'Тараз';
+      case 139:
+        return 'Уральск';
+      case 140:
+        return 'Караганда';
+      case 141:
+        return 'Костанай';
+      case 142:
+        return 'Кызылорда';
+      case 143:
+        return 'Актау';
+      case 144:
+        return 'Павлодар';
+      case 145:
+        return 'Петропавловск';
+      case 146:
+        return 'Шымкент';
+      default:
+        if (~rus.indexOf('обл.')) {
+          return (rus.slice(0, rus.indexOf('обл.')) + 'область');
+        }
+        return rus;
+    }
+  } else if (country === 'RU') {
+    switch (Number(id)) {
+      case 40:
+        return 'Забайкальский край';
+      case 41:
+        return 'Адыгея';
+      // case 42:
+      //   return 'Алтай';
+      case 43:
+        return 'Алтайский край';
+      case 44:
+        return 'Амурская обл.';
+      case 45:
+        return 'Архангельская обл.';
+      case 46:
+        return 'Астраханская обл.';
+      case 47:
+        return 'Башкирия';
+      case 48:
+        return 'Белгородская обл.';
+      case 49:
+        return 'Брянская обл.';
+      case 50:
+        return 'Бурятия';
+      case 51:
+        return 'Владимирская обл.';
+      case 52:
+        return 'Волгоградская обл.';
+      case 53:
+        return 'Вологодская обл.';
+      case 54:
+        return 'Воронежская обл.';
+      case 55:
+        return 'Дагестан';
+      // case 56:
+      //   return 'Еврейская авт. обл.';
+      case 57:
+        return 'Ивановская обл.';
+      case 58:
+        return 'Ингушетия';
+      case 59:
+        return 'Иркутская обл.';
+      case 60:
+        return 'Кабардино-Балкария';
+      // case 61:
+      //   return 'Калининградская обл.';
+      case 62:
+        return 'Калмыкия';
+      case 63:
+        return 'Калужская обл.';
+      // case 64:
+      //   return 'Камчатский край';
+      case 65:
+        return 'Карачаево-Черкессия';
+      case 66:
+        return 'Петрозаводск';
+      case 67:
+        return 'Кемеровская обл.';
+      case 68:
+        return 'Кировская обл.';
+      case 69:
+        return 'Коми';
+      case 72:
+        return 'Костромская обл.';
+      case 73:
+        return 'Краснодарский край';
+      case 74:
+        return 'Красноярский край';
+      case 75:
+        return 'Курганская обл.';
+      case 76:
+        return 'Курская обл.';
+      case 77:
+        return 'Ленинградская обл.';
+      case 78:
+        return 'Липецкая обл.';
+      // case 79:
+      //   return 'Магаданская обл.';
+      case 80:
+        return 'Марий Эл';
+      case 81:
+        return 'Саранск';
+      case 82:
+        return 'Московская обл.';
+      case 83:
+        return 'Мурманская обл.';
+      // case 84:
+      //   return 'Ненецкий авт. окр.';
+      case 85:
+        return 'Нижегородская обл.';
+      case 86:
+        return 'Новгородская обл.';
+      case 87:
+        return 'Новосибирская обл.';
+      case 88:
+        return 'Омская обл.';
+      case 89:
+        return 'Оренбургская обл.';
+      case 90:
+        return 'Орловская обл.';
+      case 91:
+        return 'Пензенская обл.';
+      case 92:
+        return 'Пермский край';
+      case 93:
+        return 'Приморский край';
+      case 94:
+        return 'Псковская обл.';
+      case 95:
+        return 'Ростовская обл.';
+      case 96:
+        return 'Рязанская обл.';
+      case 97:
+        return 'Самарская обл.';
+      case 98:
+        return 'Саратовская обл.';
+      case 99:
+        return 'Республика Саха';
+      // case 100:
+      //   return 'Сахалинская обл.';
+      case 101:
+        return 'Свердловская обл.';
+      case 102:
+        return 'Северная Осетия';
+      case 103:
+        return 'Смоленская обл.';
+      case 104:
+        return 'Ставропольский край';
+      case 106:
+        return 'Тамбовская обл.';
+      case 107:
+        return 'Татарстан';
+      case 108:
+        return 'Тверская обл.';
+      case 109:
+        return 'Томская обл.';
+      case 110:
+        return 'Тува';
+      case 111:
+        return 'Тульская обл.';
+      case 112:
+        return 'Тюменская обл.';
+      case 113:
+        return 'Удмуртия';
+      case 114:
+        return 'Ульяновская обл.';
+      case 116:
+        return 'Хабаровский край';
+      case 117:
+        return 'Хакасия';
+      case 118:
+        return 'Ханты-Мансийск АО';
+      case 119:
+        return 'Челябинская обл.';
+      case 120:
+        return 'Чечня';
+      case 122:
+        return 'Чувашия';
+      // case 123:
+      //   return 'Чукотский авт. окр.';
+      case 125:
+        return 'Ямало-Ненецкий АО';
+      case 126:
+        return 'Ярославская обл.';
       default:
         if (~rus.indexOf('обл.')) {
           return (rus.slice(0, rus.indexOf('обл.')) + 'область');
