@@ -332,29 +332,8 @@ App.scenes.cargosList = {
     countryFrom = getLardiCountryCode(object.country_from_id);
     countryTo = getLardiCountryCode(object.country_to_id);
 
-    if (~object.city_from.indexOf(',')) {
-      placeFrom.push(object.city_from.slice(0, object.city_from.indexOf(',')));
-    } else if (~object.city_from.indexOf('+')) {
-      placeFrom.push(object.city_from.slice(0, object.city_from.indexOf('+')));
-    } else {
-      if (object.city_from.match(/\d/g) && object.city_from.match(/\d/g).length === 1 && object.city_from.length > 1) {
-        placeFrom.push(object.city_from.replace(/\-?\d/g, ''));
-      } else {
-        placeFrom.push(object.city_from);
-      }
-    }
-
-    if (~object.city_to.indexOf(',')) {
-      placeTo.push(object.city_to.slice(0, object.city_to.indexOf(',')));
-    } else if (~object.city_to.indexOf('+')) {
-      placeTo.push(object.city_to.slice(0, object.city_to.indexOf('+')));
-    } else {
-      if (object.city_to.match(/\d/g) && object.city_to.match(/\d/g).length === 1 && object.city_to.length > 1) {
-        placeTo.push(object.city_to.replace(/\-?\d/g, ''));
-      } else {
-        placeTo.push(object.city_to);
-      }
-    }
+    placeFrom.push(normalizeCity(object.city_from));
+    placeTo.push(normalizeCity(object.city_to));
 
     if (areaFrom) {
       placeFrom.push(getCargoArea(object.area_from_id, areaFrom, countryFrom));

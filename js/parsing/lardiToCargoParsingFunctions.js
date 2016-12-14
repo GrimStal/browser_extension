@@ -514,3 +514,19 @@ function setLardiDate(date) {
 
   return (year + '-' + (month.length < 2 ? '0' + month : month) + '-' + (day.length < 2 ? '0' + day : day));
 }
+
+function normalizeCity(city) {
+  city.replace(/[\!\;\.]/g, '');
+
+  if (~city.indexOf(',')) {
+    city = (city.slice(0, city.indexOf(',')));
+  } else if (~city.indexOf('+')) {
+    city = (city.slice(0, city.indexOf('+')));
+  } else {
+    if (city.match(/\d/g) && city.match(/\d/g).length === 1 && city.length > 1) {
+      city = city.replace(/\-?\d/g, '');
+    }
+  }
+  city.replace(/[\!\;\.\,]/g, '');
+  return city;
+}

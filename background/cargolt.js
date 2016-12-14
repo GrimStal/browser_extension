@@ -29,11 +29,6 @@ function sendDuplicateToCargo(item) {
   var originRequest;
   var destinationRequest;
 
-  item.origins[0].name.replace(/[\!\;]/g, '');
-  item.origins[0].name.replace(/\,,/g, ',');
-  item.destinations[0].name.replace(/[\!\;]/g, '');
-  item.destinations[0].name.replace(/\,,/g, ',');
-
   // if (~item.origins[0].name.search(/[0-9]/) || ~item.destinations[0].name.search(/[0-9]/)) {
   //   def.resolve({ error: 'Place can not be only numeric', id: item.lardiID });
   // }
