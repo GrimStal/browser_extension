@@ -28,7 +28,9 @@ function setCargoBodyType(id, group) {
 
   if (id) {
     switch (id) {
-      // case 34:
+      case 34:
+        trailers.push(2, 8, 13);
+        break;
       // case 44:
       // case 55:
       // case 62:
@@ -42,7 +44,7 @@ function setCargoBodyType(id, group) {
         trailers.push(1);
         break;
       case 23:
-        // trailers.push(9, 10, 17);
+        trailers.push(9, 10, 17);
         break;
       // case 27:
       //   trailers.push(4);
