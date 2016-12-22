@@ -518,7 +518,8 @@ function setLardiDate(date) {
 }
 
 function normalizeCity(city) {
-  city.replace(/[\!\;\.]/g, '');
+  city = city.replace(/[\!\;\.]/g, '');
+  city = city.replace(/\(.*\)/g, '');
 
   if (~city.indexOf(',')) {
     city = (city.slice(0, city.indexOf(',')));
@@ -529,6 +530,7 @@ function normalizeCity(city) {
       city = city.replace(/\-?\d/g, '');
     }
   }
-  city.replace(/[\!\;\.\,]/g, '');
+  city = city.replace(/[\!\;\.\,]/g, '');
+  console.log(city);
   return city;
 }
