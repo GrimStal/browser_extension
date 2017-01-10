@@ -7,7 +7,7 @@
  * @return {(number|null)}      Lardi payment moment ID or null
  */
 function getPaymentMomentID(array, defaultID) {
-  if (!defaultID || array.length === 0) {
+  if (!defaultID || !array || array.length === 0) {
     return undefined;
   }
 

@@ -644,7 +644,6 @@ App.scenes.cargos = {
     };
     var originAddress;
     var destinationAddress;
-    var requests = [];
 
     var cargoDef = $.Deferred();
     var lardiDef = $.Deferred();
@@ -830,6 +829,7 @@ App.scenes.cargos = {
     }
 
     $.when(cargoDef, lardiDef).then(function (cargoResp, lardiResp) {
+      var requests = [];
       if (cargoResp && 'obj' in cargoResp) {
         requests.push(cargoResp.obj);
       }
@@ -878,6 +878,9 @@ App.scenes.cargos = {
     $('#temperatureMin, #temperatureMax').val('');
     $('.trailer-type-select option').css('display', 'block');
     SMData.removeCargoAdding();
+    this.addingObj = new AddingCargo();
+    this.cargo = new CargoObject();
+    this.lardi = new LardiTransCargoObject();
   },
 
   /**
