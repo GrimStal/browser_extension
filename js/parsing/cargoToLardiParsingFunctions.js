@@ -148,6 +148,7 @@ function setLardiBodyType(object, cargoType, trailers, bodyTypes) {
     case 24:
     case 25:
     case 26:
+    case 27:
     case 28:
     case 29:
     case 31:
@@ -182,7 +183,6 @@ function setLardiBodyType(object, cargoType, trailers, bodyTypes) {
     case 65:
       defaultGroup = 1;
       break;
-    case 27:
     case 30:
     case 59:
       defaultGroup = 2;

@@ -1,6 +1,6 @@
 {
   "name": "browser_extesion",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Cargo extension for browser",
   "main": "popup.js",
   "dependencies": {

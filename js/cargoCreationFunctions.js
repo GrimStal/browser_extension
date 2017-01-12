@@ -183,6 +183,7 @@ function setCargoDependencies() {
     case 13:
     case 20:
     case 23:
+    case 27:
     case 28:
     case 31:
     case 40:
@@ -211,7 +212,6 @@ function setCargoDependencies() {
       // $('#temperature').prop('disabled', true);
       $('#temperatureMin, #temperatureMax').val('');
       break;
-    case 27:
     case 59:
       setInput('#volume', 82);
       setInput('#weight', 20);

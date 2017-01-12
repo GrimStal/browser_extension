@@ -858,6 +858,7 @@ App.scenes.cargos = {
           }
         });
       } else {
+        console.log(requests);
         App.addPort.postMessage({ task: 'addToQueue', props: requests });
       }
     }, function (error) {
