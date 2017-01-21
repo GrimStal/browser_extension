@@ -269,7 +269,7 @@ App.scenes.cargosList = {
     $('.contacts-block').empty().append(template);
   },
 
-  getLardiCargos: function (callback) {
+  getLardiCargos: function () {
     var result = $.Deferred();
     var resp;
     var cargos = [];

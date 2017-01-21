@@ -160,5 +160,29 @@ var SMData = (function () {
     SM.delete('cargoObject');
   };
 
+  smdata.saveGCMRegistered = function() {
+    return SM.put('GCMRegistered', true);
+  };
+
+  smdata.isGCMRegistered = function() {
+    return SM.get('GCMRegistered');
+  };
+
+  smdata.setSystemMessagesAccept = function(bool) {
+    return SM.put('SystemMessages', bool);
+  };
+
+  smdata.getSystemMessagesAccept = function() {
+    return SM.get('SystemMessages') === 'true';
+  };
+
+  smdata.setMarketMessagesAccept = function(bool) {
+    return SM.put('MarketMessages', bool);
+  };
+
+  smdata.getMarketMessagesAccept = function() {
+    return SM.get('MarketMessages') === 'true';
+  };
+
   return smdata;
 }());

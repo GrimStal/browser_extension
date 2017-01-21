@@ -207,11 +207,13 @@ var Templates = (function () {
 }());
 
 function Request(to, type, url) {
-  this.to = to;
-  this.url = url;
-  this.type = type;
+  this.to = to || '';
+  this.url = url || '';
+  this.type = type || '';
   this.data = {};
   this.headers = {};
+
+  return this;
 }
 
 function GeoRequest(string) {

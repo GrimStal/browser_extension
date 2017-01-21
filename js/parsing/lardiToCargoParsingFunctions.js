@@ -531,6 +531,5 @@ function normalizeCity(city) {
     }
   }
   city = city.replace(/[\!\;\.\,]/g, '');
-  console.log(city);
   return city;
 }

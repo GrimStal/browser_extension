@@ -1,6 +1,18 @@
 'use strict';
 
 var App = (function () {
+  function connectPort(portNames) {
+    portNames.forEach(function(name) {
+      return app[name + 'Port'] = chrome.runtime.connect({ name: name });
+    });
+  }
+
+  function disconnectPort(portNames) {
+    portNames.forEach(function(name) {
+      return app[name + 'Port'].disconnect();
+    });
+  }
+
   var app = {};
 
   app.scenes = [];
@@ -127,22 +139,16 @@ var App = (function () {
     var lardiDef = $.Deferred();
     var checkResult = $.Deferred();
     var random = Math.floor(Math.random() * (999999)) + 99999;
-    var cargoTest = {
-      to: 'cargo',
-      url: 'cargos/' + random,
-      type: 'GET',
-      headers: {
-        'Access-Token': this.appData.cargo.token,
-      },
+    var cargoTest = new Request('cargo', 'GET', 'cargos/' + random);
+    var lardiTest = new Request('lardi', 'GET', '');
+
+    cargoTest.headers = {
+      'Access-Token': this.appData.cargo.token,
     };
-    var lardiTest = {
-      to: 'lardi',
-      url: '',
-      type: 'GET',
-      data: {
-        method: 'test.sig',
-        sig: this.appData.lardi.token,
-      },
+
+    lardiTest.data = {
+      method: 'test.sig',
+      sig: this.appData.lardi.token
     };
 
     if (this.appData.lardi.token) {
@@ -174,7 +180,7 @@ var App = (function () {
     return false;
   };
 
-  /** Function wrapper to send and get data from server. Used to not
+  /** Function wrapper to send and get data from server. Used to not get
       Cross-Domain requests error.
       @param  {Object}   data      Request object.
       @param  {Function} callback  Callback function.
@@ -302,8 +308,7 @@ var App = (function () {
 
   };
 
-  app.exportPort = chrome.runtime.connect({ name: 'export' });
-  app.addPort = chrome.runtime.connect({ name: 'add' });
+  connectPort(['export', 'add', 'system']);
 
   app.exportPort.onMessage.addListener(function (msg) {
     var message;
@@ -416,7 +421,6 @@ $.get('regions.json').then(function (regionsFile) {
 
 window.onunload = function () {
   if (App) {
-    App.exportPort.disconnect();
-    App.addPort.disconnect();
+    App.disconnectPort(['export', 'add', 'system']);
   }
 };

@@ -177,6 +177,7 @@ function exportCargoBatch(items) {
         if (self.port) {
           self.port.postMessage({ sended: { ids: args, left: queue.size(), of: amount } });
         }
+        updateProgressNotification(queue.size(), amount);
         queue.next();
       },
       function (error) {
@@ -263,6 +264,12 @@ function exportComplete() {
   if (this.port) {
     this.port.postMessage({ done: this.queue.size() === 0, show: true, errored: this.errored, of: this.amount });
   }
+
+  if (!isOpera()) {
+    removeNotification(exportProgressNotificationId);
+  }
+  showNotification('Экспорт завершён',
+      'Экспортировано ' + (this.errored ? (this.amount - this.errored) + ' из ' : '') + this.amount + ' грузов');
 
   this.amount = this.queue.size();
   this.errored = 0;
