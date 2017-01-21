@@ -16,781 +16,792 @@ $lightYellow: #ffffe7;
 $orange: #ff6600;
 
 body {
-    width: 700px;
-    min-height: 280px;
-    height: 600px;
-    background-color: $white;
-    overflow-x: hidden;
+  width: 700px;
+  min-height: 280px;
+  height: 600px;
+  background-color: $white;
+  overflow-x: hidden;
 }
 
 label {
-    input[type=checkbox] {
-        margin: 2px 0 0;
-        display: none;
+  input[type=checkbox] {
+    margin: 2px 0 0;
+    display: none;
 
-        & ~ span:before {
-            content: "";
-            width: 16px;
-            height: 16px;
-            position: absolute;
-            display: inline-block;
-            left: 15px;
-            background-color: #fff;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-            text-align: center;
-            font-weight: 800;
-            font-size: 16px;
-            color: $lime;
-            line-height: 15px;
-        }
-
-        &:checked {
-            & ~ span:before {
-                content: '\2713';
-                border-color: $lime;
-            }
-
-            &:disabled {
-                & ~ span:before {
-                    color: $lightGrey;
-                    border-color: $lightGrey;
-                }
-            }
-        }
+    & ~ span:before {
+      content: "";
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      display: inline-block;
+      left: 15px;
+      background-color: #fff;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      text-align: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: $lime;
+      line-height: 16px;
+      margin-top: 2px;
     }
+
+    &:checked {
+      & ~ span:before {
+        content: '\2713';
+        border-color: $lime;
+      }
+
+      &:disabled {
+        & ~ span:before {
+          color: $lightGrey;
+          border-color: $lightGrey;
+        }
+      }
+    }
+  }
 }
 
 .btn {
-    &.white {
-        background-color: $white;
-        border: 1px solid grey;
-        color: $greyText!important;
-    }
+  &.white {
+    background-color: $white;
+    border: 1px solid grey;
+    color: $greyText !important;
+  }
 
-    &.btn-default {
-        &:focus {
-            background-color: $white;
-            border-color: $greyText;
-        }
-    }
-
+  &.btn-default {
     &:focus {
-        outline: none;
+      background-color: $white;
+      border-color: $greyText;
     }
+  }
 
-    &.disabled,
-    &[disabled] {
-        cursor: default;
-    }
+  &:focus {
+    outline: none;
+  }
+
+  &.disabled,
+  &[disabled] {
+    cursor: default;
+  }
 }
 
 .btn-accept {
-    color: $white;
-    background-color: $lime;
+  color: $white;
+  background-color: $lime;
 
-    &:focus,
-    &:hover {
-        color: $white;
-    }
+  &:focus,
+  &:hover {
+    color: $white;
+  }
 }
 
 .row {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .ui-widget {
-    font-size: 11px;
+  font-size: 11px;
 }
 
 .alert-window {
-    h2 {
-        font-size: 18px;
-        line-height: 22px;
-        font-weight: 400;
-    }
+  h2 {
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 400;
+  }
 
-    p {
-        font-size: 14px;
-    }
+  p {
+    font-size: 14px;
+  }
 
-    button {
-        font-size: 14px;
-        padding: 6px 24px;
-        margin: 24px 5px 0;
-    }
+  button {
+    font-size: 14px;
+    padding: 6px 24px;
+    margin: 24px 5px 0;
+  }
 }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
 
 .auto-width {
-    width: auto;
+  width: auto;
 }
 
 .width-80 {
-    width: 80%;
+  width: 80%;
 }
 
 .inline-block {
-    display: inline-block;
+  display: inline-block;
 }
 
 .right {
-    float: right;
+  float: right;
 }
 
 .ce__form-container_company-image,
 .ce__unbinding-container_company-image {
-    width: 180px;
-    height: 100px;
-    margin-bottom: 10px;
+  width: 180px;
+  height: 100px;
+  margin-bottom: 10px;
 }
 
 .ce__btn {
-    padding: 5px;
+  padding: 5px;
 
-    &#addOrder {
-        margin-bottom: 10px;
-    }
+  &#addOrder {
+    margin-bottom: 10px;
+  }
 }
 
 .ce__image-holder {
-    margin: 10px 0;
-    padding: 5px;
-    opacity: 0.8;
-    border-radius: 4px;
+  margin: 10px 0;
+  padding: 5px;
+  opacity: 0.8;
+  border-radius: 4px;
 
-    span {
-        font-size: 16px;
-        font-weight: 700;
-        color: $white;
-    }
+  span {
+    font-size: 16px;
+    font-weight: 700;
+    color: $white;
+  }
 }
 
 .ce__loading {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    min-height: 270px;
-    background-color: rgba(0,0,0,0.8);
-    z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 270px;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 3;
 }
 
 .loading-img-holder,
 .loading-text-holder,
 .success-img-holder,
 .success-text-holder {
-    text-align: center;
-    margin: 25px 0;
-    color: $white;
+  text-align: center;
+  margin: 25px 0;
+  color: $white;
 }
 
 .success-text-holder {
-    text-align: center;
-    margin: 15px 0;
-    color: $greyText;
+  text-align: center;
+  margin: 15px 0;
+  color: $greyText;
 }
 
 .success-img {
-    width: 128px;
-    height: 128px;
+  width: 128px;
+  height: 128px;
 }
 
 .loading-img {
-    width: 144px;
-    height: 45px;
+  width: 144px;
+  height: 45px;
 }
 
 .loading-img-background {
-    display: inline-block;
-    /*background: url('images/preloader.png');*/
-    width: 144px;
-    height: 45px;
+  display: inline-block;
+  /*background: url('images/preloader.png');*/
+  width: 144px;
+  height: 45px;
 }
 
 .loading-img-holder {
-    margin-top: 20%;
+  margin-top: 20%;
 }
-@keyframes fill {
-    from {
-        width: 0;
-    }
 
-    to {
-        width: 100%;
-    }
+@keyframes fill {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
 }
+
 /* Префикс для Chrome, Opera, Safari */
 @-webkit-keyframes fill {
-    from {
-        width: 0;
-    }
+  from {
+    width: 0;
+  }
 
-    to {
-        width: 100%;
-    }
+  to {
+    width: 100%;
+  }
 }
 
 .loading-img-colored {
-    background: url('images/preloader-full.png');
-    height: 100%;
-    animation: fill 1.5s cubic-bezier(0.82, 0.01, 0.24, 0.99) infinite;
-    -webkit-animation: fill 1.5s cubic-bezier(0.82, 0.01, 0.24, 0.99) infinite;
+  background: url('images/preloader-full.png');
+  height: 100%;
+  animation: fill 1.5s cubic-bezier(0.82, 0.01, 0.24, 0.99) infinite;
+  -webkit-animation: fill 1.5s cubic-bezier(0.82, 0.01, 0.24, 0.99) infinite;
 }
 
 .ce__header {
-    background-color: $lime;
-    color: $white;
-    margin-bottom: 0.8em;
+  background-color: $lime;
+  color: $white;
+  margin-bottom: 0.8em;
 }
 
 .ce__company-name {
-    color: $lime;
-    cursor: pointer;
+  color: $lime;
+  cursor: pointer;
 
-    &:hover {
-        color: $darkGreen;
-    }
+  &:hover {
+    color: $darkGreen;
+  }
 }
 
 .ce__wrapper {
-    color: $greyText;
-    margin-bottom: 10px;
+  color: $greyText;
+  margin-bottom: 10px;
 }
 
 .ce__auth-wrapper {
-    margin: 30px 0;
-    padding: 0;
+  margin: 30px 0;
+  padding: 0;
 }
 
 .ce__form-container,
 .ce__unbinding-container {
-    margin: 0 14px;
+  margin: 0 14px;
 
-    label {
-        font-weight: 400;
-        font-size: 12px;
-    }
+  label {
+    font-weight: 400;
+    font-size: 12px;
+  }
 }
 
 .header-message {
-    padding: 8px 0;
+  padding: 8px 0;
+
+  &:hover {
+    background: $green;
+    cursor: pointer;
+  }
+
+  &.intro {
+    padding-left: 8px;
 
     &:hover {
-        background: $green;
-        cursor: pointer;
+      cursor: default;
+      background: transparent;
+    }
+  }
+
+  &.current-scene {
+    background: $darkGreen;
+
+    &:hover {
+      cursor: default;
     }
 
-    &.intro {
-        padding-left: 8px;
-
-        &:hover {
-            cursor: default;
-            background: transparent;
-        }
+    &:before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      border-top-color: $darkGreen;
+      top: 100%;
+      left: 45%;
     }
+  }
 
-    &.current-scene {
-        background: $darkGreen;
+  &.status {
+    font-size: 14px;
+    float: left;
+    padding-right: 10px;
 
-        &:hover {
-            cursor: default;
-        }
-
-        &:before {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border: 5px solid transparent;
-            border-top-color: $darkGreen;
-            top: 100%;
-            left: 45%;
-        }
+    &:hover {
+      background-color: transparent;
+      cursor: default;
     }
+  }
+}
 
-    &.status {
-      font-size: 14px;
-      float: left;
-      padding-right: 10px;
+.header-icons {
+  text-align: right;
+  font-size: 1.5em;
+  padding-right: 0;
 
-      &:hover {
-        background-color: transparent;
-        cursor: default;
+  .nav-icons {
+    display: inline-block;
+    margin-left: 10px;
+    line-height: 22px;
+    padding: 2px 0;
+
+    .icon {
+      display: block;
+      width: 20px;
+      height: 25px;
+      text-align: center;
+
+      img {
+        vertical-align: sub;
+      }
+
+      &:active {
+        background-color: rgba(0, 0, 0, 0.3);
       }
     }
+  }
+
+  .loading-gif {
+    margin-top: 2px;
+    display: none;
+  }
 }
 
 .header-icons {
-    text-align: right;
-    font-size: 1.5em;
-    padding-right: 0;
-
-    .nav-icons {
-        display: inline-block;
-        margin-left: 10px;
-        line-height: 22px;
-        padding: 2px 0;
-
-        .icon {
-            display: block;
-            width: 20px;
-            height: 25px;
-            text-align: center;
-
-            img {
-                vertical-align: sub;
-            }
-
-            &:active {
-                background-color: rgba(0,0,0,0.3);
-            }
-        }
-    }
-
-    .loading-gif {
-      margin-top: 2px;
-      display: none;
-    }
-}
-
-.header-icons {
-    .glyphicon {
-        padding: 0 0.2em;
-    }
+  .glyphicon {
+    padding: 0 0.2em;
+  }
 }
 
 .show-left-border {
-    border-left: 2px solid #f2f2f2;
+  border-left: 2px solid #f2f2f2;
 }
 
 .binded {
-    color: $lime!important;
-    border: 1px solid $lime;
-    background-color: $white;
+  color: $lime !important;
+  border: 1px solid $lime;
+  background-color: $white;
 }
 
 .unbinding-message-holder {
-    margin-top: 5px;
+  margin-top: 5px;
 
-    .glyphicon {
-        color: $lime;
-        margin-right: 5px;
-    }
+  .glyphicon {
+    color: $lime;
+    margin-right: 5px;
+  }
 }
 
 .cargo-info-holder,
 .city-holder {
+  label {
+    top: 2px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    padding-right: 0;
+  }
+
+  .input-sm {
+    height: 24px;
+    padding: 3px 4px;
+    background-color: $white;
+  }
+
+  .form-group {
+    margin-bottom: 0;
+  }
+
+  .checkbox {
+    margin: 3px 0 0;
+    padding-right: 0;
+
+    > div {
+      &:last-child {
+        padding-left: 20px;
+
+        .check-text:before {
+          left: 20px;
+        }
+      }
+    }
+
     label {
-        top: 2px;
-        font-size: 13px;
-        font-weight: 400;
-        line-height: 18px;
-        padding-right: 0;
+      text-align: left;
+      display: block;
     }
-
-    .input-sm {
-        height: 24px;
-        padding: 3px 4px;
-        background-color: $white;
-    }
-
-    .form-group {
-        margin-bottom: 0;
-    }
-
-    .checkbox {
-        margin: 3px 0 0;
-        padding-right: 0;
-
-        > div {
-            &:last-child {
-                padding-left: 20px;
-
-                .check-text:before {
-                    left: 20px;
-                }
-            }
-        }
-
-        label {
-            text-align: left;
-            display: block;
-        }
-    }
+  }
 }
 
 .city-holder {
-    label {
-        padding-left: 0;
+  label {
+    padding-left: 0;
+  }
+
+  .city {
+    margin-top: 25px;
+
+    &:first-child {
+      padding-right: 0;
+      padding-left: 0;
+      text-align: right;
+
+      label:last-child {
+        margin-top: 30px;
+      }
     }
+  }
 
-    .city {
-        margin-top: 25px;
+  .input-sm {
+    padding-right: 24px;
+  }
 
-        &:first-child {
-            padding-right: 0;
-            padding-left: 0;
-            text-align: right;
+  .revert-cities {
+    z-index: 2;
 
-            label:last-child {
-                margin-top: 30px;
-            }
-        }
+    .revert-cities-img {
+      width: 28px;
+      height: 28px;
+      padding: 6px;
+
+      &:active {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
     }
+  }
 
-    .input-sm {
-        padding-right: 24px;
+  .form-group {
+    margin-top: 0;
+  }
+
+  .form-control-feedback {
+    display: none;
+    right: 0;
+    line-height: 24px;
+    pointer-events: auto;
+    color: $greyText;
+
+    &.destination-remove {
+      top: 28px;
     }
-
-    .revert-cities {
-        z-index: 2;
-
-        .revert-cities-img {
-            width: 28px;
-            height: 28px;
-            padding: 6px;
-
-            &:active {
-                background-color: rgba(0,0,0,0.1);
-            }
-        }
-    }
-
-    .form-group {
-        margin-top: 0;
-    }
-
-    .form-control-feedback {
-        display: none;
-        right: 0;
-        line-height: 24px;
-        pointer-events: auto;
-        color: $greyText;
-
-        &.destination-remove {
-            top: 28px;
-        }
-    }
+  }
 }
 
 .cargo-info-holder {
-    .form-group {
-        margin-top: 5px;
+  .form-group {
+    margin-top: 5px;
+  }
+
+  .placeholder {
+    position: absolute;
+    right: 3px;
+    top: 2px;
+    z-index: 2;
+    display: inline;
+    color: $lightGrey;
+  }
+
+  #weight {
+    width: 52px;
+
+    ~ .placeholder {
+      right: -3px;
+      top: 2px;
     }
+  }
 
-    .placeholder {
-        position: absolute;
-        right: 3px;
-        top: 2px;
-        z-index: 2;
-        display: inline;
-        color: $lightGrey;
+  #volume {
+    width: 55px;
+
+    ~ .placeholder {
+      right: -5px;
+      top: 2px;
     }
+  }
 
-    #weight {
-        width: 52px;
+  #note {
+    resize: vertical;
+  }
 
-        ~ .placeholder {
-            right: -3px;
-            top: 2px;
-        }
-    }
-
-    #volume {
-        width: 55px;
-
-        ~ .placeholder {
-            right: -5px;
-            top: 2px;
-        }
-    }
-
-    #note {
-        resize: vertical;
-    }
-
-    .payment-type-block {
-        left: -3px;
-    }
+  .payment-type-block {
+    left: -3px;
+  }
 }
 
 .wide-right {
-    padding-right: 0;
+  padding-right: 0;
 }
 
 .wide-left {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 .cargos-container,
 .cargos-info-holder {
-    &.container {
-        margin: 0;
-        padding: 0;
-    }
+  &.container {
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .cargo-info-holder {
-    ::-webkit-input-placeholder {
-        text-align: right;
+  ::-webkit-input-placeholder {
+    text-align: right;
+  }
+
+  input:-moz-placeholder {
+    text-align: right;
+  }
+
+  label {
+    text-align: right;
+  }
+
+  .col-wrap {
+    .form-group {
+      margin-top: 0;
     }
 
-    input:-moz-placeholder {
-        text-align: right;
+    div:first-child {
+      padding-left: 0;
     }
 
-    label {
-        text-align: right;
+    div:last-child {
+      padding-right: 0;
     }
-
-    .col-wrap {
-        .form-group {
-            margin-top: 0;
-        }
-
-        div:first-child {
-            padding-left: 0;
-        }
-
-        div:last-child {
-            padding-right: 0;
-        }
-    }
+  }
 }
 
 #removeSelection {
-    display: none;
+  display: none;
 }
 
 .calendar-holder {
-    .calendar {
-        padding-left: 10px;
+  .calendar {
+    padding-left: 10px;
+  }
+
+  .dates,
+  .month {
+    font-size: 10px;
+  }
+
+  .month {
+    margin: 1px 0;
+  }
+
+  .next-month {
+    background-color: $lighterGrey;
+    color: $black;
+  }
+
+  .current-month {
+    background-color: $lighterLime;
+    color: $black;
+  }
+
+  #removeSelection {
+    background-color: $lightGrey;
+    color: red;
+    float: right;
+  }
+
+  .weekend > div {
+    color: $greyText;
+  }
+
+  .date {
+    div {
+      border-radius: 2px;
+      padding: 1px 0;
+      font-size: 11px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
-    .dates,
-    .month {
-        font-size: 10px;
+    &.today {
+      div {
+        font-weight: 800;
+      }
     }
 
-    .month {
-        margin: 1px 0;
+    &.past {
+      div {
+        opacity: 0.9;
+        color: $lightGrey;
+      }
     }
 
-    .next-month {
-        background-color: $lighterGrey;
-        color: $black;
+    &.selected {
+      div {
+        background-color: $lightOrange;
+        color: $white;
+        opacity: 1;
+      }
+    }
+  }
+
+  .month {
+    border-radius: 2px;
+    padding: 0 8px;
+
+    &.current-month {
+      opacity: 0.8;
+      text-align: left;
     }
 
-    .current-month {
-        background-color: $lighterLime;
-        color: $black;
+    &.next-month {
+      text-align: right;
+    }
+  }
+
+  .table {
+    margin-bottom: 0;
+
+    td,
+    th {
+      text-align: center;
     }
 
-    #removeSelection {
-        background-color: $lightGrey;
-        color: red;
-        float: right;
+    th {
+      padding: 0;
+      color: rgba(0, 0, 0, 0.3);
+      border: 0;
     }
 
-    .weekend > div {
-        color: $greyText;
+    td {
+      padding: 1px;
+      border-color: transparent;
+      cursor: pointer;
     }
-
-    .date {
-        div {
-            border-radius: 2px;
-            padding: 1px 0;
-            font-size: 11px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-        }
-
-        &.today {
-            div {
-                font-weight: 800;
-            }
-        }
-
-        &.past {
-            div {
-                opacity: 0.9;
-                color: $lightGrey;
-            }
-        }
-
-        &.selected {
-            div {
-                background-color: $lightOrange;
-                color: $white;
-                opacity: 1;
-            }
-        }
-    }
-
-    .month {
-        border-radius: 2px;
-        padding: 0 8px;
-
-        &.current-month {
-            opacity: 0.8;
-            text-align: left;
-        }
-
-        &.next-month {
-            text-align: right;
-        }
-    }
-
-    .table {
-        margin-bottom: 0;
-
-        td,
-        th {
-            text-align: center;
-        }
-
-        th {
-            padding: 0;
-            color: rgba(0,0,0,0.3);
-            border: 0;
-        }
-
-        td {
-            padding: 1px;
-            border-color: transparent;
-            cursor: pointer;
-        }
-    }
+  }
 }
 
 .cargos-list {
-    .btn {
-        top: 4px;
+  .btn {
+    top: 4px;
 
-        &#export {
-          width: 120px;
+    &#export {
+      width: 120px;
 
-          &.active {
-            background-color: $orange;
-          }
-        }
+      &.active {
+        background-color: $orange;
+      }
+    }
+  }
+
+  .export-message {
+    margin-bottom: 10px;
+  }
+
+  .manager-block {
+    top: -2px;
+
+    .manager-title {
+      font-size: 12px;
     }
 
-    .export-message {
-        margin-bottom: 10px;
+    select {
+      &.input-sm {
+        height: 24px;
+        line-height: 24px;
+        padding: 3px;
+      }
     }
+  }
 
-    .manager-block {
-      top: -2px;
+  table {
+    margin-top: 10px;
 
-      .manager-title {
+    thead {
+      td {
         font-size: 12px;
+        padding: 0 8px;
+        font-weight: 600;
+        line-height: 14px;
       }
+    }
 
-      select {
-          &.input-sm {
-              height: 24px;
-              line-height: 24px;
-              padding: 3px;
+    tbody {
+      tr {
+        font-size: 10px;
+
+        &.new-cargo {
+          background-color: $lighterLime;
+
+          &:hover {
+            background-color: $lighterLime2;
           }
+        }
+
+        &.exported {
+          color: $lightGrey;
+        }
+
+        &.error {
+          background-color: $lightRed;
+
+          &:hover {
+            background-color: $lightRed2;
+          }
+        }
+
+        &.successed {
+          background-color: $lightLime;
+        }
+
+        &.pending {
+          background-color: $lightYellow;
+        }
+
+        td {
+          &:first-child {
+            width: 30px;
+            text-align: center;
+          }
+
+          &:last-child {
+            width: 72px;
+            text-align: center;
+          }
+
+          &:nth-child(2) {
+            text-align: center;
+            width: 200px;
+          }
+
+          &:nth-child(3) {
+            text-align: center;
+            width: 80px;
+          }
+        }
       }
     }
 
-    table {
-        margin-top: 10px;
+    tbody,
+    thead {
+      tr {
+        td {
+          vertical-align: middle;
 
-        thead {
-            td {
-                font-size: 12px;
-                padding: 0 8px;
-                font-weight: 600;
-                line-height: 14px;
+          label {
+            height: 19px;
+
+            input[type=checkbox] {
+              margin: 0;
+
+              & ~ span:before {
+                position: relative;
+                left: 0;
+                top: 4px;
+              }
             }
+          }
         }
-
-        tbody {
-            tr {
-                font-size: 10px;
-
-                &.new-cargo {
-                    background-color: $lighterLime;
-
-                    &:hover {
-                        background-color: $lighterLime2;
-                    }
-                }
-
-                &.exported {
-                    color: $lightGrey;
-                }
-
-                &.error {
-                    background-color: $lightRed;
-
-                    &:hover {
-                        background-color: $lightRed2;
-                    }
-                }
-
-                &.successed {
-                    background-color: $lightLime;
-                }
-
-                &.pending {
-                    background-color: $lightYellow;
-                }
-
-                td {
-                    &:first-child {
-                        width: 30px;
-                        text-align: center;
-                    }
-
-                    &:last-child {
-                        width: 72px;
-                        text-align: center;
-                    }
-
-                    &:nth-child(2) {
-                        text-align: center;
-                        width: 200px;
-                    }
-
-                    &:nth-child(3) {
-                        text-align: center;
-                        width: 80px;
-                    }
-                }
-            }
-        }
-
-        tbody,
-        thead {
-            tr {
-                td {
-                    vertical-align: middle;
-
-                    label {
-                        height: 19px;
-
-                        input[type=checkbox] {
-                            margin: 0;
-
-                            & ~ span:before {
-                                position: relative;
-                                left: 0;
-                                top: 4px;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+      }
     }
+  }
+}
+
+.messages-label {
+  font-weight: 400;
+
+  span {
+    margin-left: 20px;
+  }
 }

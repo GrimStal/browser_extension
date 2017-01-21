@@ -26,6 +26,7 @@
     'contacts': {},
     'intro': {},
     'loading': {},
+    'notificationsSubscribe': {},
     'settingsNav': {},
     'trailerCheckbox': {}
   };
@@ -569,6 +570,25 @@
     __p += '<div class="ce__loading">\n    <div class="loading-wrap">\n        <div class="loading-img-holder">\n            <div class="loading-img-background">\n                <div class="loading-img-colored"></div>\n            </div>\n\n        </div>\n        <div class="loading-text-holder">\n            <span class="ce__loading-text">' +
     __e(text) +
     '</span>\n        </div>\n    </div>\n</div>\n';
+
+    }
+    return __p
+  };
+
+  templates['notificationsSubscribe'] =   function(obj) {
+    obj || (obj = {});
+    var __t, __p = '', __j = Array.prototype.join;
+    function print() { __p += __j.call(arguments, '') }
+    with (obj) {
+    __p += '<div class="col-xs-12 col-sm-12">\n    <label class="messages-label">\n        <input type="checkbox" class="message-type" value="' +
+    ((__t = (type)) == null ? '' : __t) +
+    '" ';
+     if (checked) {
+    __p += ' checked ';
+    }
+    __p += ' />\n        <span class="check-text">' +
+    ((__t = (message)) == null ? '' : __t) +
+    '</span>\n    </label>\n</div>';
 
     }
     return __p

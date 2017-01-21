@@ -23,7 +23,8 @@ label input[type=checkbox] {
     font-weight: 800;
     font-size: 16px;
     color: #91b247;
-    line-height: 15px; }
+    line-height: 16px;
+    margin-top: 2px; }
   label input[type=checkbox]:checked ~ span:before {
     content: '\2713';
     border-color: #91b247; }
@@ -530,3 +531,8 @@ label input[type=checkbox] {
           position: relative;
           left: 0;
           top: 4px; }
+
+.messages-label {
+  font-weight: 400; }
+  .messages-label span {
+    margin-left: 20px; }
