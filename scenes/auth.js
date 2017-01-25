@@ -17,8 +17,8 @@ App.scenes.auth = {
     $('#lardi_password').bind('keyup', onEnter.bind(null, lardiSubmit));
     $('#addOrder').bind('click', this.showOrderForm.bind(this));
     $('.auth-input').bind('input', this.onChange.bind(this));
-    $('.cargo-site').bind('click', App.openTab.bind(null, 'https://www.cargo.lt'));
-    $('.lardi-site').bind('click', App.openTab.bind(null, 'https://lardi-trans.com'));
+    $('.cargo-site').bind('click', App.openTab.bind(null, 'https://www.cargo.lt/'));
+    $('.lardi-site').bind('click', App.openTab.bind(null, 'http://lardi-trans.com/'));
     $('.icon.cog-icon').addClass('hidden');
 
     this.initForm(['cargo', 'lardi'], this.checkAccess);

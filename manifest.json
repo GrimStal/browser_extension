@@ -38,9 +38,8 @@
     "https://io.cargo.lt/*",
     "http://api.lardi-trans.com/*",
     "https://restcountries.eu/*",
-    "https://www.cargo.lt/",
-    "http://lardi-trans.com/",
-    "http://localhost:3000/*"
+    "https://www.cargo.lt/*",
+    "http://lardi-trans.com/*"
   ],
 
   "offline_enabled": false,
