@@ -7,12 +7,6 @@ var App = (function () {
     });
   }
 
-  function disconnectPort(portNames) {
-    portNames.forEach(function(name) {
-      return app[name + 'Port'].disconnect();
-    });
-  }
-
   var app = {};
 
   app.scenes = [];
@@ -309,6 +303,12 @@ var App = (function () {
   };
 
   connectPort(['export', 'add', 'system']);
+
+  app.disconnectPort = function(portNames) {
+    portNames.forEach(function(name) {
+      return app[name + 'Port'].disconnect();
+    });
+  }
 
   app.exportPort.onMessage.addListener(function (msg) {
     var message;

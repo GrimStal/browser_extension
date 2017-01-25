@@ -106,7 +106,6 @@ function onConnect(port) {
           Queue.port.postMessage({error: 'Incorrect data'});
         }
         Queue.amount = Queue.queue.size();
-        showProgressNotification();
         Queue.queue.start();
       } else if (msg.task === 'disconnect') {
         Queue.port.disconnect();
@@ -117,6 +116,7 @@ function onConnect(port) {
           port.postMessage({done: Queue.queue.size() === 0});
         }
         if (msg.task === 'addToQueue' && msg.props) {
+          showProgressNotification();
           chrome.browserAction.setBadgeText({text: (Queue.amount < 1000 ? String(Queue.amount) : '999+')});
         }
       }
@@ -198,11 +198,11 @@ function showNotification(title, message) {
 
 function showMarketNotification(title, message, link) {
   if (SMData.getMarketMessagesAccept()) {
-    return chrome.notifications.create(new BasicNotification(title, message  + (link ? '\n' + link : '')), function(createdId) {
+    return chrome.notifications.create(new BasicNotification(title, message + (link ? '\n' + link : '')), function(createdId) {
       if (link) {
         chrome.notifications.onClicked.addListener(function(notificationId) {
           if (createdId === notificationId) {
-           chrome.tabs.create({ url: link, active: true });
+            chrome.tabs.create({url: link, active: true});
           }
         });
       }
@@ -211,7 +211,7 @@ function showMarketNotification(title, message, link) {
 }
 
 function showProgressNotification() {
-  if (SMData.getSystemMessagesAccept() && !isOpera()) {
+  if (SMData.getSystemMessagesAccept() && !isOpera() && !isFirefox()) {
     return chrome.notifications.create(new ProgressNotification(), function(notificationId) {
       exportProgressNotificationId = notificationId;
     });
@@ -220,7 +220,7 @@ function showProgressNotification() {
 
 function updateProgressNotification(currentSize, amount) {
   var updateData = new Object();
-  if (SMData.getSystemMessagesAccept() && !isOpera() && amount - currentSize) {
+  if (SMData.getSystemMessagesAccept() && !isOpera() && !isFirefox() && amount - currentSize) {
     updateData.message = 'Экспортировано ' + (amount - currentSize) + ' из ' + amount;
     updateData.progress = Math.round((amount - currentSize) * 100 / amount);
     return chrome.notifications.update(exportProgressNotificationId, updateData);
@@ -258,13 +258,12 @@ function showUpdateNotification(version) {
 function showNewCargosNotification(amount) {
   if (SMData.getSystemMessagesAccept()) {
     return chrome.notifications.create(new newCargosNotification(amount), function(newCargoNotificationId) {
-      if (!isOpera()) {
-        chrome.notifications.onButtonClicked.addListener(function(notificationId) {
-          if (newCargoNotificationId === notificationId) {
-            chrome.browserAction.openPopup();
-          }
-        });
-      }
+      chrome.notifications.onClicked.addListener(function(notificationId) {
+        if (newCargoNotificationId === notificationId) {
+          removeNotification(newCargoNotificationId);
+          exportCargos();
+        }
+      });
     });
   }
 }
@@ -344,5 +343,6 @@ function listenForGCM() {
     // consists of key-value pairs.
     showMarketNotification(message.data.title, message.data.body, message.data.link);
   }
+
   chrome.gcm.onMessage.addListener(listen);
 }

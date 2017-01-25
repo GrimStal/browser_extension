@@ -70,10 +70,10 @@ function UpdateNotification(version) {
 
 function newCargosNotification(amount) {
   this.type = 'basic';
-  this.title = 'У вас появились новые грузы!';
-  this.message = 'У вас было добавлено ' + amount + ' новых\nгрузов на Lardi-Trans.\nЭкспортируйте их на Cargo.LT';
+  this.title = 'Новые грузы на Lardi-Trans!';
+  this.message = 'Нажмите на сообщение и экспортируйте\n' + amount + ' грузов на Cargo.LT!';
   this.iconUrl = '/css/images/icons/128x128.png';
-  this.priority = 1;
+  this.priority = 2;
 
   return this;
 }
@@ -84,6 +84,46 @@ function testNotification() {
   this.message = 'Так будет выглядеть сообщение.';
   this.iconUrl = '/css/images/icons/128x128.png';
   this.priority = 0;
+
+  return this;
+}
+
+function CargoObject() {
+  this.from = [];
+  this.to = [];
+  this.type = 0;
+  this.fromDate = null;
+  this.tillDate = null;
+
+  // this.fromDateto = 0;
+  // this.tillDateto = 0;
+  this.notes = '';
+  this.trailers = [];
+  this.pallets = 0;
+  this.pallettype = 1;
+  this.volume = 0;
+  this.volumeldm = 0.0;
+  this.weight = 0;
+  this.minTemperature = null;
+  this.maxTemperature = null;
+  this.price = null;
+  this.currency = null;
+  this.top = 0;
+  this.side = 0;
+  this.back = 0;
+  this.full = 0;
+  this.partly = 0;
+  this.adr = 0;
+  this.tir = 0;
+  this.declaration = 0;
+  this.manipulator = 0;
+  this.lift = 0;
+
+  // this.boxes = [];
+  // this.boxtype = 0;
+  // this.accountId = 0;
+  this.source = 12;
+  this.pricerequest = 0;
 
   return this;
 }

@@ -213,6 +213,7 @@ App.scenes.cargosList = {
   },
 
   createSelect: function () {
+    var isSelectedUser = false;
     var selections;
     var template;
     if (App.appData.lardi.contact === 'false') {
@@ -246,6 +247,21 @@ App.scenes.cargosList = {
           }
         }
       });
+
+      selections.forEach(function(selection) {
+        if (selection.id === App.appData.lardi.id) {
+          isSelectedUser = true;
+        }
+      });
+
+      if (!isSelectedUser) {
+        selections.push({
+          id: App.appData.lardi.id,
+          name: App.appData.lardi.name,
+          selected: true,
+          count: 0
+        });
+      }
 
       selections.sort(sortContacts);
     } else {
@@ -322,10 +338,7 @@ App.scenes.cargosList = {
     var countryFrom;
     var countryTo;
 
-    if (!object) {
-      ready.reject('Object not set');
-      return ready.promise();
-    }
+    return false;
 
     areaFrom = getLardiAreaName(object.country_from_id, object.area_from_id);
     areaTo = getLardiAreaName(object.country_to_id, object.area_to_id);
@@ -573,7 +586,7 @@ App.scenes.cargosList = {
     if (object.auto_col_id && object.auto_col_id.length > 0 && object.auto_col_id !== '0') {
       object.auto_col = parseInt(object.auto_col);
       if (object.auto_col > 0) {
-        note.push(object.auto_col + ' ' + getName(atips, object.auto_col_id));
+        note.push(object.auto_col + ' ' + getName(autoTips, object.auto_col_id));
       }
     }
 

@@ -265,7 +265,7 @@ function exportComplete() {
     this.port.postMessage({ done: this.queue.size() === 0, show: true, errored: this.errored, of: this.amount });
   }
 
-  if (!isOpera()) {
+  if (!isOpera() && !isFirefox()) {
     removeNotification(exportProgressNotificationId);
   }
   showNotification('Экспорт завершён',
