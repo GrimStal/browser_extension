@@ -165,7 +165,7 @@ var SMData = (function () {
   };
 
   smdata.isGCMRegistered = function() {
-    return SM.get('GCMRegistered');
+    return SM.get('GCMRegistered') === 'true';
   };
 
   smdata.setSystemMessagesAccept = function(bool) {
@@ -182,6 +182,14 @@ var SMData = (function () {
 
   smdata.getMarketMessagesAccept = function() {
     return SM.get('MarketMessages') === 'true';
+  };
+
+  smdata.saveGCMToken = function(token) {
+    return SM.put('GCMToken', token);
+  };
+
+  smdata.getGCMToken = function() {
+    return SM.get('GCMToken');
   };
 
   return smdata;

@@ -1,6 +1,5 @@
 'use strict';
 
-
 /** Requests */
 
 function sendRequest(data, uid, callback) {
@@ -156,6 +155,12 @@ function onSystemConnect(port) {
         case 'disconnect':
           System.port.disconnect();
           break;
+        case 'disableMarketNotifications':
+          unregisterGCM();
+          break;
+        case 'enableMarketNotifications':
+          chrome.gcm.register(GCMIds, registerCallback);
+          break;
         default:
           console.log('Unknown task: ' + msg.task);
           return false;
@@ -176,6 +181,10 @@ function isOpera() {
   return !!(~navigator.userAgent.indexOf('OPR/'));
 }
 
+function isFirefox() {
+  return !!(~navigator.userAgent.indexOf('Firefox/'));
+}
+
 
 /**
  * Notifications
@@ -184,6 +193,20 @@ function isOpera() {
 function showNotification(title, message) {
   if (SMData.getSystemMessagesAccept()) {
     return chrome.notifications.create(new BasicNotification(title, message));
+  }
+}
+
+function showMarketNotification(title, message, link) {
+  if (SMData.getMarketMessagesAccept()) {
+    return chrome.notifications.create(new BasicNotification(title, message  + (link ? '\n' + link : '')), function(createdId) {
+      if (link) {
+        chrome.notifications.onClicked.addListener(function(notificationId) {
+          if (createdId === notificationId) {
+           chrome.tabs.create({ url: link, active: true });
+          }
+        });
+      }
+    });
   }
 }
 
@@ -262,26 +285,43 @@ function registerCallback(registrationId) {
     // When the registration fails, handle the error and retry the
     // registration later.
     console.log(chrome.runtime.lastError);
-    return setTimeout(function() {
-      return unregisterGCM();
-    }, 60000);
-    return;
+    return setTimeout(
+        function() {
+          return unregisterGCM();
+        },
+        60000);
   }
 
   // Send the registration token to your application server.
-  sendRegistrationId(function(succeed) {
+  sendRegistrationId(registrationId, function(error, succeed) {
     // Once the registration token is received by your server,
     // set the flag such that register will not be invoked
     // next time when the app starts up.
     if (succeed) {
-      SMData.saveGCMRegistered();
+      SMData.saveGCMToken(registrationId);
+      return SMData.saveGCMRegistered();
     }
+    console.log(error);
   });
 }
 
-function sendRegistrationId(callback) {
+function sendRegistrationId(id, callback) {
   // Send the registration token to your application server
   // in a secure way.
+  console.log(id);
+  $.ajax({
+    url: GCM_server_address + 'message/subscribe',
+    type: 'POST',
+    data: {
+      id: id
+    }
+  })
+      .then(function() {
+        return callback(null, true)
+      })
+      .catch(function(res) {
+        return callback(res.error);
+      });
 }
 
 function unregisterCallback() {
@@ -292,9 +332,17 @@ function unregisterCallback() {
       return unregisterGCM();
     }, 60000);
   }
-
 }
 
 function unregisterGCM() {
   chrome.gcm.unregister(unregisterCallback);
+}
+
+function listenForGCM() {
+  function listen(message) {
+    // A message is an object with a data property that
+    // consists of key-value pairs.
+    showMarketNotification(message.data.title, message.data.body, message.data.link);
+  }
+  chrome.gcm.onMessage.addListener(listen);
 }

@@ -4,49 +4,55 @@ var cleanCSS = require('gulp-clean-css');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 
-gulp.task('styles', function () {
-  return gulp.src('./scss/**/*.scss')
-  .pipe(sass().on('error', sass.logError))
-  .pipe(gulp.dest('./css'));
+gulp.task('styles', function() {
+  gulp.src('./scss/**/*.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(gulp.dest('./css'));
 });
 
-gulp.task('styles:watch', function () {
+gulp.task('server-styles', function() {
+  gulp.src('./server/scss/**/*.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(gulp.dest('./server/public/css'));
+});
+
+gulp.task('styles:watch', function() {
   gulp.watch('./scss/**/*.scss', ['styles']);
+  gulp.watch('./server/scss/**/*.scss', ['server-styles']);
 });
 
-gulp.task('production:watch', function () {
+gulp.task('production:watch', function() {
   gulp.watch([
-    'css/**/*.*',
-    'bower_components/**/*.*',
-    'images/**/*.*',
-    'scenes/**/*.js',
-    'templates/**/*.js',
-    'js/**/*.js',
-    'background/**/*.js',
-    './lodash*.*',
-    './*.*',
-    '!./gulpfile.*',
-    '!./bower.*',
-    '!./package.json',
-    '!./dist/**/*',
-    '!./.git/**/*',
-    '!./.jscsrc',
-  ],
-  ['production']
-);
+        'css/**/*.*',
+        'bower_components/**/*.*',
+        'images/**/*.*',
+        'scenes/**/*.js',
+        'templates/**/*.js',
+        'js/**/*.js',
+        'background/**/*.js',
+        './lodash*.*',
+        './*.*',
+        '!./gulpfile.*',
+        '!./bower.*',
+        '!./package.json',
+        '!./dist/**/*',
+        '!./.git/**/*',
+        '!./.jscsrc',
+        '!./server/**/*.*',
+      ],
+      ['production']
+  );
 });
 
-gulp.task('production', function () {
+gulp.task('production', function() {
+
+  gulp.src(
+      ['css/**/*.css'], {base: '.'})
+      .pipe(cleanCSS())
+      .pipe(gulp.dest('dist/'));
 
   gulp.src([
-    'css/**/*.css',
-  ], {
-    base: '.',
-  })
-  .pipe(cleanCSS())
-  .pipe(gulp.dest('dist/'));
-
-  gulp.src([
+    '!./server/**/*.*',
     '!./gulpfile.js',
     '!./lodash*.*',
     '!./xml2json*.*',
@@ -58,8 +64,8 @@ gulp.task('production', function () {
     './js/**/*.js',
     './scenes/**/*.js',
   ])
-  .pipe(concat('javascript.js'))
-  .pipe(gulp.dest('dist/'));
+      .pipe(concat('javascript.js'))
+      .pipe(gulp.dest('dist/'));
 
   gulp.src([
     './background/functions.js',
@@ -67,8 +73,8 @@ gulp.task('production', function () {
     './background/cargolt.js',
     './background/**/*.js',
   ])
-  .pipe(concat('background.js'))
-  .pipe(gulp.dest('dist/'));
+      .pipe(concat('background.js'))
+      .pipe(gulp.dest('dist/'));
 
   gulp.src([
     './popup.html',
@@ -81,7 +87,7 @@ gulp.task('production', function () {
   ], {
     base: '.',
   })
-  .pipe(gulp.dest('dist/'));
+      .pipe(gulp.dest('dist/'));
 
   gulp.src([
     './bower_components/bootstrap/dist/**/*.*',
@@ -90,17 +96,20 @@ gulp.task('production', function () {
     './bower_components/jquery-ui/jquery-ui.min.js',
     './bower_components/js-md5/build/**/*.*',
     './bower_components/lodash/dist/**/*.*',
+    './bower_components/firebase/**/firebase-app.*',
+    './bower_components/firebase/**/firebase-messaging.*'
   ], {
     base: './bower_components/',
   })
-  .pipe(gulp.dest('dist/src/'));
+      .pipe(gulp.dest('dist/src/'));
 
   gulp.src([
     './sweetalert.min.js',
     './xml2json.min.js',
     './jquery.ba-jqmq.min.js',
+    './firebase.js'
   ], {
     base: './',
   })
-  .pipe(gulp.dest('dist/src/'));
+      .pipe(gulp.dest('dist/src/'));
 });

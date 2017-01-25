@@ -41,7 +41,7 @@ App.scenes.settings = {
       lardiHTML = _.templates.auth(Templates.lardiLogin);
     }
 
-    $('.ce__wrapper').empty().append(cargoHTML + lardiHTML + systemMessagesHTML + addOrder);
+    $('.ce__wrapper').empty().append(cargoHTML + lardiHTML + /*systemMessagesHTML + marketMessagesHTML +*/ addOrder);
 
     if (cargoData.token) {
       $('#cargoUnbind').bind('click', self.cargoUnbind.bind(settingsContext));
@@ -67,6 +67,7 @@ App.scenes.settings = {
           break;
         case 'market':
           SMData.setMarketMessagesAccept($(this).prop('checked'));
+          App.systemPort.postMessage({ task: ($(this).prop('checked') ? 'enable': 'disable') + 'MarketNotifications' });
           break;
         default:
           return false;

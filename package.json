@@ -4,7 +4,13 @@
   "description": "Cargo extension for browser",
   "main": "popup.js",
   "dependencies": {
-    "bower": "^1.7.9"
+    "body-parser": "^1.16.0",
+    "bower": "^1.7.9",
+    "ejs": "^2.5.5",
+    "express": "^4.14.0",
+    "moment": "^2.17.1",
+    "request": "^2.79.0",
+    "socket.io": "^1.7.2"
   },
   "devDependencies": {
     "express": "^4.14.0",
@@ -17,7 +23,8 @@
     "lodash-cli": "^4.15.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd ./server && node server.js"
   },
   "author": "Borshchov Dimitriy",
   "license": "MIT"

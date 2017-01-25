@@ -123,3 +123,17 @@ function filterCargos(cargo) {
     }
   }
 }
+
+function lardiExportWatcher() {
+  if (SMData.getSystemMessagesAccept()) {
+    if (!exportQueue.queue.size()) {
+      checkCargosForExport()
+          .then(function(cargos) {
+            showNewCargosNotification(cargos.filter(filterCargos).length);
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+    }
+  }
+}

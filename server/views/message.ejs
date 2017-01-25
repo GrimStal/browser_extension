@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <base href="/">
+
+    <title>CARGO - Рассылка сообщений</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<h1 class="center">
+    Рассылка сообщений для CARGO extension
+</h1>
+<div class="container cargo-ext__container">
+    <div class="cargo-ext__row">
+        <form class="cargo-ext__form" action="/message"  method="post">
+            <div class="form-group">
+                <label for="title" class="input-label">Заголовок</label>
+                <input type="text" class="cargo-ext__input" maxlength="32" name="title" id="title" />
+            </div>
+            <div class="form-group">
+                <label for="message" class="textarea-label">Сообщение</label>
+                <textarea class="cargo-ext__textarea" maxlength="160" name="message" id="message"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="link" class="input-label">Ссылка</label>
+                <input type="text" class="cargo-ext__input" name="link" id="link"></input>
+            </div>
+            <div class="form-group">
+                <label for="ttl" class="input-label">TTL, ч.</label>
+                <input type="number" class="cargo-ext__input" max="99" min="0" name="ttl" id="message"></input>
+            </div>
+            <div class="form-group">
+                <label for="collapse" class="input-label">ID сообщения</label>
+                <input type="text" class="cargo-ext__input" maxlength="64" name="collapse" id="collapse"></input>
+            </div>
+            <!--<div class="form-group">-->
+                <!--<label for="to" class="input-label">ID пользователя</label>-->
+                <!--<input type="text" class="cargo-ext__input" name="to" id="to"></input>-->
+            <!--</div>-->
+            <input type="submit" class="cargo-ext__btn cargo-ext__btn-grey cargo-ext__btn-send" value="Отправить">
+        </form>
+    </div>
+</div>
+</body>
+</html>
