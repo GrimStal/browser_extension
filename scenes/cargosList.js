@@ -338,10 +338,6 @@ App.scenes.cargosList = {
     var countryFrom;
     var countryTo;
 
-    if (!object) {
-      return false;
-    }
-
     areaFrom = getLardiAreaName(object.country_from_id, object.area_from_id);
     areaTo = getLardiAreaName(object.country_to_id, object.area_to_id);
     countryFrom = getLardiCountryCode(object.country_from_id);
@@ -713,7 +709,7 @@ App.scenes.cargosList = {
           if (cargo.id === id) {
             duplicate = self.createCargoDuplicate(cargo, atips);
             if (duplicate) {
-              duplicates.push();
+              duplicates.push(duplicate);
             }
           }
         });
