@@ -131,7 +131,10 @@ function filterCargos(cargo) {
 
 function lardiExportWatcher() {
   if (SMData.getSystemMessagesAccept()) {
-    if (!exportQueue.queue.size() && (new Date().getHours() > 8 && new Date().getHours() < 20)) {
+    if (!exportQueue.queue.size() &&
+        (new Date().getUTCHours() > 6 && new Date().getUTCHours() < 18) &&
+        (new Date().getUTCMinutes() === 0)
+    ) {
       checkCargosForExport()
           .then(function(cargos) {
             if (cargos.length) {
@@ -1029,6 +1032,7 @@ function exportCargos() {
           ids.push(cargo.id);
           duplicates.push(createCargoDuplicate(cargo, atips, lcountries, cargoTypes));
         });
+        console.log(duplicates);
         SMData.savePendingCargos('lardi', SMData.getPendingCargos().concat(ids));
         addToExportQueue(duplicates);
       })

@@ -95,11 +95,9 @@ gulp.task('production', function() {
     './bower_components/jquery-ui/themes/**/*.*',
     './bower_components/jquery-ui/jquery-ui.min.js',
     './bower_components/js-md5/build/**/*.*',
-    './bower_components/lodash/dist/**/*.*',
-    './bower_components/firebase/**/firebase-app.*',
-    './bower_components/firebase/**/firebase-messaging.*'
+    './bower_components/lodash/dist/**/*.*'
   ], {
-    base: './bower_components/',
+    base: './bower_components/'
   })
       .pipe(gulp.dest('dist/src/'));
 
@@ -107,9 +105,9 @@ gulp.task('production', function() {
     './sweetalert.min.js',
     './xml2json.min.js',
     './jquery.ba-jqmq.min.js',
-    './firebase.js'
+    './socket.io-1.4.5.js'
   ], {
-    base: './',
+    base: './'
   })
       .pipe(gulp.dest('dist/src/'));
 });

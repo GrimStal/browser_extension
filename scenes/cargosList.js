@@ -338,7 +338,9 @@ App.scenes.cargosList = {
     var countryFrom;
     var countryTo;
 
-    return false;
+    if (!object) {
+      return false;
+    }
 
     areaFrom = getLardiAreaName(object.country_from_id, object.area_from_id);
     areaTo = getLardiAreaName(object.country_to_id, object.area_to_id);
@@ -707,11 +709,17 @@ App.scenes.cargosList = {
 
       selected.forEach(function (id) {
         self.lardiCargos.forEach(function (cargo) {
+          var duplicate;
           if (cargo.id === id) {
-            duplicates.push(self.createCargoDuplicate(cargo, atips));
+            duplicate = self.createCargoDuplicate(cargo, atips);
+            if (duplicate) {
+              duplicates.push();
+            }
           }
         });
       });
+
+      console.log(duplicates);
 
       App.exportPort.postMessage({ task: 'addToQueue', props: duplicates });
 

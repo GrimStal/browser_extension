@@ -8,10 +8,9 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var moment = require('moment');
 var messages = require('./messages');
-var http = require('http').Server(app);
-
-
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var port = 3000;
 
 function getTime() {
@@ -45,6 +44,11 @@ app.use(function timeLog(req, res, next) {
 
 app.use('/message', messages);
 
-app.listen(port, function() {
+http.listen(port, function() {
   console.log('App runned on ' + port + ' port.');
 });
+
+io.sockets.on('connection', function(socket) {
+  console.log('user has been connected: ');
+});
+

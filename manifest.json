@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "CARGO",
-  "version": "1.1.5",
-  "version_name": "1.1.5",
+  "version": "1.1.6",
+  "version_name": "1.1.6",
 
   "description": "Расширение \"CARGO\" позволяет одновременно добавлять Ваши грузы на транспортные биржи Cargo.LT и Lardi-Trans.com",
   "icons": {
@@ -27,6 +27,7 @@
       "SM.js",
       "src/jquery/dist/jquery.min.js",
       "src/jquery.ba-jqmq.min.js",
+      "src/socket.io-1.4.5.js",
       "background.js"
     ]
   },

@@ -5,7 +5,8 @@ var addQueue = new MQ();
 var exportProgressNotificationId;
 var updateNotificationId;
 var GCMIds = ["896628471556"];
-var GCM_server_address = 'http://localhost:3000/';
+var GCM_server_address = 'http://localhost:3000/message';
+// var socket = io(GCM_server_address);
 
 exportQueue.init({
   delay: -1,
@@ -62,7 +63,7 @@ chrome.runtime.onMessage.addListener(function(request, uid, callback) {
 chrome.runtime.onConnect.addListener(onConnect);
 chrome.runtime.onConnect.addListener(onSystemConnect);
 
-setInterval(lardiExportWatcher, 3600000);
+setInterval(lardiExportWatcher, 60000);
 
 /** GCM */
 /**
