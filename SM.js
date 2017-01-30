@@ -22,7 +22,12 @@ var SMData = (function () {
   var smdata = {};
 
   smdata.saveToken = function (key, data) {
-    return SM.put(key + 'Token', data);
+    SM.put(key + 'Token', data);
+    if (typeof App !== 'undefined') {
+      App.systemPort.postMessage({ task: 'authChanges', props: {} });
+    } else {
+      socketAuth();
+    }
   };
 
   smdata.getToken = function (key) {
@@ -31,6 +36,11 @@ var SMData = (function () {
 
   smdata.removeToken = function (key) {
     SM.delete(key + 'Token');
+    if (typeof App !== 'undefined') {
+      App.systemPort.postMessage({ task: 'authChanges', props: {} });
+    } else {
+      socketAuth();
+    }
   };
 
   smdata.saveUserData = function (key, data) {
@@ -43,7 +53,7 @@ var SMData = (function () {
   };
 
   smdata.updateUserData = function (key, variable, data) {
-    return SM.put(key + variable, data);
+    SM.put(key + variable, data);
   };
 
   smdata.removeUserData = function (key) {

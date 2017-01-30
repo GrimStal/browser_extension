@@ -110,4 +110,11 @@ gulp.task('production', function() {
     base: './'
   })
       .pipe(gulp.dest('dist/src/'));
+
+  gulp.src([
+      './socket.io*.*',
+      './node_modules/vue/dist/vue.min.js',
+      './node_modules/vue-socket.io/dist/build.js'
+  ])
+      .pipe(gulp.dest('./server/public/src/'));
 });

@@ -10,7 +10,8 @@
     "express": "^4.14.0",
     "moment": "^2.17.1",
     "request": "^2.79.0",
-    "socket.io": "^1.7.2"
+    "socket.io": "^1.7.2",
+    "vue": "^2.1.10"
   },
   "devDependencies": {
     "express": "^4.14.0",
@@ -20,7 +21,8 @@
     "gulp-sass": "^2.3.2",
     "gulp-uglify": "^2.0.0",
     "gulp-watch": "^4.3.9",
-    "lodash-cli": "^4.15.0"
+    "lodash-cli": "^4.15.0",
+    "webpack": "^1.14.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

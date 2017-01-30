@@ -5,41 +5,67 @@
 
     <title>CARGO - Рассылка сообщений</title>
     <link rel="stylesheet" href="/css/main.css">
+    <% header_scripts.forEach( function(script) { %>
+    <script type="text/javascript" src="<%- script %>"></script>
+    <% }) %>
 </head>
 <body>
 <h1 class="center">
     Рассылка сообщений для CARGO extension
 </h1>
-<div class="container cargo-ext__container">
-    <div class="cargo-ext__row">
-        <form class="cargo-ext__form" action="/message"  method="post">
-            <div class="form-group">
-                <label for="title" class="input-label">Заголовок</label>
-                <input type="text" class="cargo-ext__input" maxlength="32" name="title" id="title" />
+<div id="chat" class="cargo-ext__chat">
+    <div class="cargo-ext__chat-row">
+        <div class="cargo-ext__chat-window">
+            <div class="chat-window-columns">
+                <div class="title">Title</div>
+                <div class="message">Message</div>
+                <div class="link">Link</div>
+                <div class="to">To</div>
             </div>
-            <div class="form-group">
-                <label for="message" class="textarea-label">Сообщение</label>
-                <textarea class="cargo-ext__textarea" maxlength="160" name="message" id="message"></textarea>
+            <div class="chat-message-holder" id="chat-message-holder">
+                <div class="chat-message" v-for="message in chat">
+                    <div class="title">{{ message.title }}</div>
+                    <div class="message">{{ message.message }}
+                    </div>
+                    <div class="link">{{ message.link }}</div>
+                    <div class="to">{{ message.to }} room</div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="link" class="input-label">Ссылка</label>
-                <input type="text" class="cargo-ext__input" name="link" id="link"></input>
+            <div class="chat-message-writer">
+                <form class="cargo-ext__form">
+                    <div class="form-group">
+                        <input type="text" class="cargo-ext__input title" maxlength="32" name="title" id="title" v-model="message.title" placeholder="Title"/>
+                        <input type="text" class="cargo-ext__input link" name="link" id="link" v-model="message.link" placeholder="Link"></input>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="cargo-ext__textarea cargo-ext__chat-textarea message" maxlength="160" name="message" id="message" v-model="message.message" placeholder="Message"></textarea>
+                    </div>
+                </form>
+                <button class="cargo-ext__btn" v-on:click="send">Отправить</button>
             </div>
-            <div class="form-group">
-                <label for="ttl" class="input-label">TTL, ч.</label>
-                <input type="number" class="cargo-ext__input" max="99" min="0" name="ttl" id="message"></input>
+        </div>
+        <div class="cargo-ext__chat-users">
+            <div class="users-table">
+                <div class="table-row table-headers">
+                    <div class="table-header">Cargo</div>
+                    <div class="table-header">Lardi</div>
+                </div>
+                <template v-for="user in usersSelect">
+                    <div class="table-row table-data" id="user.id">
+                        <label class="table-user">
+                            <input type="checkbox" class="table-input" :value="user.id" v-model="message.selectedRooms">
+                            <span class="user-login">{{ user.cargo_login }}</span>
+                            <span class="user-login">{{ user.lardi_login }}</span>
+                        </label>
+                    </div>
+                </template>
             </div>
-            <div class="form-group">
-                <label for="collapse" class="input-label">ID сообщения</label>
-                <input type="text" class="cargo-ext__input" maxlength="64" name="collapse" id="collapse"></input>
-            </div>
-            <!--<div class="form-group">-->
-                <!--<label for="to" class="input-label">ID пользователя</label>-->
-                <!--<input type="text" class="cargo-ext__input" name="to" id="to"></input>-->
-            <!--</div>-->
-            <input type="submit" class="cargo-ext__btn cargo-ext__btn-grey cargo-ext__btn-send" value="Отправить">
-        </form>
+        </div>
     </div>
 </div>
+<% if (scripts) {
+scripts.forEach(function(script) { %>
+<script type="text/javascript" src="<%- script %>"></script>
+<% }) } %>
 </body>
 </html>

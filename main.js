@@ -297,7 +297,7 @@ var App = (function () {
 
     return this.appData = {
       cargo: cargo,
-      lardi: lardi,
+      lardi: lardi
     };
 
   };
@@ -384,7 +384,7 @@ var App = (function () {
         } else if (msg.sended.cargo.success) {
           message += ' Cargo.LT' + (msg.sended.lardi.error ? '\nLardi-Trans: ' + msg.sended.lardi.error : '');
         } else if (msg.sended.lardi.success) {
-          message += ' Lardi-Trans' + (msg.sended.cargo.error ? '\nCargo.LT: ' + msg.sended.cargo.error : '');
+          message += ' Lardi-Trans' + (msg.sended.cargo.error ? '\nCargo.LT: ' + msg.sended.cargo.error.message : '');
         }
       }
 

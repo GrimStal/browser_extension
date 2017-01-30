@@ -161,6 +161,9 @@ function onSystemConnect(port) {
         case 'enableMarketNotifications':
           chrome.gcm.register(GCMIds, registerCallback);
           break;
+        case 'authChanges':
+          socketAuth();
+          break;
         default:
           console.log('Unknown task: ' + msg.task);
           return false;
@@ -277,72 +280,3 @@ function removeNotification(id) {
   return chrome.notifications.clear(id);
 }
 
-
-/** GCM */
-function registerCallback(registrationId) {
-  if (chrome.runtime.lastError) {
-    // When the registration fails, handle the error and retry the
-    // registration later.
-    console.log(chrome.runtime.lastError);
-    return setTimeout(
-        function() {
-          return unregisterGCM();
-        },
-        60000);
-  }
-
-  // Send the registration token to your application server.
-  sendRegistrationId(registrationId, function(error, succeed) {
-    // Once the registration token is received by your server,
-    // set the flag such that register will not be invoked
-    // next time when the app starts up.
-    if (succeed) {
-      SMData.saveGCMToken(registrationId);
-      return SMData.saveGCMRegistered();
-    }
-    console.log(error);
-  });
-}
-
-function sendRegistrationId(id, callback) {
-  // Send the registration token to your application server
-  // in a secure way.
-  console.log(id);
-  $.ajax({
-    url: GCM_server_address + 'message/subscribe',
-    type: 'POST',
-    data: {
-      id: id
-    }
-  })
-      .then(function() {
-        return callback(null, true)
-      })
-      .catch(function(res) {
-        return callback(res.error);
-      });
-}
-
-function unregisterCallback() {
-  if (chrome.runtime.lastError) {
-    // When the unregistration fails, handle the error and retry
-    // the unregistration later.
-    return setTimeout(function() {
-      return unregisterGCM();
-    }, 60000);
-  }
-}
-
-function unregisterGCM() {
-  chrome.gcm.unregister(unregisterCallback);
-}
-
-function listenForGCM() {
-  function listen(message) {
-    // A message is an object with a data property that
-    // consists of key-value pairs.
-    showMarketNotification(message.data.title, message.data.body, message.data.link);
-  }
-
-  chrome.gcm.onMessage.addListener(listen);
-}

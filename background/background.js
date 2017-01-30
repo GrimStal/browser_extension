@@ -6,7 +6,6 @@ var exportProgressNotificationId;
 var updateNotificationId;
 var GCMIds = ["896628471556"];
 var GCM_server_address = 'http://localhost:3000/';
-var socket = io(GCM_server_address);
 
 exportQueue.init({
   delay: -1,
@@ -64,14 +63,4 @@ chrome.runtime.onConnect.addListener(onConnect);
 chrome.runtime.onConnect.addListener(onSystemConnect);
 
 setInterval(lardiExportWatcher, 30000);
-
-/** GCM */
-/**
-if (!isFirefox()) {
-  if (SMData.getMarketMessagesAccept()) {
-    chrome.gcm.register(GCMIds, registerCallback);
-  }
-  listenForGCM();
-}
- */
 
