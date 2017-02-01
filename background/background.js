@@ -4,8 +4,6 @@ var exportQueue = new MQ();
 var addQueue = new MQ();
 var exportProgressNotificationId;
 var updateNotificationId;
-var GCMIds = ["896628471556"];
-var GCM_server_address = 'http://localhost:3000/';
 
 exportQueue.init({
   delay: -1,

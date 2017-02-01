@@ -168,7 +168,7 @@ App.scenes.auth = {
         name = user.name;
       }
     });
-    return name;
+    return name.replace(/[&amp\;,&quote;]/g, '');
   },
 
   checkLardiContact: function (login, companyID, token, callback) {

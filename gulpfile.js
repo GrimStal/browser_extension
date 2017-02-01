@@ -24,13 +24,12 @@ gulp.task('styles:watch', function() {
 gulp.task('production:watch', function() {
   gulp.watch([
         'css/**/*.*',
-        'bower_components/**/*.*',
         'images/**/*.*',
         'scenes/**/*.js',
         'templates/**/*.js',
         'js/**/*.js',
         'background/**/*.js',
-        './lodash*.*',
+        'lodash*.js',
         './*.*',
         '!./gulpfile.*',
         '!./bower.*',
@@ -59,6 +58,7 @@ gulp.task('production', function() {
     '!./jquery*.*',
     '!./sweetalert*.*',
     '!./SM.js',
+    '!./socket*.*',
     './templates/**/*.js',
     './*.js',
     './js/**/*.js',
@@ -76,26 +76,30 @@ gulp.task('production', function() {
       .pipe(concat('background.js'))
       .pipe(gulp.dest('dist/'));
 
-  gulp.src([
-    './popup.html',
-    './lodash.templates.js',
-    './SM.js',
-    './css/**/*.*',
-    './*.json',
-    '!./package.json',
-    '!./bower.json',
-  ], {
-    base: '.',
-  })
+  gulp.src(
+      [
+        './popup.html',
+        './lodash.templates.js',
+        './SM.js',
+        './css/**/*.*',
+        './*.json',
+        '!./package.json',
+        '!./bower.json',
+      ],
+      {
+        base: '.'
+      })
       .pipe(gulp.dest('dist/'));
 
   gulp.src([
-    './bower_components/bootstrap/dist/**/*.*',
-    './bower_components/jquery/dist/jquery.min.js',
-    './bower_components/jquery-ui/themes/**/*.*',
-    './bower_components/jquery-ui/jquery-ui.min.js',
-    './bower_components/js-md5/build/**/*.*',
-    './bower_components/lodash/dist/**/*.*'
+    './bower_components/bootstrap/dist/css/bootstrap.css',
+    './bower_components/bootstrap/dist/fonts/*.*',
+    './bower_components/bootstrap/dist/js/bootstrap.js',
+    './bower_components/jquery/dist/jquery.js',
+    './bower_components/jquery-ui/themes/base/**/*.*',
+    './bower_components/jquery-ui/jquery-ui.js',
+    './bower_components/js-md5/src/md5.js',
+    './bower_components/lodash/dist/lodash.js',
   ], {
     base: './bower_components/'
   })
@@ -103,8 +107,8 @@ gulp.task('production', function() {
 
   gulp.src([
     './sweetalert.min.js',
-    './xml2json.min.js',
-    './jquery.ba-jqmq.min.js',
+    './xml2json.js',
+    './jquery.ba-jqmq.js',
     './socket.io-1.4.5.js'
   ], {
     base: './'
@@ -112,9 +116,9 @@ gulp.task('production', function() {
       .pipe(gulp.dest('dist/src/'));
 
   gulp.src([
-      './socket.io*.*',
-      './node_modules/vue/dist/vue.min.js',
-      './node_modules/vue-socket.io/dist/build.js'
+    './socket.io*.*',
+    './node_modules/vue/dist/vue.min.js',
+    './node_modules/vue-socket.io/dist/build.js'
   ])
       .pipe(gulp.dest('./server/public/src/'));
 });

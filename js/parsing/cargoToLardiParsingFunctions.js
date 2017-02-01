@@ -294,7 +294,7 @@ function getLardiAreaID(code, area, countries) {
   var rusName;
 
   if ((code && area && countries) && (Array.isArray(countries) && countries.length !== 0)
-   && (countriesWithAreas.indexOf(code) !== -1)) {
+   && (~countriesWithAreas.indexOf(code))) {
 
     if (code !== 'PL') {
       rusName = regions[code][area];
