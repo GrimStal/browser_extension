@@ -359,5 +359,6 @@ App.scenes.auth = {
 
   togglePasswordVisability: function(key) {
     $('#' + key + '_password').attr('type', ($('#' + key + '_password').attr('type') === 'password' ? 'text' : 'password'));
+    $('#' + key + '_password + .eye').toggleClass('visible');
   }
 };

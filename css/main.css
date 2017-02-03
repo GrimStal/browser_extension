@@ -541,10 +541,13 @@ label input[type=checkbox] {
   user-select: none; }
   .eye:after {
     display: block;
-    content: " ";
+    content: "Показать";
     position: absolute;
-    top: 32px;
-    right: 24px;
-    width: 20px;
+    top: 35px;
+    right: 22px;
+    width: 55px;
     height: 20px;
-    background: url("/css/images/icons/see.png"); }
+    color: #ccc;
+    font-size: 12px; }
+  .eye.visible:after {
+    content: "Скрыть"; }

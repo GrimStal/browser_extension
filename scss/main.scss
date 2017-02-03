@@ -810,12 +810,19 @@ label {
   user-select: none;
   &:after {
     display: block;
-    content: " ";
+    content: "Показать";
     position: absolute;
-    top: 32px;
-    right: 24px;
-    width: 20px;
+    top: 35px;
+    right: 22px;
+    width: 55px;
     height: 20px;
-    background: url('/css/images/icons/see.png');
+    color: $lightGrey;
+    font-size: 12px;
+  }
+
+  &.visible {
+    &:after {
+      content: "Скрыть";
+    }
   }
 }
