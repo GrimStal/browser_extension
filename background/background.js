@@ -20,13 +20,6 @@ addQueue.init({
 });
 
 
-//Update available message
-if (!isFirefox() || (isFirefox() && navigator.userAgent.match(/Firefox\/([0-9]+\.[0-9]*)/)[1] >= '51')) {
-  chrome.runtime.onUpdateAvailable.addListener(function(details) {
-    return showUpdateNotification(details.version);
-  });
-}
-
 //On istalled, updated and Chrome updated event
 if (!isFirefox() || (isFirefox() && navigator.userAgent.match(/Firefox\/([0-9]+\.[0-9]*)/)[1] >= '52')) {
   chrome.runtime.onInstalled.addListener(function(details) {
