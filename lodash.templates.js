@@ -121,7 +121,11 @@
     ((__t = (field.id)) == null ? '' : __t) +
     '" placeholder="Введите ' +
     ((__t = (field.label.toLowerCase())) == null ? '' : __t) +
-    '" />\n                    </div>\n                  ';
+    '" />\n                        ';
+     if (field.type === 'password') {
+    __p += '\n                        <span class="eye"></span>\n                        ';
+     }
+    __p += '\n                    </div>\n                  ';
      }); ;
     __p += '\n                </fieldset>\n                <div class="ce__auth_btn">\n                    <button id="' +
     ((__t = (submit_id)) == null ? '' : __t) +

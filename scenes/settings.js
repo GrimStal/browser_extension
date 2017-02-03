@@ -48,6 +48,7 @@ App.scenes.settings = {
     } else {
       $('#cargoSubmit').bind('click', authCargo);
       $('#cargo_password').bind('keyup', onEnter.bind(null, authCargo));
+      $('#cargo_password + .eye').bind('click', authContext.togglePasswordVisability.bind(this, 'cargo'));
       authContext.initForm('cargo');
     }
 
@@ -57,6 +58,7 @@ App.scenes.settings = {
     } else {
       $('#lardiSubmit').bind('click', authLardi);
       $('#lardi_password').bind('keyup', onEnter.bind(null, authLardi));
+      $('#lardi_password + .eye').bind('click', authContext.togglePasswordVisability.bind(this, 'lardi'));
       authContext.initForm('lardi');
     }
 
@@ -193,6 +195,7 @@ App.scenes.settings = {
     context.initForm(key);
     $('.auth-input').unbind('input');
     $('.auth-input').bind('input', this.onChange.bind(this));
+    $('#' + key + '_password + .eye').bind('click', context.togglePasswordVisability.bind(this, key));
   },
 
   onChange: function(e) {

@@ -10,6 +10,9 @@
                     <div class="form-group has-feedback">
                         <label for="<%=field.id%>"><%=field.label%></label>
                         <input type="<%=field.type%>" class="form-control auth-input" id="<%=field.id%>" name="<%=field.id%>" placeholder="Введите <%=field.label.toLowerCase()%>" />
+                        <% if (field.type === 'password') { %>
+                        <span class="eye"></span>
+                        <% } %>
                     </div>
                   <% }); %>
                 </fieldset>
