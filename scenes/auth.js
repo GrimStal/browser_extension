@@ -171,7 +171,11 @@ App.scenes.auth = {
         name = user.name;
       }
     });
-    return name.replace(/[&amp\;,&quote;]/g, '');
+
+    if (name) {
+      name.replace(/[&amp\;,&quote;]/g, '');
+    }
+    return name;
   },
 
   checkLardiContact: function(login, companyID, token, callback) {
