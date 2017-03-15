@@ -276,6 +276,7 @@ function exportComplete() {
   SMData.savePendingCargos('lardi', []);
   chrome.browserAction.setIcon({ path: 'css/images/icons/16x16.png' });
   chrome.browserAction.setBadgeText({ text: '' });
+  checkCargoSiteOpened();
 }
 
 function addComplete() {

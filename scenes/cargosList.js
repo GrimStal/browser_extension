@@ -715,9 +715,8 @@ App.scenes.cargosList = {
         });
       });
 
-      console.log(duplicates);
-
       App.exportPort.postMessage({ task: 'addToQueue', props: duplicates });
+	  self.checkCargoSiteOpened();
 
     }, function (err) {
       App.stopLoading();
